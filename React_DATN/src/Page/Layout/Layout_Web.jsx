@@ -55,7 +55,7 @@ const Layout_Web = () => {
                           <li><a href="wishlist.html">my wishlist</a></li>
                           <li><a href="cart.html">my cart</a></li>
                           <li><a href="checkout.html">Checkout</a></li>
-                          <li><a href="blog.html">Blog</a></li>
+                          <li><a href="blog">Blog</a></li>
                           <li><a href="#">Log in</a></li>
                         </ul>
                       </li>
@@ -124,7 +124,7 @@ const Layout_Web = () => {
                           </span>
                         </div>
                       </li>
-                      <li className="mega-women"><a href="shop.html">Women</a>
+                      <li className="mega-women"><a href="category">Women</a>
                         <div className="mega-menu women">
                           <div className="part-1">
                             <span>
@@ -163,7 +163,7 @@ const Layout_Web = () => {
                           </div>
                         </div>
                       </li>
-                      <li className="mega-men"><a href="shop.html">Men</a>
+                      <li className="mega-men"><a href="category">Men</a>
                         <div className="mega-menu men">
                           <span>
                             <a href="#">Bags</a>
@@ -208,10 +208,10 @@ const Layout_Web = () => {
                             <a href="about-us.html">About us</a>
                           </span>
                           <span>
-                            <a href="blog.html">Blog</a>
+                            <a href="blog">Blog</a>
                           </span>
                           <span>
-                            <a href="blog-details.html">Blog Details</a>
+                            <a href="blog_details">Blog Details</a>
                           </span>
                           <span>
                             <a href="cart.html">Cart</a>
@@ -340,8 +340,8 @@ const Layout_Web = () => {
                       <li><a href="#">Pages</a>
                         <ul>
                           <li><a href="about-us.html">About us</a></li>
-                          <li><a href="blog.html">Blog</a></li>
-                          <li><a href="blog-details.html">Blog Details</a></li>
+                          <li><a href="blog">Blog</a></li>
+                          <li><a href="blog_details">Blog Details</a></li>
                           <li><a href="cart.html">Cart</a></li>
                           <li><a href="checkout.html">Checkout</a></li>
                           <li><a href="contact.html">Contact</a></li>
