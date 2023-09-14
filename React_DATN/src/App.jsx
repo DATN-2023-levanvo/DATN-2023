@@ -24,6 +24,10 @@ function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="product-detail" element={<ProductDetail />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="register" element={<Register />} />
+        <Route path="login" element={<Login />} />
+
+
       </Route>
     </Routes>
   )
