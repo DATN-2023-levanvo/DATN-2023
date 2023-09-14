@@ -1,10 +1,7 @@
 import React from 'react'
 
-
-
 const Register = () => {
     return (
-
         <div>
             <div className="shopping-cart">
                 <div className="container">
@@ -49,7 +46,6 @@ const Register = () => {
                 </div>
             </div>
         </div>
-
     )
 }
 

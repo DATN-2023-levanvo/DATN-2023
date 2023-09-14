@@ -1,273 +1,173 @@
 import React from 'react'
 
 const Blog = () => {
-  return (
-    <div>
-              {/* <!-- header area end -->
-        <!-- blog  banner start --> */}
-        <div class="blog-banner">
-            <img src="img/product/banner.jpg" alt=""/>
-        </div>
-        {/* <!-- blog banner end -->
-        <!-- blog area start --> */}
-        <div class="blog-main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="location">
-                            <ul>
-                                <li><a href="index.html" title="go to homepage">Home<span>/</span></a>  </li>
-                                <li><strong> blog</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="product-sidebar">
-                            <div class="sidebar-title">
-                                <h2>Shopping Options</h2>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Category</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Dresses (4)</a></li>
-                                        <li><a href="#">shoes (6)</a></li>
-                                        <li><a href="#">Handbags (1)</a></li>
-                                        <li><a href="#">Clothing (3)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Color</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Black (2)</a></li>
-                                        <li><a href="#">Blue (2)</a></li>
-                                        <li><a href="#">Green (4)</a></li>
-                                        <li><a href="#">Grey (2)</a></li>
-                                        <li><a href="#">Red (2)</a></li>
-                                        <li><a href="#">White (2)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Manufacturer</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Calvin Klein (2)</a></li>
-                                        <li><a href="#">Diesel (2)</a></li>
-                                        <li><a href="#">option value (1)</a></li>
-                                        <li><a href="#">Polo (2)</a></li>
-                                        <li><a href="#">store view (4)</a></li>
-                                        <li><a href="#">Tommy Hilfiger (2)</a></li>
-                                        <li><a href="#">will be used (1)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="banner-left">
-                                <a href="#">
-                                    <img src="img/product/banner_left.jpg" alt=""/>
-                                </a>
+    return (
+        <div>
+            <div className="blog-banner">
+                <img src="img/product/banner.jpg" alt="" />
+            </div>
+            <div className="blog-main">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="location">
+                                <ul>
+                                    <li><a href="index.html" title="go to homepage">Home<span>/</span></a>  </li>
+                                    <li><strong> blog</strong></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-9">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sidebar-title">
-                                    <h2>Blog Posts</h2>
+                    <div className="row">
+                        <div className="col-lg-3">
+                            <div className="product-sidebar">
+                                <div className="sidebar-title">
+                                    <h2>Shopping Options</h2>
                                 </div>
-                                <div class="blog-area">
-                                    <div class="single-blog-post-page">
-                                        <div class="blog-img">
-                                            <a href="blog_details">
-                                                <img src="img/blog/5.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="blog_details" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
-                                            <a href="blog_details" class="readmore">read more </a>
-                                        </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Category</h3>
                                     </div>
-                                    <div class="single-blog-post-page">
-                                        <div class="blog-img">
-                                            <a href="blog_details">
-                                                <img src="img/blog/6.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="blog_details" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
-                                            <a href="blog_details" class="readmore">read more </a>
-                                        </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Dresses (4)</a></li>
+                                            <li><a href="#">shoes (6)</a></li>
+                                            <li><a href="#">Handbags (1)</a></li>
+                                            <li><a href="#">Clothing (3)</a></li>
+                                        </ul>
                                     </div>
-                                    <div class="single-blog-post-page">
-                                        <div class="blog-img">
-                                            <a href="blog_details">
-                                                <img src="img/blog/5.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="blog_details" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
-                                            <a href="blog_details" class="readmore">read more </a>
-                                        </div>
+                                </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Color</h3>
                                     </div>
-                                    <div class="single-blog-post-page">
-                                        <div class="blog-img">
-                                            <a href="blog_details">
-                                                <img src="img/blog/6.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="blog_details" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
-                                            <a href="blog_details" class="readmore">read more </a>
-                                        </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Black (2)</a></li>
+                                            <li><a href="#">Blue (2)</a></li>
+                                            <li><a href="#">Green (4)</a></li>
+                                            <li><a href="#">Grey (2)</a></li>
+                                            <li><a href="#">Red (2)</a></li>
+                                            <li><a href="#">White (2)</a></li>
+                                        </ul>
                                     </div>
-                                    <div class="single-blog-post-page">
-                                        <div class="blog-img">
-                                            <a href="blog_details">
-                                                <img src="img/blog/5.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="blog_details" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
-                                            <a href="blog_details" class="readmore">read more </a>
-                                        </div>
+                                </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Manufacturer</h3>
                                     </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Calvin Klein (2)</a></li>
+                                            <li><a href="#">Diesel (2)</a></li>
+                                            <li><a href="#">option value (1)</a></li>
+                                            <li><a href="#">Polo (2)</a></li>
+                                            <li><a href="#">store view (4)</a></li>
+                                            <li><a href="#">Tommy Hilfiger (2)</a></li>
+                                            <li><a href="#">will be used (1)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="banner-left">
+                                    <a href="#">
+                                        <img src="img/product/banner_left.jpg" alt="" />
+                                    </a>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="toolbar-bottom">
-                                    <ul>
-                                        <li><span>Pages:</span></li>
-                                        <li class="current"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#"> <img src="img/product/pager_arrow_right.gif" alt=""/> </a></li>
-                                    </ul>
+                        </div>
+                        <div className="col-lg-9">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="sidebar-title">
+                                        <h2>Blog Posts</h2>
+                                    </div>
+                                    <div className="blog-area">
+                                        <div className="single-blog-post-page">
+                                            <div className="blog-img">
+                                                <a href="blog_details">
+                                                    <img src="img/blog/5.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div className="blog-content">
+                                                <a href="blog_details" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
+                                                <a href="blog_details" className="readmore">read more </a>
+                                            </div>
+                                        </div>
+                                        <div className="single-blog-post-page">
+                                            <div className="blog-img">
+                                                <a href="blog_details">
+                                                    <img src="img/blog/6.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div className="blog-content">
+                                                <a href="blog_details" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
+                                                <a href="blog_details" className="readmore">read more </a>
+                                            </div>
+                                        </div>
+                                        <div className="single-blog-post-page">
+                                            <div className="blog-img">
+                                                <a href="blog_details">
+                                                    <img src="img/blog/5.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div className="blog-content">
+                                                <a href="blog_details" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
+                                                <a href="blog_details" className="readmore">read more </a>
+                                            </div>
+                                        </div>
+                                        <div className="single-blog-post-page">
+                                            <div className="blog-img">
+                                                <a href="blog_details">
+                                                    <img src="img/blog/6.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div className="blog-content">
+                                                <a href="blog_details" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
+                                                <a href="blog_details" className="readmore">read more </a>
+                                            </div>
+                                        </div>
+                                        <div className="single-blog-post-page">
+                                            <div className="blog-img">
+                                                <a href="blog_details">
+                                                    <img src="img/blog/5.jpg" alt="" />
+                                                </a>
+                                            </div>
+                                            <div className="blog-content">
+                                                <a href="blog_details" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna...</p>
+                                                <a href="blog_details" className="readmore">read more </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-12">
+                                    <div className="toolbar-bottom">
+                                        <ul>
+                                            <li><span>Pages:</span></li>
+                                            <li className="current"><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#"> <img src="img/product/pager_arrow_right.gif" alt="" /> </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-        {/* <!-- blog area end -->
-        <!-- footer top area start --> */}
-        <div class="footer-top-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-contact">
-                            <img src="img/logo-white.png" alt=""/>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-                            <ul class="address">
-                                <li>
-                                    <span class="fa fa-fax"></span>
-                                    (800) 123 456 789
-                                </li>
-                                <li>
-                                    <span class="fa fa-phone"></span>
-                                    (800) 123 456 789
-                                </li>
-                                <li>
-                                    <span class="fa fa-envelope-o"></span>
-                                    admin@bootexperts.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-tweets">
-                            <div class="footer-title">
-                                <h3>Latest tweets</h3>
-                            </div>
-                            <div class="twitter-feed">
-                                <div class="twitter-article">
-                                    <div class="twitter-img">
-                                        <a href="#">
-                                            <img src="img/twitter/twitter-1.png" alt=""/>
-                                        </a>
-                                    </div>
-                                    <div class="twitter-text">
-                                        <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                        <a href="#">https://t.co/iu0OYBwti8</a>
-                                        <div class="twitter-time">
-                                            <a href="#">16h</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="twitter-article">
-                                    <div class="twitter-img">
-                                        <a href="#">
-                                            <img src="img/twitter/twitter-1.png" alt=""/>
-                                        </a>
-                                    </div>
-                                    <div class="twitter-text">
-                                        <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                        <a href="#">https://t.co/iu0OYBwti8</a>
-                                        <div class="twitter-time">
-                                            <a href="#">16h</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-support">
-                            <div class="footer-title">
-                                <h3>Our support</h3>
-                            </div>
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="#">Sitemap</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Your Account</a></li>
-                                    <li><a href="#">Advanced Search</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-info">
-                            <div class="footer-title">
-                                <h3>Our information</h3>
-                            </div>
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="#">Customer Service</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Orders and Returns</a></li>
-                                    <li><a href="#">Site Map</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Blog

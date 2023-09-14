@@ -1,200 +1,201 @@
 import React from 'react'
 
 const Blog_details = () => {
-  return (
-    <div>
-                <div class="blog-details-main">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="location">
-                            <ul>
-                                <li><a href="index.html" title="go to homepage">Home<span>/</span></a>  </li>
-                                <li><strong> blog details</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3">
-                        <div class="product-sidebar">
-                            <div class="sidebar-title">
-                                <h2>Shopping Options</h2>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Category</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Dresses (4)</a></li>
-                                        <li><a href="#">shoes (6)</a></li>
-                                        <li><a href="#">Handbags (1)</a></li>
-                                        <li><a href="#">Clothing (3)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Color</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Black (2)</a></li>
-                                        <li><a href="#">Blue (2)</a></li>
-                                        <li><a href="#">Green (4)</a></li>
-                                        <li><a href="#">Grey (2)</a></li>
-                                        <li><a href="#">Red (2)</a></li>
-                                        <li><a href="#">White (2)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="single-sidebar">
-                                <div class="single-sidebar-title">
-                                    <h3>Manufacturer</h3>
-                                </div>
-                                <div class="single-sidebar-content">
-                                    <ul>
-                                        <li><a href="#">Calvin Klein (2)</a></li>
-                                        <li><a href="#">Diesel (2)</a></li>
-                                        <li><a href="#">option value (1)</a></li>
-                                        <li><a href="#">Polo (2)</a></li>
-                                        <li><a href="#">store view (4)</a></li>
-                                        <li><a href="#">Tommy Hilfiger (2)</a></li>
-                                        <li><a href="#">will be used (1)</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="banner-left">
-                                <a href="#">
-                                    <img src="img/product/banner_left.jpg" alt=""/>
-                                </a>
+    return (
+        <div>
+            <div className="blog-details-main">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="location">
+                                <ul>
+                                    <li><a href="index.html" title="go to homepage">Home<span>/</span></a>  </li>
+                                    <li><strong> blog details</strong></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-9">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="sidebar-title">
-                                    <h2>Details Post</h2>
+                    <div className="row">
+                        <div className="col-lg-3">
+                            <div className="product-sidebar">
+                                <div className="sidebar-title">
+                                    <h2>Shopping Options</h2>
                                 </div>
-                                <div class="blog-area">
-                                    <div class="blog-post-details">
-                                        <div class="blog-img">
-                                            <a href="#">
-                                                <img src="img/blog/5.jpg" alt=""/>
-                                            </a>
-                                        </div>
-                                        <div class="blog-content">
-                                            <a href="#" class="blog-title">Lorem ipsum dolor sit amet</a>
-                                            <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
-                                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna onec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.</p>
-                                            <p>Aliquam et metus pharetra, bibendum massa nec, fermentum odio. Nunc id leo ultrices, mollis ligula in, finibus tortor. Mauris eu dui ut lectus fermentum eleifend. Pellentesque faucibus sem ante, non malesuada odio varius nec. Suspendisse potenti. Proin consectetur aliquam odio nec fringilla. Sed interdum at justo in efficitur. Vivamus gravida volutpat sodales. Fusce ornare sit amet ligula condimentum sagittis.</p>
-                                            <blockquote>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur. In venenatis elit ac ultrices convallis. Duis est nisi, tincidunt ac urna sed, cursus blandit lectus. In ullamcorper sit amet ligula ut eleifend. Proin dictum tempor ligula, ac feugiat metus. Sed finibus tortor eu scelerisque scelerisque.</blockquote>
-                                            <p>Aenean et tempor eros, vitae sollicitudin velit. Etiam varius enim nec quam tempor, sed efficitur ex ultrices. Phasellus pretium est vel dui vestibulum condimentum. Aenean nec suscipit nibh. Phasellus nec lacus id arcu facilisis elementum. Curabitur lobortis, elit ut elementum congue, erat ex bibendum odio, nec iaculis lacus sem non lorem. Duis suscipit metus ante, sed convallis quam posuere quis. Ut tincidunt eleifend odio, ac fringilla mi vehicula nec. Nunc vitae lacus eget lectus imperdiet tempus sed in dui. Nam molestie magna at risus consectetur, placerat suscipit justo dignissim. Sed vitae fringilla enim, nec ullamcorper arcu.</p>
-                                            <p>Suspendisse turpis ipsum, tempus in nulla eu, posuere pharetra nibh. In dignissim vitae lorem non mollis. Praesent pretium tellus in tortor viverra condimentum. Nullam dignissim facilisis nisl, accumsan placerat justo ultricies vel. Vivamus finibus mi a neque pretium, ut convallis dui lacinia. Morbi a rutrum velit. Curabitur sagittis quam quis consectetur mattis. Aenean sit amet quam vel turpis interdum sagittis et eget neque. Nunc ante quam, luctus et neque a, interdum iaculis metus. Aliquam vel ante mattis, placerat orci id, vehicula quam. Suspendisse quis eros cursus, viverra urna sed, commodo mauris. Cras diam arcu, fringilla a sem condimentum, viverra facilisis nunc. Curabitur vitae orci id nulla maximus maximus. Nunc pulvinar sollicitudin molestie.</p>
-                                            <div class="share-post">
-                                                <div class="share-title">
-                                                    <h3>share this post</h3>
-                                                </div>
-                                                <div class="share-social">
-                                                    <ul>
-                                                        <li><a href="#"> <i class="fa fa-facebook"></i> </a></li>
-                                                        <li><a href="#"> <i class="fa fa-twitter"></i> </a></li>
-                                                        <li><a href="#"> <i class="fa fa-pinterest"></i> </a></li>
-                                                        <li><a href="#"> <i class="fa fa-google-plus"></i> </a></li>
-                                                        <li><a href="#"> <i class="fa fa-linkedin"></i> </a></li>
-                                                    </ul>
-                                                </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Category</h3>
+                                    </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Dresses (4)</a></li>
+                                            <li><a href="#">shoes (6)</a></li>
+                                            <li><a href="#">Handbags (1)</a></li>
+                                            <li><a href="#">Clothing (3)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Color</h3>
+                                    </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Black (2)</a></li>
+                                            <li><a href="#">Blue (2)</a></li>
+                                            <li><a href="#">Green (4)</a></li>
+                                            <li><a href="#">Grey (2)</a></li>
+                                            <li><a href="#">Red (2)</a></li>
+                                            <li><a href="#">White (2)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="single-sidebar">
+                                    <div className="single-sidebar-title">
+                                        <h3>Manufacturer</h3>
+                                    </div>
+                                    <div className="single-sidebar-content">
+                                        <ul>
+                                            <li><a href="#">Calvin Klein (2)</a></li>
+                                            <li><a href="#">Diesel (2)</a></li>
+                                            <li><a href="#">option value (1)</a></li>
+                                            <li><a href="#">Polo (2)</a></li>
+                                            <li><a href="#">store view (4)</a></li>
+                                            <li><a href="#">Tommy Hilfiger (2)</a></li>
+                                            <li><a href="#">will be used (1)</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="banner-left">
+                                    <a href="#">
+                                        <img src="img/product/banner_left.jpg" alt="" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-lg-9">
+                            <div className="row">
+                                <div className="col-md-12">
+                                    <div className="sidebar-title">
+                                        <h2>Details Post</h2>
+                                    </div>
+                                    <div className="blog-area">
+                                        <div className="blog-post-details">
+                                            <div className="blog-img">
+                                                <a href="#">
+                                                    <img src="img/blog/5.jpg" alt="" />
+                                                </a>
                                             </div>
-                                            <div class="about-author">
-                                                <div class="author-img">
-                                                    <img src="img/blog/admin.jpg" alt=""/>
-                                                </div>
-                                                <div class="author-content">
-                                                    <h3>About the Author: <a href="#">admin</a> </h3>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-10">
-                                                    <div class="comment-box">
-                                                        <div class="comment-title">
-                                                            <h3>4 comments</h3>
-                                                        </div>
-                                                        <div class="comment-list">
-                                                            <ul>
-                                                                <li>
-                                                                    <div class="author-img">
-                                                                        <img src="img/blog/user.jpg" alt=""/>
-                                                                    </div>
-                                                                    <div class="author-comment">
-                                                                        <h5><a href="#">admin</a> Post author February 6, 2016 at 1:38 am <a href="#">Reply</a></h5>
-                                                                        <p>just a nice post</p>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="comment-reply">
-                                                                    <div class="author-img">
-                                                                        <img src="img/blog/admin.jpg" alt=""/>
-                                                                    </div>
-                                                                    <div class="author-comment">
-                                                                        <h5><a href="#">demo</a> Post author February 6, 2016 at 2:38 am <a href="#">Reply</a></h5>
-                                                                        <p>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur</p>
-                                                                    </div>
-                                                                </li>
-                                                                <li>
-                                                                    <div class="author-img">
-                                                                        <img src="img/blog/user.jpg" alt=""/>
-                                                                    </div>
-                                                                    <div class="author-comment">
-                                                                        <h5><a href="#">admin</a> Post author February 6, 2016 at 1:38 am <a href="#">Reply</a></h5>
-                                                                        <p>just a nice post</p>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="comment-reply">
-                                                                    <div class="author-img">
-                                                                        <img src="img/blog/admin.jpg" alt=""/>
-                                                                    </div>
-                                                                    <div class="author-comment">
-                                                                        <h5><a href="#">demo</a> Post author February 6, 2016 at 2:38 am <a href="#">Reply</a></h5>
-                                                                        <p>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur</p>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
+                                            <div className="blog-content">
+                                                <a href="#" className="blog-title">Lorem ipsum dolor sit amet</a>
+                                                <span><a href="#">By plaza themes - </a>17 Aug 2015 ( 0 comments )</span>
+                                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna onec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.</p>
+                                                <p>Aliquam et metus pharetra, bibendum massa nec, fermentum odio. Nunc id leo ultrices, mollis ligula in, finibus tortor. Mauris eu dui ut lectus fermentum eleifend. Pellentesque faucibus sem ante, non malesuada odio varius nec. Suspendisse potenti. Proin consectetur aliquam odio nec fringilla. Sed interdum at justo in efficitur. Vivamus gravida volutpat sodales. Fusce ornare sit amet ligula condimentum sagittis.</p>
+                                                <blockquote>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur. In venenatis elit ac ultrices convallis. Duis est nisi, tincidunt ac urna sed, cursus blandit lectus. In ullamcorper sit amet ligula ut eleifend. Proin dictum tempor ligula, ac feugiat metus. Sed finibus tortor eu scelerisque scelerisque.</blockquote>
+                                                <p>Aenean et tempor eros, vitae sollicitudin velit. Etiam varius enim nec quam tempor, sed efficitur ex ultrices. Phasellus pretium est vel dui vestibulum condimentum. Aenean nec suscipit nibh. Phasellus nec lacus id arcu facilisis elementum. Curabitur lobortis, elit ut elementum congue, erat ex bibendum odio, nec iaculis lacus sem non lorem. Duis suscipit metus ante, sed convallis quam posuere quis. Ut tincidunt eleifend odio, ac fringilla mi vehicula nec. Nunc vitae lacus eget lectus imperdiet tempus sed in dui. Nam molestie magna at risus consectetur, placerat suscipit justo dignissim. Sed vitae fringilla enim, nec ullamcorper arcu.</p>
+                                                <p>Suspendisse turpis ipsum, tempus in nulla eu, posuere pharetra nibh. In dignissim vitae lorem non mollis. Praesent pretium tellus in tortor viverra condimentum. Nullam dignissim facilisis nisl, accumsan placerat justo ultricies vel. Vivamus finibus mi a neque pretium, ut convallis dui lacinia. Morbi a rutrum velit. Curabitur sagittis quam quis consectetur mattis. Aenean sit amet quam vel turpis interdum sagittis et eget neque. Nunc ante quam, luctus et neque a, interdum iaculis metus. Aliquam vel ante mattis, placerat orci id, vehicula quam. Suspendisse quis eros cursus, viverra urna sed, commodo mauris. Cras diam arcu, fringilla a sem condimentum, viverra facilisis nunc. Curabitur vitae orci id nulla maximus maximus. Nunc pulvinar sollicitudin molestie.</p>
+                                                <div className="share-post">
+                                                    <div className="share-title">
+                                                        <h3>share this post</h3>
                                                     </div>
-                                                    <div class="leave-reply">
-                                                        <div class="reply-title">
-                                                            <h3>leave a reply</h3>
+                                                    <div className="share-social">
+                                                        <ul>
+                                                            <li><a href="#"> <i className="fa fa-facebook"></i> </a></li>
+                                                            <li><a href="#"> <i className="fa fa-twitter"></i> </a></li>
+                                                            <li><a href="#"> <i className="fa fa-pinterest"></i> </a></li>
+                                                            <li><a href="#"> <i className="fa fa-google-plus"></i> </a></li>
+                                                            <li><a href="#"> <i className="fa fa-linkedin"></i> </a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div className="about-author">
+                                                    <div className="author-img">
+                                                        <img src="img/blog/admin.jpg" alt="" />
+                                                    </div>
+                                                    <div className="author-content">
+                                                        <h3>About the Author: <a href="#">admin</a> </h3>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-10">
+                                                        <div className="comment-box">
+                                                            <div className="comment-title">
+                                                                <h3>4 comments</h3>
+                                                            </div>
+                                                            <div className="comment-list">
+                                                                <ul>
+                                                                    <li>
+                                                                        <div className="author-img">
+                                                                            <img src="img/blog/user.jpg" alt="" />
+                                                                        </div>
+                                                                        <div className="author-comment">
+                                                                            <h5><a href="#">admin</a> Post author February 6, 2016 at 1:38 am <a href="#">Reply</a></h5>
+                                                                            <p>just a nice post</p>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li className="comment-reply">
+                                                                        <div className="author-img">
+                                                                            <img src="img/blog/admin.jpg" alt="" />
+                                                                        </div>
+                                                                        <div className="author-comment">
+                                                                            <h5><a href="#">demo</a> Post author February 6, 2016 at 2:38 am <a href="#">Reply</a></h5>
+                                                                            <p>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur</p>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <div className="author-img">
+                                                                            <img src="img/blog/user.jpg" alt="" />
+                                                                        </div>
+                                                                        <div className="author-comment">
+                                                                            <h5><a href="#">admin</a> Post author February 6, 2016 at 1:38 am <a href="#">Reply</a></h5>
+                                                                            <p>just a nice post</p>
+                                                                        </div>
+                                                                    </li>
+                                                                    <li className="comment-reply">
+                                                                        <div className="author-img">
+                                                                            <img src="img/blog/admin.jpg" alt="" />
+                                                                        </div>
+                                                                        <div className="author-comment">
+                                                                            <h5><a href="#">demo</a> Post author February 6, 2016 at 2:38 am <a href="#">Reply</a></h5>
+                                                                            <p>Quisque semper nunc vitae erat pellentesque, ac placerat arcu consectetur</p>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </div>
-                                                        <div class="reply-form">
-                                                            <p>Your email address will not be published. Required fields are marked *</p>
-                                                            <form action="#">
-                                                                <div class="row">
-                                                                    <div class="col-md-4">
-                                                                        <label> Name * </label>
-                                                                        <input type="text"/>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label> Email * </label>
-                                                                        <input type="email"/>
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label> Website </label>
-                                                                        <input type="text"/>
-                                                                    </div>
-                                                                    <div class="col-md-12 text-area">
-                                                                        <label> comment </label>
-                                                                        <textarea cols="30" rows="10"></textarea>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12">
-                                                                        <div class="post-comment">
-                                                                            <button type="submit"> post a comment </button>
+                                                        <div className="leave-reply">
+                                                            <div className="reply-title">
+                                                                <h3>leave a reply</h3>
+                                                            </div>
+                                                            <div className="reply-form">
+                                                                <p>Your email address will not be published. Required fields are marked *</p>
+                                                                <form action="#">
+                                                                    <div className="row">
+                                                                        <div className="col-md-4">
+                                                                            <label> Name * </label>
+                                                                            <input type="text" />
+                                                                        </div>
+                                                                        <div className="col-md-4">
+                                                                            <label> Email * </label>
+                                                                            <input type="email" />
+                                                                        </div>
+                                                                        <div className="col-md-4">
+                                                                            <label> Website </label>
+                                                                            <input type="text" />
+                                                                        </div>
+                                                                        <div className="col-md-12 text-area">
+                                                                            <label> comment </label>
+                                                                            <textarea cols="30" rows="10"></textarea>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </form>
+                                                                    <div className="row">
+                                                                        <div className="col-md-12">
+                                                                            <div className="post-comment">
+                                                                                <button type="submit"> post a comment </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -202,16 +203,16 @@ const Blog_details = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="toolbar-bottom">
-                                    <ul>
-                                        <li><span>Pages:</span></li>
-                                        <li class="current"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#"> <img src="img/product/pager_arrow_right.gif" alt=""/> </a></li>
-                                    </ul>
+                                <div className="col-md-12">
+                                    <div className="toolbar-bottom">
+                                        <ul>
+                                            <li><span>Pages:</span></li>
+                                            <li className="current"><a href="#">1</a></li>
+                                            <li><a href="#">2</a></li>
+                                            <li><a href="#">3</a></li>
+                                            <li><a href="#"> <img src="img/product/pager_arrow_right.gif" alt="" /> </a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -219,107 +220,7 @@ const Blog_details = () => {
                 </div>
             </div>
         </div>
-        {/* <!-- blog details area end -->
-        <!-- footer top area start --> */}
-        <div class="footer-top-area">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-contact">
-                            <img src="img/logo-white.png" alt=""/>
-                            <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-                            <ul class="address">
-                                <li>
-                                    <span class="fa fa-fax"></span>
-                                    (800) 123 456 789
-                                </li>
-                                <li>
-                                    <span class="fa fa-phone"></span>
-                                    (800) 123 456 789
-                                </li>
-                                <li>
-                                    <span class="fa fa-envelope-o"></span>
-                                    admin@bootexperts.com
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-tweets">
-                            <div class="footer-title">
-                                <h3>Latest tweets</h3>
-                            </div>
-                            <div class="twitter-feed">
-                                <div class="twitter-article">
-                                    <div class="twitter-img">
-                                        <a href="#">
-                                            <img src="img/twitter/twitter-1.png" alt=""/>
-                                        </a>
-                                    </div>
-                                    <div class="twitter-text">
-                                        <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                        <a href="#">https://t.co/iu0OYBwti8</a>
-                                        <div class="twitter-time">
-                                            <a href="#">16h</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="twitter-article">
-                                    <div class="twitter-img">
-                                        <a href="#">
-                                            <img src="img/twitter/twitter-1.png" alt=""/>
-                                        </a>
-                                    </div>
-                                    <div class="twitter-text">
-                                        <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                        <a href="#">https://t.co/iu0OYBwti8</a>
-                                        <div class="twitter-time">
-                                            <a href="#">16h</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-support">
-                            <div class="footer-title">
-                                <h3>Our support</h3>
-                            </div>
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="#">Sitemap</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Your Account</a></li>
-                                    <li><a href="#">Advanced Search</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="footer-info">
-                            <div class="footer-title">
-                                <h3>Our information</h3>
-                            </div>
-                            <div class="footer-menu">
-                                <ul>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="#">Customer Service</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Orders and Returns</a></li>
-                                    <li><a href="#">Site Map</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {/* <!-- footer top area end -->
-        <!-- footer area start --> */}
-    </div>
-  )
+    )
 }
 
 export default Blog_details

@@ -1,38 +1,30 @@
 
 import { useState } from "react";
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-
 import "../../css/detail.css";
-
-// import required modules
 import { FreeMode, Navigation, Thumbs, Pagination } from "swiper/modules";
 const ProductDetail = () => {
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
     const [quantity, setQuantity] = useState(0);
     const price = 170;
-    
+
     const handleIncrease = () => {
-      setQuantity(quantity + 1);
+        setQuantity(quantity + 1);
     };
-  
+
     const handleDecrease = () => {
-      if (quantity > 0) {
-        setQuantity(quantity - 1);
-      }
+        if (quantity > 0) {
+            setQuantity(quantity - 1);
+        }
     };
-  
+
     const totalPrice = price * quantity;
     return (
         <>
-
-            {/* <!-- single product area start --> */}
             <div className="Single-product-location home2">
                 <div className="container">
                     <div className="row">
@@ -47,8 +39,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-            {/* <!-- single product area end --> */}
-            {/* <!-- single product details start --> */}
             <div className="single-product-details">
                 <div className="container">
                     <div className="row">
@@ -225,7 +215,7 @@ const ProductDetail = () => {
                                                     <button onClick={handleDecrease}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-dash" viewBox="0 0 16 16">
                                                         <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
                                                     </svg></button>
-                                                    <input className="cart-plus-minus-box" type="text" name="qtybutton" value={quantity} readOnly/>
+                                                    <input className="cart-plus-minus-box" type="text" name="qtybutton" value={quantity} readOnly />
                                                     <button onClick={handleIncrease}><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-plus-lg" viewBox="0 0 16 16">
                                                         <path fillRule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
                                                     </svg></button>
@@ -240,8 +230,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-            {/* <!-- single product details end --> */}
-            {/* <!-- single product tab start --> */}
             <div className="single-product-tab-area">
                 <div className="container">
                     <div className="row">
@@ -393,8 +381,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-            {/* <!-- single product tab end --> */}
-            {/* <!-- upsell product area start--> */}
             <div className="upsell-product home2">
                 <div className="container">
                     <div className="row">
@@ -680,9 +666,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-
-            {/* <!-- upsell product area end--> */}
-            {/* <!-- related product area start--> */}
             <div className="related-product home2">
                 <div className="container">
                     <div className="row">
@@ -967,104 +950,6 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-            {/* <!-- related product area end--> */}
-            {/* <!-- footer top area start --> */}
-            <div className="footer-top-area">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-contact">
-                                <img src="img/logo-white.png" alt="" />
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-                                <ul className="address">
-                                    <li>
-                                        <span className="fa fa-fax"></span>
-                                        (800) 123 456 789
-                                    </li>
-                                    <li>
-                                        <span className="fa fa-phone"></span>
-                                        (800) 123 456 789
-                                    </li>
-                                    <li>
-                                        <span className="fa fa-envelope-o"></span>
-                                        admin@bootexperts.com
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-tweets">
-                                <div className="footer-title">
-                                    <h3>Latest tweets</h3>
-                                </div>
-                                <div className="twitter-feed">
-                                    <div className="twitter-article">
-                                        <div className="twitter-img">
-                                            <a href="#">
-                                                <img src="img/twitter/twitter-1.png" alt="" />
-                                            </a>
-                                        </div>
-                                        <div className="twitter-text">
-                                            <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                            <a href="#">https://t.co/iu0OYBwti8</a>
-                                            <div className="twitter-time">
-                                                <a href="#">16h</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="twitter-article">
-                                        <div className="twitter-img">
-                                            <a href="#">
-                                                <img src="img/twitter/twitter-1.png" alt="" />
-                                            </a>
-                                        </div>
-                                        <div className="twitter-text">
-                                            <p>Raboda Fashion #Magento #Theme comes up with pure white and grey, which great show your products. Check it: </p>
-                                            <a href="#">https://t.co/iu0OYBwti8</a>
-                                            <div className="twitter-time">
-                                                <a href="#">16h</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-support">
-                                <div className="footer-title">
-                                    <h3>Our support</h3>
-                                </div>
-                                <div className="footer-menu">
-                                    <ul>
-                                        <li><a href="#">Sitemap</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Your Account</a></li>
-                                        <li><a href="#">Advanced Search</a></li>
-                                        <li><a href="contact.html">Contact Us</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="footer-info">
-                                <div className="footer-title">
-                                    <h3>Our information</h3>
-                                </div>
-                                <div className="footer-menu">
-                                    <ul>
-                                        <li><a href="about-us.html">About Us</a></li>
-                                        <li><a href="#">Customer Service</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Orders and Returns</a></li>
-                                        <li><a href="#">Site Map</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {/* <!-- footer top area end --> */}
         </>
     )
 }
