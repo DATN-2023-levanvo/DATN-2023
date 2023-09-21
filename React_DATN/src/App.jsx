@@ -20,14 +20,15 @@ function App() {
       <Route path='/' element={<Layout_Web />}>
         <Route index element={<HomePage />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="category" element={<Category />} />
         <Route path="bill" element={<Bill />} />
         <Route path="contact" element={<Contact />} />
         <Route path="product-detail" element={<ProductDetail />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="register" element={<Register />} />
         <Route path="login" element={<Login />} />
-
-
+        <Route path="blog-detail" element={<Blog_details />} />
+        <Route path="blog" element={<Blog />} />
       </Route>
     </Routes>
   )

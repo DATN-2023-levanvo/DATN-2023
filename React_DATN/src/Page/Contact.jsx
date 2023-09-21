@@ -2,7 +2,7 @@ import React from 'react'
 
 const Contact = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="contact-area">
                 <div className="container">
                     <div className="row">

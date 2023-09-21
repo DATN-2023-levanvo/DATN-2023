@@ -4,7 +4,7 @@ import React from 'react'
 
 const New_products = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="new-products-area">
                 <div className="container">
                     <div className="row">

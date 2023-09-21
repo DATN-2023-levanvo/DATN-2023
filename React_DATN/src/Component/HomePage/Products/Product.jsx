@@ -4,7 +4,7 @@ import React from 'react'
 
 const Product = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="products-area">
                 <div className="container">
                     <div className="products">

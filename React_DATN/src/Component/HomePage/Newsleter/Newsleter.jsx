@@ -4,7 +4,7 @@ import React from 'react'
 
 const Newsleter = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="newsleter-area">
                 <div className="container">
                     <div className="row">

@@ -1,6 +1,6 @@
 const Checkout = () => {
     return (
-        <>
+        <div className='w-[90vw] mx-auto'>
             <div className="checkout-area">
                 <div className="container">
                     <div className="row">
@@ -492,7 +492,7 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

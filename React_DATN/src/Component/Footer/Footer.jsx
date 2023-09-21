@@ -1,7 +1,5 @@
 import React from 'react'
 
-
-
 const Footer = () => {
     return (
         <div>
@@ -100,8 +98,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            {/* footer top area end */}
-            {/* footer area start */}
             <footer className="footer-area">
                 <div className="container">
                     <div className="row">
@@ -119,8 +115,6 @@ const Footer = () => {
                 </div>
                 <a href="#" id="scrollUp"><i className="fa fa fa-arrow-up" /></a>
             </footer>
-            {/* footer area end */}
-            {/* quickview product start */}
             <div id="quickview-wrapper">
                 {/* Modal */}
                 <div className="modal fade" id="productModal" tabIndex={-1} role="dialog">
