@@ -1551,7 +1551,7 @@ body {
 /*----------------------------------------*/
 
 .another-banner-area {
-    background-image: url("img/banner/banner-bg.jpg");
+    background-image: url(".././img/banner/banner-bg.jpg");
     background-position: center top;
     min-height: 440px;
     padding-top: 50px;
