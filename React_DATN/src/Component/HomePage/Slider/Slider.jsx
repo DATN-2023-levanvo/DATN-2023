@@ -4,11 +4,10 @@ const Slider = () => {
         <div>
             <div className="slider-area home1">
                 <div className="bend niceties preview-2">
-                    <div id="nivoslider" className="slides">
+                    <div id="nivoslider" className="slides mt-44">
                         <img src="img/slider/slider-1.jpg" alt="" title="#slider-direction-1" />
                         <img src="img/slider/slider-2.jpg" alt="" title="#slider-direction-2" />
                     </div>
-                    {/* <!-- direction 1 --> */}
                     <div id="slider-direction-1" className="t-cn slider-direction">
                         <div className="slider-progress"></div>
                         <div className="slider-content t-lfl s-tb slider-1">
@@ -20,7 +19,6 @@ const Slider = () => {
                             </div>
                         </div>
                     </div>
-                    {/* <!-- direction 2 --> */}
                     <div id="slider-direction-2" className="slider-direction">
                         <div className="slider-progress" />
                         <div className="slider-content t-lfl s-tb slider-2">

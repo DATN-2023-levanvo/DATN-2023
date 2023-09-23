@@ -4,7 +4,7 @@ import React from 'react'
 
 const Featured_products = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="features-product-area">
                 <div className="container">
                     <div className="row">

@@ -1,32 +1,49 @@
 import React from 'react'
-
-
+import "../../App.css"
 
 const Header = () => {
+    window.addEventListener('scroll', function () {
+        let headerScroll = document.querySelector('.scroll_header');
+        let header_shell = document.querySelector('.mainmenu-area');
+        let imageBanner = document.querySelector('.image-banner');
+        if (window.scrollY >= 200) {
+            headerScroll.style.marginTop = '-5px';
+            imageBanner.style.height = '123px';
+            imageBanner.style.marginTop = '12px';
+            header_shell.style.marginTop="-10px"
+        } else {
+            headerScroll.style.marginTop = '0px';
+            imageBanner.style.height = '134px';
+            imageBanner.style.marginTop = '2px';
+            header_shell.style.height="81px"
+            header_shell.style.marginTop="0px"
+        }
+    });
     return (
-        <div>
+        <div className='_header-web'>
             <div className="top-link">
                 <div className="container">
                     <div className="row">
-                        <div className="col-lg-7 offset-lg-3 col-md-9 d-none d-md-block">
-                            <div className="site-option">
+                        <div className="col-lg-7 offset-lg-3 col-md-9 d-none d-md-block flex scroll_header">
+                            <div className="site-option mr-10">
                                 <ul>
-                                    <li className="currency"><a href="#">USD <i className="fa fa-angle-down" /> </a>
-                                        <ul className="sub-site-option">
-                                            <li><a href="#">Eur</a></li>
-                                            <li><a href="#">Usd</a></li>
-                                        </ul>
-                                    </li>
-                                    <li className="language"><a href="#">English <i className="fa fa-angle-down" /> </a>
+                                    <li className="language">
+                                        <a href="#">English <i className="fa fa-angle-down" /> </a>
                                         <ul className="sub-site-option">
                                             <li><a href="#">English</a></li>
                                             <li><a href="#">VietNam</a></li>
                                         </ul>
                                     </li>
+                                    <li> <span className='ml-10'>Call support free:</span> <span className='text-orange-500'> (800) 123 456 789</span></li>
                                 </ul>
                             </div>
-                            <div className="call-support">
-                                <p>Call support free: <span> (800) 123 456 789</span></p>
+                            <div className="mt-[10px]">
+                                <form action="#" className=''>
+                                    <input className='w-[350px]  outline-0 p-[5px] border ' type="text" />
+                                    <button className="bg-gray-300">
+                                        <i className="fa fa-search p-[10px] px-3 " />
+                                    </button>
+                                </form>
                             </div>
                         </div>
                         <div className="col-lg-2 col-md-3 ">
@@ -93,9 +110,7 @@ const Header = () => {
                         <div className="col-lg-3">
                             <div className="logo">
                                 <a href="/">
-                                    {/* <img className="w-[300px]" src="#"  /> */}
-                                    <img className="w-[300px]" src="img/logo.png" />
-
+                                    <img className="w-[300px] image-banner" src="img/logo.png" />
                                 </a>
                             </div>
                         </div>
@@ -103,16 +118,7 @@ const Header = () => {
                             <div className="mainmenu container">
                                 <nav>
                                     <ul>
-                                        <li><a href="#">Home</a>
-                                            {/* <div className="sub-menu">
-                          <span>
-                            <a href="index.html">Home version 1</a>
-                          </span>
-                          <span>
-                            <a href="index-2.html">Home version 2</a>
-                          </span>
-                        </div> */}
-                                        </li>
+                                        <li><a href="#">Home</a></li>
                                         <li className="mega-women"><a href="shop.html">Women</a>
                                             <div className="mega-menu women">
                                                 <div className="part-1">
@@ -234,6 +240,7 @@ const Header = () => {
                                                 </span>
                                             </div>
                                         </li>
+
                                     </ul>
                                 </nav>
                             </div>
@@ -243,10 +250,6 @@ const Header = () => {
                                 <nav>
                                     <ul>
                                         <li><a href="/">Home</a>
-                                            {/* <ul>
-                          <li><a href="index.html">Home 1</a></li>
-                          <li><a href="index-2.html">Home 2</a></li>
-                        </ul> */}
                                         </li>
                                         <li><a href="shop.html">Women</a>
                                             <ul>

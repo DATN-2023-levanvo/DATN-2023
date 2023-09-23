@@ -14,7 +14,7 @@ const Testimonial = () => {
                                     <a href="#">“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat ”</a>
                                 </div>
                                 <div className="avater">
-                                    <img src="img/testimonial/1.jpg" />
+                                    <img className='mx-auto' src="img/testimonial/1.jpg" />
                                 </div>
                                 <div className="post-by">
                                     <span>Salim Rana</span>
@@ -25,7 +25,7 @@ const Testimonial = () => {
                                     <a href="#">“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat ”</a>
                                 </div>
                                 <div className="avater">
-                                    <img src="img/testimonial/2.jpg" />
+                                    <img className='mx-auto' src="img/testimonial/2.jpg" />
                                 </div>
                                 <div className="post-by">
                                     <span>Hridoy Roy</span>
@@ -36,7 +36,7 @@ const Testimonial = () => {
                                     <a href="#">“ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat ”</a>
                                 </div>
                                 <div className="avater">
-                                    <img src="img/testimonial/3.jpg" />
+                                    <img className='mx-auto' src="img/testimonial/3.jpg" />
                                 </div>
                                 <div className="post-by">
                                     <span>themesplaza</span>

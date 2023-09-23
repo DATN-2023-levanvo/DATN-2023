@@ -2,7 +2,7 @@ import React from 'react'
 
 const Category = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="product-banner">
                 <img src="img/product/banner.jpg" alt="" />
             </div>

@@ -24,7 +24,7 @@ const ProductDetail = () => {
 
     const totalPrice = price * quantity;
     return (
-        <>
+        <div className='w-[90vw] mx-auto'>
             <div className="Single-product-location home2">
                 <div className="container">
                     <div className="row">
@@ -950,7 +950,7 @@ const ProductDetail = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

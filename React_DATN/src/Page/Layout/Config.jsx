@@ -2,6 +2,7 @@ import $ from "jquery";
 
 export default function Run() {
     $(document).ready(function () {
+        
         (function ($) {
             "use strict";
             $('#nivoslider').nivoSlider({

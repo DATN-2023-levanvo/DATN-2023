@@ -4,7 +4,7 @@ import React from 'react'
 
 const Blog = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="blog-area">
                 <div className="container">
                     <div className="row">
@@ -47,7 +47,7 @@ const Blog = () => {
                             <div className="single-blog-post">
                                 <div className="blog-img">
                                     <a href="blog-details.html">
-                                        <img src="img/blog/3.jpg" />
+                                        <img className='w-44' src="img/blog/3.jpg" />
                                     </a>
                                 </div>
                                 <div className="blog-content">
@@ -60,7 +60,7 @@ const Blog = () => {
                             <div className="single-blog-post">
                                 <div className="blog-img">
                                     <a href="blog-details.html">
-                                        <img src="img/blog/4.jpg" />
+                                        <img className='w-44' src="img/blog/4.jpg" />
                                     </a>
                                 </div>
                                 <div className="blog-content">

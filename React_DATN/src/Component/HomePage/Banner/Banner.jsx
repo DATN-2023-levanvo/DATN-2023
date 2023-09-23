@@ -4,7 +4,7 @@ import React from 'react'
 
 const Banner = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="banner-area">
                 <div className="single-banner">
                     <div className="part-1">
@@ -21,14 +21,6 @@ const Banner = () => {
                         </div>
                     </div>
                     <div className="part-2">
-                        <div className="search-box">
-                            <form action="#">
-                                <input type="text" />
-                                <button type="submit">
-                                    <i className="fa fa-search" />
-                                </button>
-                            </form>
-                        </div>
                         <div className="box-3">
                             <a href="#">
                                 <img src="img/banner/banner-1.jpg" />

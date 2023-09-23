@@ -2,7 +2,7 @@ import React from 'react'
 
 const Blog_details = () => {
     return (
-        <div>
+        <div className='w-[90vw] mx-auto'>
             <div className="blog-details-main">
                 <div className="container">
                     <div className="row">
