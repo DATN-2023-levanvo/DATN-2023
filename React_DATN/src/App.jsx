@@ -12,6 +12,9 @@ import Login from "./Page/Login"
 import Category from "./Page/Category"
 import Blog_details from "./Page/Blog_details"
 import Register from "./Page/Register"
+import Layout_Admin from "./Page/Layout/Layout_Admin"
+import ProductsAdmin from "./Page/Admin/Products"
+import AdminAddProduct from "./Page/Admin/Products/AddProduct"
 
 function App() {
   Config();
@@ -29,6 +32,14 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="blog-detail" element={<Blog_details />} />
         <Route path="blog" element={<Blog />} />
+      </Route>
+
+      <Route path='/admin' element={<Layout_Admin />}>
+        <Route index element="Dashbroad" />
+        <Route path="products" element={<ProductsAdmin />} />
+        <Route path="products/add" element={<AdminAddProduct />} />
+
+
       </Route>
     </Routes>
   )
