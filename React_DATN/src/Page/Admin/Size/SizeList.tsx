@@ -4,6 +4,8 @@ import { ISize } from '../../../Models/interfaces';
 import { QuestionCircleOutlined, DeleteFilled, EditOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { useDeleteSizeMutation, useGetAllSizeQuery } from '../../../Services/Api_Size';
+import Loading from '../../../Component/Loading';
+
 
 const { Search } = Input;
 
@@ -39,8 +41,6 @@ const SizeList = () => {
 
   const handleSelectionChange = (selectedRowKeys: React.Key[], selectedRows: ISize[]) => {
     setSelectedSizes(selectedRows);
-    console.log('selectedRowKeys:', selectedRowKeys);
-    console.log('selectedRows:', selectedRows);
   };
 
   const deleteSelectedSizes = () => {

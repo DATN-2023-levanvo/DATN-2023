@@ -1,18 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState } from "react"
 import {
-  DesktopOutlined,
-  FileOutlined,
+  GoldOutlined,
   PieChartOutlined,
-  TeamOutlined,
   UserOutlined,
+  HddOutlined,
+  FormatPainterOutlined,
+  DeploymentUnitOutlined,
+  BarChartOutlined,
+  EditOutlined,
+  HomeOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Outlet, Link } from 'react-router-dom';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer, Sider } = Layout
 
-type MenuItem = Required<MenuProps>['items'][number];
+type MenuItem = Required<MenuProps>["items"][number]
 
 function getItem(
   label: React.ReactNode,
@@ -30,32 +34,32 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem('Dashboard', '0', <PieChartOutlined />, undefined, '/admin'),
-  getItem('Products', '1', <PieChartOutlined />, undefined, 'product/list'),
-  getItem('Category', '2', <DesktopOutlined />),
-  getItem('File', 'sub1', <FileOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
+  getItem('Thống kê', '0', <BarChartOutlined />, undefined, '/admin'),
+  getItem('Kho', 'sub1', <HddOutlined />, [
+    getItem('Sản phẩm', '1', <DeploymentUnitOutlined />, undefined, 'product/list'),
+    getItem('Màu', '2', <FormatPainterOutlined />, undefined, 'color/list'),
+    getItem('Kích thước', '3', <PieChartOutlined />, undefined, 'size/list')
   ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [
-    getItem('Team 1', '6'),
-    getItem('Team 2', '8')
-  ]),
-  getItem('Users', '9', <UserOutlined />, undefined, 'user/list'),
+  getItem('Bình luận', '4', <EditOutlined />, undefined, 'comment/list'),
+  getItem('Danh mục', '5', <GoldOutlined />, undefined, 'category/list'),
+  getItem('Users', '6', <UserOutlined />, undefined, 'user/list'),
 ];
 
 const Layout_Admin: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer },
-  } = theme.useToken();
+  } = theme.useToken()
 
   return (
     <div className="nav-left">
       <Layout style={{ minHeight: '100vh' }}>
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
           <div className="demo-logo-vertical" />
+          <div className="flex justify-center">
+            <a href={`/`}><HomeOutlined className="scale-125 hover:scale-150 mx-auto mt-3"/></a>
+          </div>
+          <hr />
           <Menu theme="dark" defaultSelectedKeys={['0']} mode="inline" items={items} />
         </Sider>
         <Layout>
@@ -76,4 +80,4 @@ const Layout_Admin: React.FC = () => {
   );
 };
 
-export default Layout_Admin;
+export default Layout_Admin

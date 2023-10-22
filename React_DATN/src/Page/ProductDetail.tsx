@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/free-mode";
@@ -6,12 +6,38 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { FreeMode, Navigation, Thumbs, Pagination } from "swiper/modules";
 import { useParams } from "react-router-dom";
-import { useGetOneProductQuery } from "../Services/Api_Product";
+import { useGetOneProductQuery, useGetAllProductQuery } from "../Services/Api_Product";
+import { useGetColorsQuery } from "../Services/api_Color";
+import { useGetAllSizeQuery } from "../Services/Api_Size";
+import {
+  PlusOutlined,
+  MinusOutlined,
+} from "@ant-design/icons"
+
 const ProductDetail = () => {
   // state Swiper
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper]: any = useState(null);
+  const [relativeProducts, setRelativeProducts]: any = useState([]);
   const { id } = useParams();
-  const { data: productData, isLoading } = useGetOneProductQuery(id || "");
+  const { data: productData, isLoading: isLoadingProduct }: any = useGetOneProductQuery(id || "");
+  const { data: productDataAll, isLoading: isLoadingProductAll }: any = useGetAllProductQuery();
+  const { data: colorData, isLoading: loadingColor }: any = useGetColorsQuery();
+  const { data: sizeData, isLoading: loadingSize }: any = useGetAllSizeQuery();
+  // console.log("all-PR: ", productDataAll);
+  console.log("one-PR: ", productData?.categoryId._id);
+
+    useEffect(()=>{
+      if (productData && productData?.categoryId && productDataAll.length) {
+        productDataAll?.map((itemAllPr:any)=>{
+          if(itemAllPr.categoryId==productData.categoryId._id){
+            // setRelativeProducts(itemAllPr);
+            console.log("xem:",itemAllPr);
+          };
+        });
+      };
+    },[]);
+  // console.log("data-Relative: ",relativeProducts);
+
 
   return (
     <div className="w-[90vw] mx-auto">
@@ -35,6 +61,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      {/* detail */}
       <div className="single-product-details">
         <div className="container">
           <div className="row">
@@ -53,26 +80,7 @@ const ProductDetail = () => {
                   modules={[FreeMode, Navigation, Thumbs]}
                   className="mySwiper2"
                 >
-                  <SwiperSlide>
-                    <div>
-                      <img
-                        src={productData?.imgUrl[0]}
-                        className="product-img"
-                      />
-                    </div>
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productData?.imgUrl[1]} />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productData?.imgUrl[2]} />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productData?.imgUrl[3]} />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                    <img src={productData?.imgUrl[4]} />
-                  </SwiperSlide>
+                  {productData?.imgUrl.map((itemImg: any, index) => <SwiperSlide key={index}><img src={productData?.imgUrl[index]} /></SwiperSlide>)}
                 </Swiper>
               </div>
               <div className="nav product-page-slider">
@@ -85,24 +93,7 @@ const ProductDetail = () => {
                   modules={[FreeMode, Navigation, Thumbs]}
                   className="mySwiper"
                 >
-                  <SwiperSlide>
-                  <img src={productData?.imgUrl[0]} />
-
-                  </SwiperSlide>
-                  <SwiperSlide>
-                  <img src={productData?.imgUrl[1]} />
-
-                  </SwiperSlide>
-                  <SwiperSlide>
-                  <img src={productData?.imgUrl[2]} />
-
-                  </SwiperSlide>
-                  <SwiperSlide>
-                  <img src={productData?.imgUrl[3]} />
-                  </SwiperSlide>
-                  <SwiperSlide>
-                  <img src={productData?.imgUrl[4]} />
-                  </SwiperSlide>
+                  {productData?.imgUrl.map((itemImg: any, index) => <SwiperSlide key={index}><img src={productData?.imgUrl[index]} /></SwiperSlide>)}
                 </Swiper>
                 <div className="single-product-slider">
                   <a
@@ -163,23 +154,10 @@ const ProductDetail = () => {
                   </p>
                 </div>
                 <div className="item-price">
-                  <span>{productData?.price}</span>
+                  <span>{productData?.original_price.toLocaleString()} (VND)</span>
                 </div>
                 <div className="single-product-info">
-                  <p>
-                    Nunc facilisis sagittis ullamcorper. Proin lectus ipsum,
-                    gravida et mattis vulputate, tristique ut lectus. Sed et
-                    lorem nunc. Vestibulum ante ipsum primis in faucibus orci
-                    luctus et ultrices posuere cubilia Curae; Aenean eleifend
-                    laoreet congue. Vivamus adipiscing nisl ut dolor dignissim
-                    semper. Nulla luctus malesuada tincidunt. Class aptent
-                    taciti sociosqu ad litora torquent per conubia nostra, per
-                    inceptos himenaeos. Integer enim purus, posuere at ultricies
-                    eu, placerat a felis. Suspendisse aliquet urna pretium eros
-                    convallis interdum. Quisque in arcu id dui vulputate mollis
-                    eget non arcu. Aenean et nulla purus. Mauris vel tellus non
-                    nunc mattis lobortis.{" "}
-                  </p>
+                  <p>{productData?.description}</p>
                   <div className="share">
                     <img src="img/product/share.png" alt="" />
                   </div>
@@ -206,26 +184,17 @@ const ProductDetail = () => {
                 <div className="select-catagory">
                   <div>
                     <h3>Chọn màu:</h3>
-                    <div>
-                      <label
-                        htmlFor="color-red"
-                        style={{ backgroundColor: "red" }}
-                      ></label>
-                      <label
-                        htmlFor="color-green"
-                        style={{ backgroundColor: "green" }}
-                      ></label>
-                      <label
-                        htmlFor="color-blue"
-                        style={{ backgroundColor: "blue" }}
-                      ></label>
-                    </div>
+                    {colorData?.map((itemColor: any) => {
+                      return (
+                        <span>{itemColor.name} - </span>
+                      )
+                    })}
                     <h3>Chọn kích cỡ:</h3>
-                    <div>
-                      <label htmlFor="size-small">38</label>
-                      <label htmlFor="size-medium">39</label>
-                      <label htmlFor="size-large">40</label>
-                    </div>
+                    {sizeData?.map((itemSize: any) => {
+                      return (
+                        <span>{itemSize.name} - </span>
+                      )
+                    })}
                     {/* <!-- input ẩn để lưu trữ giá trị được chọn --> */}
                     <input type="hidden" id="selected-color" />
                     <input type="hidden" id="selected-size" />
@@ -233,52 +202,24 @@ const ProductDetail = () => {
                 </div>
                 <div className="cart-item">
                   <div className="price-box">
-                    <span>
+                    {/* <span>
                       Price: <span></span>
-                    </span>
+                    </span> */}
                   </div>
                   <div className="single-cart d-flex align-items-center">
                     <div className="cart-plus-minus">
                       <div className="d-flex align-items-center">
                         <span style={{ fontSize: "20px" }}>Qty: </span>
                         <div className="inp_group">
-                          <button>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi bi-dash"
-                              viewBox="0 0 16 16"
-                            >
-                              <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
-                            </svg>
-                          </button>
-                          <input
-                            className="cart-plus-minus-box"
-                            type="text"
-                            name="qtybutton"
-                            readOnly
+                          <button><MinusOutlined /></button>
+                          <input className="cart-plus-minus-box outline-0" type="text"
+                            name="qtybutton" readOnly id="quanityBuy"
                           />
-                          <button>
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              className="bi bi-plus-lg"
-                              viewBox="0 0 16 16"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
-                              />
-                            </svg>
-                          </button>
+                          <button><PlusOutlined /></button>
                         </div>
                       </div>
                     </div>
-                    <button className="cart-btn">Add to cart</button>
+                    <button className="cart-btn">Thêm vào giỏ</button>
                   </div>
                 </div>
               </div>
@@ -286,6 +227,7 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      {/* mô tả + đánh giá + comment */}
       <div className="single-product-tab-area">
         <div className="container">
           <div className="row">
@@ -605,828 +547,11 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <div className="upsell-product home2">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="product-title">
-                <h2>upsell products</h2>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={10}
-              pagination={{
-                clickable: true,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2,
-                  spaceBetween: 20,
-                },
-                768: {
-                  slidesPerView: 3,
-                  spaceBetween: 40,
-                },
-                1024: {
-                  slidesPerView: 4,
-                  spaceBetween: 50,
-                },
-              }}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/25.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/26.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/23.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/24.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/21.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/22.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/19.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/20.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product"></div>
-                  <div className="product-img">
-                    <a href="single-product.html">
-                      <img
-                        src="img/product/17.png"
-                        alt=""
-                        className="primary-img"
-                      />
-                      <img
-                        src="img/product/18.png"
-                        alt=""
-                        className="secondary-img"
-                      />
-                    </a>
-                  </div>
-                  <div className="list-product-info">
-                    <div className="price-rating">
-                      <div className="ratings">
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star-half-o"></i>
-                        <a href="#" className="review">
-                          1 Review(s)
-                        </a>
-                        <a href="#" className="add-review">
-                          Add Your Review
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="product-price">
-                    <div className="product-name">
-                      <a href="single-product.html" title="Fusce aliquam">
-                        Fusce aliquam
-                      </a>
-                    </div>
-                    <div className="price-rating">
-                      <span>$170.00</span>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/15.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/16.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/13.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/14.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/11.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/12.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
-        </div>
-      </div>
-      <div className="related-product home2">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-12">
-              <div className="product-title">
-                <h2>related products</h2>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <Swiper
-              slidesPerView={1}
-              spaceBetween={10}
-              pagination={{
-                clickable: true,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2,
-                  spaceBetween: 20,
-                },
-                768: {
-                  slidesPerView: 3,
-                  spaceBetween: 40,
-                },
-                1024: {
-                  slidesPerView: 4,
-                  spaceBetween: 50,
-                },
-              }}
-              modules={[Pagination]}
-              className="mySwiper"
-            >
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/25.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/26.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/23.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/24.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/21.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/22.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/19.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/20.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product"></div>
-                  <div className="product-img">
-                    <a href="single-product.html">
-                      <img
-                        src="img/product/17.png"
-                        alt=""
-                        className="primary-img"
-                      />
-                      <img
-                        src="img/product/18.png"
-                        alt=""
-                        className="secondary-img"
-                      />
-                    </a>
-                  </div>
-                  <div className="list-product-info">
-                    <div className="price-rating">
-                      <div className="ratings">
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star"></i>
-                        <i className="fa fa-star-half-o"></i>
-                        <a href="#" className="review">
-                          1 Review(s)
-                        </a>
-                        <a href="#" className="add-review">
-                          Add Your Review
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="product-price">
-                    <div className="product-name">
-                      <a href="single-product.html" title="Fusce aliquam">
-                        Fusce aliquam
-                      </a>
-                    </div>
-                    <div className="price-rating">
-                      <span>$170.00</span>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/15.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/16.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/13.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/14.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide id="x">
-                <div className="col-md-12">
-                  <div className="single-product">
-                    <div className="product-img">
-                      <a href="single-product.html">
-                        <img
-                          src="img/product/11.png"
-                          alt=""
-                          className="primary-img"
-                        />
-                        <img
-                          src="img/product/12.png"
-                          alt=""
-                          className="secondary-img"
-                        />
-                      </a>
-                    </div>
-                    <div className="list-product-info">
-                      <div className="price-rating">
-                        <div className="ratings">
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star"></i>
-                          <i className="fa fa-star-half-o"></i>
-                          <a href="#" className="review">
-                            1 Review(s)
-                          </a>
-                          <a href="#" className="add-review">
-                            Add Your Review
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="product-price">
-                      <div className="product-name">
-                        <a href="single-product.html" title="Fusce aliquam">
-                          Fusce aliquam
-                        </a>
-                      </div>
-                      <div className="price-rating">
-                        <span>$170.00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            </Swiper>
-          </div>
+      {/* ============================================ khu SP liên quan */}
+      <div className="container productsRelative">
+        <h3>Sản phẩm liên quan</h3>
+        <div className="productShow mt-4 flex flex-wrap ">
+
         </div>
       </div>
     </div>
