@@ -14,6 +14,7 @@ router.get("/product/:id", readProduct)
 router.post("/product", createProduct)
 router.delete("/product/:id", removeProduct)
 router.patch("/product/:id", updateProduct)
+router.put("/products/:id", updateProduct)
 router.delete("/product/removeAll", deleteSelectedProducts)
 
 export default router

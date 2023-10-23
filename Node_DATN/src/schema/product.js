@@ -30,5 +30,6 @@ export const productSchema = joi.object({
   quantity: joi.number().required().messages({
     "number.empty": "Số lượng sản phẩm không được để trống",
     "any.required": "Trường quantity là bắt buộc",
-  })
+  }),
+  view:joi.number(),
 })

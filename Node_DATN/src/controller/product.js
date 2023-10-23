@@ -1,5 +1,6 @@
 import Product from "../models/product.js"
 import Category from "../models/category.js"
+
 import { productSchema } from "../schema/product.js"
 import mongoose from "mongoose"
 import Color from "../models/color.js"
@@ -7,7 +8,7 @@ import Size from "../models/size.js"
 
 export const getProduct = async (req, res) => {
   try {
-    const data = await Product.find()
+    const data = await Product.find();
     if(data.length===0){
       return res.status(400).json({
         message: "Không có sản phẩm nào"
@@ -16,7 +17,7 @@ export const getProduct = async (req, res) => {
     return res.status(200).json(data)
   } catch (error) {
     return res.status(404).json({
-      message: "Không lấy được danh sách sản phẩm",
+      message: error.message,
     })
   }
 }
