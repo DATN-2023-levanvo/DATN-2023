@@ -86,6 +86,7 @@ const CategoryList = () => {
   ]
  
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log("selectedRowKeys changed: ", newSelectedRowKeys)
     setSelectedCategoryIds(newSelectedRowKeys)
   }
 

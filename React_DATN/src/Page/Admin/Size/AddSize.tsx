@@ -40,10 +40,11 @@ const AdminSizeAdd = () => {
                     });
                     setTimeout(() => {
                         navigate("/admin/size/list");
-                    }, 1000);
+                    }, 2000);
                 });
             setIsLoadingScreen(false);
         } catch (error) {
+            console.log("Lỗi khi thêm");
             setIsLoadingScreen(false);
         }
     };
