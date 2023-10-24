@@ -36,9 +36,10 @@ const productSchema = new mongoose.Schema({
   discount_code_id: {
     type: String,
   },
-  poinId: {
-    type: String,
-  },
+  view:Number,
+  inventory_number: Number, // số lượng tồn kho
+  quantity_sold: Number, // số lượng đã bán
+  arrayColor:[]
 },{timestamps: true, versionKey: false})
 
 export default mongoose.model("Product", productSchema)
