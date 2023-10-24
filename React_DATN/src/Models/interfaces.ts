@@ -10,8 +10,7 @@ export interface IProduct {
   color_id: string
   quantity?: number
   discount_code_id?: string
-  poinId?: string,
-  arrayColor?:String,
+  poinId?: string
 }
 
 export interface ICategory {
