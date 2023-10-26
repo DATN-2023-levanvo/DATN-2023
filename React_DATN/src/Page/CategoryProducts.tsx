@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 const ProductsCategory = () => {
   const { id } = useParams();
   const { data: ProductsCategoty, isLoading, isError } = useGetProductsByCategoryQuery(id);
-    console.log(ProductsCategoty);
     
   const {
     data: categoryData,
@@ -34,7 +33,7 @@ const ProductsCategory = () => {
   }
 
   return (
-    <div className="w-[90vw] mx-auto">
+    <div className="w-[90vw] mx-auto mt-36">
       <div className="product-banner">
         <img src="img/product/banner.jpg" alt="" />
       </div>
@@ -290,22 +289,6 @@ const ProductsCategory = () => {
       </div>
     </div>
   );
-  // return (
-  //   <div>
-  //     <h2>Products in Category</h2>
-  //     <ul>
-  //       {data?.map((product: IProduct) => {
-  //         console.log(product);
-  //         return (
-  //           <li key={product._id}>
-  //             <h3>{product.name}</h3>
-  //             <p>{product.description}</p>
-  //           </li>
-  //         )
-  //       })}
-  //     </ul>
-  //   </div>
-  // );
 }
 
 export default ProductsCategory;

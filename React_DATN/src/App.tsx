@@ -46,6 +46,8 @@ function App() {
   const handleSearch = (keyword: string) => {
     setSearchKeyword(keyword);
   };
+
+  
   Config();
   return (
     <Routes>
@@ -76,7 +78,7 @@ function App() {
         <Route path="category/list" element={<CategoryList />} />
         <Route path="category/add" element={<AddCategory />} />
         <Route path="category/:id/update" element={<UpdateCategory />} />
-        <Route path="colors" element={<ListColor />} />
+        <Route path="color/list" element={<ListColor />} />
         <Route path="color/create" element={<CreateColor />} />
         <Route path="color/:id/update" element={<UpdateColor />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
