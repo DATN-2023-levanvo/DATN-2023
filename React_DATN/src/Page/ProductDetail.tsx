@@ -18,7 +18,6 @@ import {Button, message} from "antd"
 import Loading from "../Component/Loading";
 
 
-
 const ProductDetail = () => {
   // state Swiper
   const [thumbsSwiper, setThumbsSwiper]: any = useState(null);
@@ -32,26 +31,32 @@ const ProductDetail = () => {
   const {data:cartData,error} = useGetCartQuery()
 
 
+  const sl_SP:number=productDataOne?.variants.reduce((sl1:any,sl2:any)=>{
+    return sl1+sl2.quantity
+  },0)
+
   let arrayPR: any = [];
-  const arrayRelate = productDataOne?.categoryId.products;
+  const arrayRelate = productDataOne?.categoryId;
   if (arrayRelate) {
     for (let i = 0; i < arrayRelate.length; i++) {
       allProducts?.map((product: any) => {
-        if (product._id == arrayRelate[i]) {
+        if (product.categoryId == arrayRelate) {
           arrayPR.push(product);
         };
       });
     };
   };
   arrayPR = arrayPR.filter((item: any) => item._id != id);
+  arrayPR=new Set(arrayPR)
+  arrayPR=Array.from(arrayPR);
 
+  console.log(arrayPR);
+  
   const ChooseColor = (color: any) => {
     setColor(color);
   };
-  console.log(getColor);
   
   const ChooseSize = (size: any) => {
-    console.log(size);
     setSize(size);
   };
 
@@ -80,13 +85,11 @@ const ProductDetail = () => {
           quantity: getQuantityBuy,
           price: productDataOne.price*getQuantityBuy
         })
-        console.log(res);
         
       
         message.success("Đã thêm sản phẩm vào giỏ hàng")
       }else{
         const productItemIndex = cartData.products.findIndex((product:any)=>product.productId._id == productDataOne._id && product.color == getColor && product.size == getSize);
-        console.log(productItemIndex);
         
         const productItem = cartData.products[productItemIndex];   
         if (productItemIndex !== -1) {
@@ -114,7 +117,6 @@ const ProductDetail = () => {
       // Xử lý khi chưa đăng nhập, tương tự như trước
       const existingCartJSON = localStorage.getItem('cart');
       const existingCart = existingCartJSON ? JSON.parse(existingCartJSON) : [];
-      console.log(existingCart);
       
   
       // Kiểm tra xem sản phẩm đã tồn tại trong giỏ hàng chưa
@@ -292,10 +294,10 @@ const uniqueColorButtons = productDataOne?.variants.reduce(
                 </div>
                 <div className="avalable">
                   <p>
-                    Tình trạng: <span> {productDataOne?.quantity > 0 ? "còn hàng" : "hết hàng"}</span>
+                    Tình trạng: <span> {sl_SP > 0 ? "còn hàng" : "hết hàng"}</span>
                   </p>
                   <p>
-                    Số lượng: <span className="text-gray-600"> {productDataOne?.quantity}</span>
+                    Số lượng tổng: <span className="text-gray-600">{sl_SP}</span>
                   </p>
                 </div>
                 <div className="item-price flex space-x-2">
@@ -312,7 +314,7 @@ const uniqueColorButtons = productDataOne?.variants.reduce(
 
 
                 <h3 className="-mt-4">Chọn màu:</h3>
-                <div className="flex space-x-2 my-4">{uniqueColorButtons}</div>;
+                <div className="flex space-x-2 my-4">{uniqueColorButtons}</div>
 
 
               <div className="select-catagory">
@@ -714,12 +716,14 @@ const uniqueColorButtons = productDataOne?.variants.reduce(
           {arrayPR.length ? arrayPR?.map((items: any) => {
             return (
               <div className="border rounded-2xl w-56 m-2 relative" key={items._id}>
-
                 <Link to={`/product/${items._id}`}><img className="w-56 h-48 rounded-lg hover:scale-110 duration-200" src={items.imgUrl[0]} alt="" /></Link>
-                <p className="ml-2  text-gray-500">{items.name} <span className="float-right mr-2 text-gray-400 text-xs mt-2">SL: {items.quantity}</span></p>
+                <p className="ml-2  text-gray-500">{items.name} </p>
+                <span className="float-right mr-2 text-gray-400 text-xs mt-2">SL: {items.variants.reduce((sl1:any,sl2:any)=>{
+                  return sl1+sl2.quantity
+                },0)}</span>
                 <div className="flex space-x-2">
-                  <p className="text-xs ml-2">{items.price.toLocaleString()} (VND)</p>
-                  {items.original_price > 0 && <p className="text-xs"><del>{items.original_price.toLocaleString()}</del></p>}
+                  <p className="text-xs ml-2 -mt-2">{items.price.toLocaleString()} </p>
+                  {items.original_price > 0 && <p className="text-xs"><del>{items.original_price.toLocaleString()}</del><span className="text-gray-400">(VND)</span></p>}
                   {
                     items.original_price > items.price ?
                       <img className=" absolute w-10 top-2" src="../../img/IMAGE_CREATED/sale.png" alt="" />

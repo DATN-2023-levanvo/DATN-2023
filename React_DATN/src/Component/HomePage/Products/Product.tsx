@@ -65,7 +65,7 @@ const Product = () => {
         }
     }
     const dataProducts = arrayLimitProducts.length ? arrayLimitProducts : productData;
-    // console.log("product: ", productData);
+    console.log("product: ", productData);
 
     const {
         data: categoryData
@@ -96,29 +96,9 @@ const Product = () => {
                                         <div>
                                             <img src="img/banner/banner-5.jpg" />
                                         </div>
-                                        {/* <ul className="nav tab-navigation" role="tablist">
-                                            <li role="presentation">
-                                                <a href="#tab5" aria-controls="tab5" role="tab" data-bs-toggle="tab">NIKE</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a href="#tab6" aria-controls="tab6" role="tab" data-bs-toggle="tab">MLB</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a href="#tab7" aria-controls="tab7" role="tab" data-bs-toggle="tab">ADIDAS</a>
-                                            </li>
-                                            <li role="presentation">
-                                                <a href="#tab8" aria-controls="tab8" role="tab" data-bs-toggle="tab">VANS</a>
-                                            </li>
-                                            <li></li>
-                                        </ul> */}
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className="col-lg-9">
-                                <div className="row">
-                                    
-                                </div>
-                            </div> */}
                             <div className="flex justify-center flex-wrap col-lg-9 mt-1">
                                 {
                                     isLoading ?
@@ -126,19 +106,21 @@ const Product = () => {
                                         :
                                         dataProducts?.map((items: any) => {
                                             return (
-                                                <div className="w-[220px] h-[280px] mx-2 mb-5 " key={items._id}>
+                                                <div className="w-[220px] h-[280px] mx-2 mb-5 hover:bg-gray-100" key={items._id}>
                                                     <div className="imgPr h-[250px] w-[220px] overflow-hidden">
-                                                        <Link to={`/product/${items._id}`}><img onClick={() => HandleView(items._id)} className='h-[250px] w-[220px] hover:scale-125 duration-200' src={items.imgUrl[0]} alt="" /></Link>
+                                                        <Link to={`/product/${items._id}`}><img onClick={() => HandleView(items._id)} className='h-[250px] w-[220px] hover:scale-110 duration-500' src={items.imgUrl[0]} alt="" /></Link>
                                                     </div>
                                                     <div className="content">
-                                                        <p className='text-center border-y border-gray-200 mt-1 text-orange-400 font-bold'>{items.name}</p>
-                                                        <div className="flex justify-between -mt-3">
-                                                            <div className="flex space-x-1">
-                                                                <span>{items.original_price.toLocaleString()}</span>
-                                                                {/* <del className='text-xs'> {items.original_price > 0 ? (items.price + items.original_price).toLocaleString() : ""}</del> */}
+                                                        <p className='text-center border-y border-gray-200 mt-1 text-orange-300 font-bold'>{items.name}</p>
+                                                        <div className="flex justify-between -mt-3 ">
+                                                            <div className="flex space-x-1 text-xs">
+                                                                <span>{items.price.toLocaleString()}</span>
+                                                                <del className='text-xs'> {items.original_price > 0 ? (items.price + items.original_price).toLocaleString() : ""}</del>
                                                                 <span> VND</span>
                                                             </div>
-                                                            <span>SL: {items.quantity}</span>
+                                                            <span className='text-red-400 text-xs'>only: {items.variants.reduce((sl1:any,sl2:any)=>{
+                                                                return sl1+sl2.quantity
+                                                            },0)}</span>
                                                         </div>
                                                     </div>
                                                 </div>
