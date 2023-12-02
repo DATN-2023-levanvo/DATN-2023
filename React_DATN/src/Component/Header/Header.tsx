@@ -90,7 +90,6 @@ const Header = () => {
               <div className="flex space-x-3 mt-3">
                 {/* Thanh tìm kiếm */}
                 {
-
                   <div className="account-menu relative">
                     <input type="checkbox" hidden id='search-webSite' />
                     <label htmlFor="search-webSite"><img className='w-7 active:scale-90 cursor-pointer' src="../../../img/search-main-web.png" alt="" /></label>
@@ -104,10 +103,8 @@ const Header = () => {
                     </form>
                     <label htmlFor="search-webSite" className='display-website-search'></label>
                   </div>
-
                 }
                 <div className="cart-img">
-                  {/* {VerifyAccount ? ( */}
                   <a href="/cart">
                     <img
                       className="active:scale-90 "
@@ -115,15 +112,6 @@ const Header = () => {
                       alt=""
                     />
                   </a>
-                  {/* ) : (
-                    <Link to={`/login`}>
-                      <img
-                        className="active:scale-90 "
-                        src="img/icon-cart.png"
-                        alt=""
-                      />
-                    </Link>
-                  )} */}
                 </div>
                 {user ? (
                   <div className="account-menu">

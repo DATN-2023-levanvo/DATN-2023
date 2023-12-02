@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {  useGetHotProductsQuery } from '../../../Services/Api_Product'
 import { IProduct } from '../../../Models/interfaces';
+import { Link } from 'react-router-dom';
 
 const Hot_products = () => {
     const { data: productData, isError, isLoading }: any = useGetHotProductsQuery()
@@ -48,7 +49,7 @@ const Hot_products = () => {
                     <div className="row">
                         <div className="col-md-12">
                             <div className="section-heading">
-                                <h2>Sản HOT</h2>
+                                <h2>Sản Phẩm HOT</h2>
                             </div>
                         </div>
                     </div>
@@ -59,7 +60,7 @@ const Hot_products = () => {
                                     {visibleProducts.map((product: IProduct) => {
                                         return (
                                             <div className='ml-2' key={product._id}>
-                                                <a href={`/product/${product._id}`} >
+                                                <Link to={`/product/${product._id}`} >
                                                     <div className="single-product">
                                                         <div className="level-pro-new">
                                                             <span>HOT</span>
@@ -131,7 +132,7 @@ const Hot_products = () => {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </a>
+                                                </Link>
                                             </div>
                                         );
                                     })}
@@ -139,13 +140,13 @@ const Hot_products = () => {
                             </div>
                             <div className=' text-2xl'>
                                 <button
-                                    className="absolute top-1/2 transform -translate-y-1/2 hover:bg-gray-300 left-[-20px] rounded-full shadow cursor-pointer"
+                                    className="absolute top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 left-[-20px] rounded-full shadow cursor-pointer"
                                     onClick={handlePrevClick}
                                 >
                                     {'<'}
                                 </button>
                                 <button
-                                    className="absolute top-1/2 transform -translate-y-1/2  hover:bg-gray-300 right-[-20px] rounded-full shadow cursor-pointer"
+                                    className="absolute top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 right-[-20px] rounded-full shadow cursor-pointer"
                                     onClick={handleNextClick}
                                 >
                                     {'>'}

@@ -2,10 +2,6 @@ import mongoose, { Schema } from "mongoose"
 
 const productSchema = new mongoose.Schema(
   {
-    productDetailsId: {
-      type: Schema.Types.ObjectId,
-      ref: "ProductDetails"
-    },
     name: {
       type: String,
     },

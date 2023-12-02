@@ -1,7 +1,7 @@
 // import React from 'react'
 // import "../../../../lib/home"
 
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IProduct } from "../../../Models/interfaces";
 import { useGetAllProductQuery } from "../../../Services/Api_Product";
 import Loading from "../../Loading";
@@ -36,7 +36,7 @@ const Featured_products = () => {
                                             key={product._id}
                                             style={{margin: 12}}
                                         >
-                                            <a href={`/product/${product._id}`}>
+                                            <Link to={`/product/${product._id}`}>
                                                 <div className="single-product">
                                                     <div className="level-pro-new">
                                                         <span>new</span>
@@ -107,7 +107,7 @@ const Featured_products = () => {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </a>
+                                            </Link>
                                         </div>
                                     );
                                 })}

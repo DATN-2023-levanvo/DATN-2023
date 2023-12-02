@@ -6,7 +6,6 @@ import mongoose from "mongoose"
 import Color from "../models/color.js"
 import Size from "../models/size.js"
 import Cart from "../models/cart.js"
-import ProductDetails from "../models/productDetails.js"
 
 export const getProduct = async (req, res) => {
   try {
