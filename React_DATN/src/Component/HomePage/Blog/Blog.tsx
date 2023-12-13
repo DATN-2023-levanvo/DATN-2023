@@ -6,7 +6,7 @@ import parse from 'html-react-parser';
 
 
 const Blog = () => {
-    const { data: blogData }:any = useGetAllBlogsQuery()
+    const { data: blogData }: any = useGetAllBlogsQuery()
 
     return (
         <div className='w-[90vw] mx-auto'>
@@ -23,7 +23,7 @@ const Blog = () => {
                         <div className="col-md-12">
                             <div className="blog-post">
 
-                                {blogData?.data.map((blog: IBlog) => {
+                                {blogData?.data?.map((blog: IBlog) => {
                                     return (
                                         <div className="single-blog-post relative h-[330px]">
                                             <div className="blog-img">

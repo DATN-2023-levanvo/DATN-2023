@@ -5,6 +5,7 @@ import { useGetOneProductQuery, useUpdateProductMutation } from '../../../Servic
 import Loading from '../../../Component/Loading';
 import { useGetAllCategoryQuery } from '../../../Services/Api_Category';
 import { ICategory, IProduct } from '../../../Models/interfaces';
+import ReactQuill from 'react-quill';
 
 const { Option } = Select;
 const { TextArea } = Input
@@ -26,7 +27,25 @@ const UpdateProduct = () => {
   const { data: productData, isLoading } = useGetOneProductQuery(id || "")
   const [updateProduct, { error }] = useUpdateProductMutation()
   const [isLoadingScreen, setIsLoadingScreen] = useState(false);
-
+  const modules = {
+    toolbar: [
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ size: [] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [
+        { list: 'ordered' },
+        { list: 'bullet' },
+        { indent: '-1' },
+        { indent: '+1' },
+      ],
+      ['link', 'image', 'video'],
+      ['clean'],
+    ],
+    clipboard: {
+      // toggle to add extra line breaks when pasting HTML:
+      matchVisual: false,
+    },
+  }
   useEffect(() => {
     if (error) {
       if ("data" in error) {
@@ -160,7 +179,8 @@ const UpdateProduct = () => {
         </Form.Item>
 
         <Form.Item label="Mô tả sản phẩm" name="description">
-          <TextArea rows={4} />
+          <ReactQuill theme="snow" modules={modules} className="h-[200px] w-[800px] mb-10" />
+
         </Form.Item>
 
         <Form.Item {...tailLayout}>
