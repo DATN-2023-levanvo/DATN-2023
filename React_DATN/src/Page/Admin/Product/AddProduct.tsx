@@ -46,7 +46,7 @@ const AddProduct = () => {
   const [previewTitle, setPreviewTitle] = useState("")
   const [isLoadingScreen, setIsLoadingScreen] = useState(false)
   const [messageApi, contextHolder] = message.useMessage()
-  const { data:getAllColor } = useGetColorsQuery()
+  const { data: getAllColor } = useGetColorsQuery()
 
   const handleCancel = () => setPreviewOpen(false)
 
@@ -221,7 +221,7 @@ const AddProduct = () => {
             },
           ]}
         >
-         <Input/>
+          <Input />
         </Form.Item>
 
         <Form.Item
