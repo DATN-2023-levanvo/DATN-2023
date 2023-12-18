@@ -93,10 +93,10 @@ const Header = () => {
   }, []);
 
   const hasDataGuests=()=>{
-    cartStatus ?
-    window.location.href="/guests"
-    :
-    message.warning("Bạn chưa có đơn hàng nào, hãy mua sản phẩm hoặc đăng kí 1 tài khoản !")
+    // cartStatus ?
+    window.location.href="/order/view/guest"
+    // :
+    // message.warning("Bạn chưa có đơn hàng nào, hãy mua sản phẩm hoặc đăng kí 1 tài khoản !")
   }
 
   return (
