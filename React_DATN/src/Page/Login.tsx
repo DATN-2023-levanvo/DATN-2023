@@ -28,7 +28,7 @@ const Login = () => {
             const { role } = data.user;
             setTimeout(() => {
                 if (role === "admin" || role === "staff") {
-                    navigate("/admin")
+                    window.location.href = "/admin"
                 } else {
                     navigate("/")
                 }

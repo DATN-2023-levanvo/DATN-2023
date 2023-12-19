@@ -234,7 +234,7 @@ const ProductDetail = () => {
 
       // Cập nhật localStorage với giỏ hàng mới
       localStorage.setItem('cart', JSON.stringify(existingCart));
-      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn (chưa đăng nhập).");
+      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn");
     }
   };
 

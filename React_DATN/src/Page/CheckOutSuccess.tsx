@@ -36,7 +36,7 @@ const CheckOutSuccess = () => {
                     localStorage.removeItem('orderData');
                     setTimeout(()=>{
                         navigate("/")
-                    },2000)
+                    },1000)
                 }
 
                 // Thanh toán vnp với người không có tài khoản
@@ -53,7 +53,7 @@ const CheckOutSuccess = () => {
                     localStorage.removeItem('orderItemData');
                     setTimeout(()=>{
                         navigate("/order/view/guest")
-                    },2000)
+                    },1000)
                 }
                 setStatusOrder(true);
             } else {
