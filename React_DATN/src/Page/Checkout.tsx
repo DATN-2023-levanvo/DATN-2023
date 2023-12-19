@@ -501,14 +501,7 @@ const Checkout = () => {
           note:
             (document.getElementById("note") as HTMLTextAreaElement)?.value ||
             "",
-          totalPrice: productId.reduce(
-            (total: number, id: string, index: number) => {
-              const productPrice = selectedProducts[index].price
-              const productQuantity = quantity[index]
-              return total + productPrice * productQuantity
-            },
-            0
-          ),
+          totalPrice: totalPrice,
         }
 
         if (selectedMethod == "transfer") {
