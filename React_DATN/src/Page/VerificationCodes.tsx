@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Form, Input, message } from 'antd';
 import { useVerificationCodesMutation } from '../Services/Api_User';
 import Loading from '../Component/Loading';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const VerificationCodes = () => {
@@ -10,7 +10,7 @@ const VerificationCodes = () => {
     const [messageApi, contexHolder] = message.useMessage()
     const [isLoadingSeen, setIsLoadingSeen] = useState(false)
     const [countdown, setCountdown] = useState(179);
-
+    const navigate = useNavigate()
     
 
     useEffect(() => {
@@ -45,12 +45,17 @@ const VerificationCodes = () => {
         setIsLoadingSeen(true)
         try {
             const response = await verificationCode(values)
+           
             if ("data" in response) {
                 messageApi.open({
                     type: "success",
                     content: response.data.message
                 })
+                setTimeout(()=>{
+                    navigate("/login")
+                },1500)
             }
+            
         } catch (error) {
             messageApi.open({
                 type: "error",
