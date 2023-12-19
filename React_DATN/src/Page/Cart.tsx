@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom"
 
 const Cart = () => {
   const token = localStorage.getItem('token');
-  const { data: cartData, isLoading, error } = token ? useGetCartQuery() : { data: null, isLoading: false, error: null };
+  const { data: cartData, isLoading, error } = token ? useGetCartQuery() : { data: null,isLoading:false,error:null };
   const [messageApi, contextHolder] = message.useMessage();
   const [deleteCart] = useDeleteFromCartMutation();
   const [selectedProductId, setSelectedProductId] = useState<React.Key[]>([])
@@ -359,9 +359,8 @@ const Cart = () => {
 
   return (
     <div className='w-[90vw] mx-auto mt-44'>
-      {token && isLoading && <Loading />}
       {contextHolder}
-      <div className="shopping-cart">
+      {isLoading ? <Loading /> : <div className="shopping-cart">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
@@ -391,7 +390,8 @@ const Cart = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div>}
+      
     </div>
   )
 }

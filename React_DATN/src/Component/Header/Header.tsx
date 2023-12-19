@@ -135,14 +135,14 @@ const Header = () => {
 
                 }
                 <div className="cart-img">
-                  <Link to={"/cart"}>
+                  <a href={"/cart"}>
                       <img
                           className="active:scale-90"
                           src="../../../img/icon-cart.png"
                           alt=""
                         />
                         <span>{token ? cartQuantity : cartLocal}</span>
-                  </Link>
+                  </a>
                 </div>
                 {user ? (
                   <div className="account-menu">

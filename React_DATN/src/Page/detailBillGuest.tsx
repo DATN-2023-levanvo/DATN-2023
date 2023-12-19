@@ -28,7 +28,7 @@ const BillDetailGuest = () => {
                 });
                 setLoadingDelete(false)
                 setTimeout(() => {
-                    navigate("/order/view")
+                    navigate("/order/view/guest")
                 }, 2000);
             })
         } catch (error) {
