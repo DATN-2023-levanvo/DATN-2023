@@ -388,8 +388,8 @@ const ProductList = () => {
         <Search
           onSearch={handleSearch} placeholder="tìm từ khóa" allowClear style={{ width: 300, marginLeft: 50 }} />
         <Dropdown
-          open={filterVisible}
-          onOpenChange={handleFilterVisibleChange}
+          visible={filterVisible}
+          onVisibleChange={handleFilterVisibleChange}
           overlay={filterMenu}
           trigger={['click']}
         >
