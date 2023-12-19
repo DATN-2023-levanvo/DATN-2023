@@ -1,6 +1,5 @@
-
-
-import { Spin } from "antd";
+import React from "react";
+import { FaSpinner } from "react-icons/fa";
 
 const Loading = () => {
   return (
@@ -14,11 +13,28 @@ const Loading = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)", // Màu nền mờ
-        zIndex: 9999, // Độ sâu lớp
+        backgroundColor: "white",
+        zIndex: 9999,
+        fontSize: 50
       }}
     >
-      <Spin size="large" />
+      <FaSpinner
+        style={{
+          animation: "spin 1s infinite linear",
+        }}
+      />
+      <style>
+        {`
+          @keyframes spin {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
