@@ -19,6 +19,8 @@ const BillGuest = () => {
 
     const [dataNew, setdataNew] = useState('');
 
+    const [isSearchCompleted, setSearchCompleted] = useState(false);
+
     const dataSource = data?.map((order: IOrder) => ({
         key: order._id,
         code_order: order?.code_order,
@@ -51,14 +53,13 @@ const BillGuest = () => {
                 if (filteredData?.length == 0) {
                     setdataNew('');
                     message.error("Không tìm thấy đơn hàng")
-                } else { 
+                } else {
                     message.success("Tìm thấy đơn hàng")
-                    setdataNew(filteredData) 
+                    setdataNew(filteredData)
                 };
 
             };
-
-
+            setSearchCompleted(true);
         } else {
             // Định dạng không đúng, hiển thị thông báo
             message.error("Giá trị không hợp lệ. Định dạng kiểu 0******** hoặc XXX*** hoặc xxx***.");
@@ -113,6 +114,17 @@ const BillGuest = () => {
 
     const handleStatusFilter = (value: string) => {
         setFilterStatus(value);
+        const filteredDataNew = dataSource?.filter((order: IOrder) => {
+            const matchStatus = !value || order.status === value;
+            const matchNameOrCode =
+                !filterNameOrCode ||
+                deburr(order.code_order.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase())) ||
+                deburr(order.phone.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase()));
+            const matchUserId = order.userId.toLowerCase() === "khách hàng";
+
+            return matchStatus && matchNameOrCode && matchUserId;
+        });
+        setdataNew(filteredDataNew);
     };
 
     const filteredData = dataSource?.filter((order: IOrder) => {
@@ -132,8 +144,8 @@ const BillGuest = () => {
 
         setFilterNameOrCode(formattedValue);
         setdataNew('');
+        setSearchCompleted(false);
     };
-
 
     return (
         <div className='container_u'>
@@ -141,10 +153,15 @@ const BillGuest = () => {
                 <Divider />
                 <p className='text-center text-2xl mb-3 text-sky-500'>Bạn có thể tìm kiếm đơn hàng của bạn tại đây</p>
                 <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'end' }}>
-                    
+
                     <div>
                         <span style={{ marginRight: '8px' }}>Tìm kiếm đơn hàng:</span>
-                        <Input value={filterNameOrCode} onChange={handleNameOrCodeChange} style={{ width: 150 }} />
+                        <Input 
+                        value={filterNameOrCode} 
+                        onChange={
+                            handleNameOrCodeChange
+                        } 
+                        style={{ width: 150 }} />
                         <button style={{ marginLeft: 20, backgroundColor: 'blue', color: 'white', borderRadius: 10 }} onClick={handleNameOrCodeFilter}>Tìm kiếm</button>
                     </div>
 
@@ -155,6 +172,7 @@ const BillGuest = () => {
                             value={filterStatus}
                             onChange={handleStatusFilter}
                             style={{ width: 150 }}
+                            disabled={!isSearchCompleted}
                         >
                             <Option value="">Tất cả</Option>
                             <Option value="0">Đang chờ xác nhận</Option>
