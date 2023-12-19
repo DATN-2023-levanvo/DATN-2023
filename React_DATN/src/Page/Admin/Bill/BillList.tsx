@@ -75,6 +75,7 @@ const BillList = () => {
         } else if (status === '1') {
           options.push(<Option key="1" value="1" hidden>Đã xác nhận</Option>);
           options.push(<Option key="3" value="3">Đang giao hàng</Option>);
+          options.push(<Option key="2" value="2">Đã hủy</Option>);
         } else if (status === '3') {
           options.push(<Option key="2" value="2">Đã hủy</Option>);
           options.push(<Option key="3" value="3" hidden>Đang giao hàng</Option>);

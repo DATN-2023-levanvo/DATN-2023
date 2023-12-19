@@ -515,51 +515,20 @@ const Checkout = () => {
           const urlPay:any = await createPayment(orderItemData)
           window.location.href = urlPay.data.data
           localStorage.setItem("orderItemData", JSON.stringify(orderItemData))
-
-          let arrayGuests:any=[];
-          const getLocalStorege:any=localStorage.getItem("orderItemData");
-          const orderGuests:any=localStorage.getItem("orderGuests");
-          if(orderGuests==null){
-            arrayGuests.push(orderItemData.products)
-            localStorage.setItem("orderGuests", JSON.stringify(arrayGuests))
-            message.success("Đặt hàng thành công, quay lại sảnh trong giây lát")
-          }else{
-            const dataGuests:any=JSON.parse(orderGuests);
-            arrayGuests=[...dataGuests,orderItemData.products]
-            localStorage.setItem("orderGuests", JSON.stringify(arrayGuests))
-            message.success("Đặt hàng thành công, quay lại sảnh trong giây lát")
-          }
         } else {
           await addOrder(orderItemData)
+          message.success("Đặt hàng thành công")
           setIsLoadingSeen(false);
+          setTimeout(() => {
+            navigate("/order/view/guest")
+          },2000)
           const updatedLocalCart = localCart.filter(
             (item) => !cartId.includes(item.id)
           )
           localStorage.setItem("cart", JSON.stringify(updatedLocalCart))
-
-          let arrayGuests:any=[];
-          const getLocalStorege:any=localStorage.getItem("orderItemData");
-          const orderGuests:any=localStorage.getItem("orderGuests");
-          if(orderGuests==null){
-            arrayGuests.push(orderItemData.products)
-            localStorage.setItem("orderGuests", JSON.stringify(arrayGuests))
-            message.success("Đặt hàng thành công, quay lại sảnh trong giây lát")
-            setTimeout(()=>{
-              navigate("/order/view/guest");
-            },1500)
-          }else{
-            const dataGuests:any=JSON.parse(orderGuests);
-            arrayGuests=[...dataGuests,orderItemData.products]
-            localStorage.setItem("orderGuests", JSON.stringify(arrayGuests))
-            message.success("Đặt hàng thành công, quay lại sảnh trong giây lát")
-            setTimeout(()=>{
-              navigate("/order/view/guest");
-            },1500)
-          }
         }
       }
     } catch (error) {
-      console.log(error)
       setIsLoadingSeen(false);
     }
   }

@@ -113,7 +113,7 @@ function App() {
         <Route path="top10-product" element={<Top10Product />} />
         <Route path="revenue-statistics" element={<RevenueStatistics />} />
         <Route path="product/add" element={<AddProduct />} />
-        <Route path="product/add" element={<AddProduct />} />
+        {/* <Route path="product/add" element={<AddProduct />} /> */}
         <Route path="product/:id/variants" element={<AddProductDetails />} />
         <Route path="product/list" element={<ProductList />} />
         <Route path="product/details/:id" element={<ProductListDetails />} />
