@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useGetAllOrdersQuery, useGetUserOrdersQuery, useUpdateOrderMutation } from '../Services/Api_Order';
-import { Divider, Table, message } from 'antd';
+
+import { useGetUserOrdersQuery } from '../Services/Api_Order';
+import { Table } from 'antd';
 import Loading from '../Component/Loading';
 import { Link } from 'react-router-dom';
 import { IOrder } from '../Models/interfaces';
@@ -10,9 +10,7 @@ import moment from 'moment';
 
 
 const Bill = () => {
-  const { data, isLoading, error } = useGetUserOrdersQuery(undefined);
-  const [updateOrder] = useUpdateOrderMutation();
-
+  const { data, isLoading } = useGetUserOrdersQuery(undefined);
 
   const dataSource = data?.map((order: IOrder) => ({
     key: order._id,
@@ -22,13 +20,6 @@ const Bill = () => {
     status: order?.status,
   }));
 
-
-  const handleConfirmOrder = async(orderId: string) => {
-     await updateOrder({ _id: orderId, status: "4" })
-  };
-
-
-  
 
   const columns = [
     {
