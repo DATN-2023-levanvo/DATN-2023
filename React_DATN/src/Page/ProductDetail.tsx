@@ -318,6 +318,24 @@ const ProductDetail = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (currentUser?.role === "admin" || currentUser?.role === "staff") {
+      // Gửi yêu cầu tạo bình luận mà không cần kiểm tra đã mua hàng
+      createComment({ userId: currentUser?._id, productId: id, content })
+        .unwrap()
+        .then((response) => {
+          // Xử lý phản hồi thành công
+          console.log('Bình luận đã được tạo:', response);
+          // Cập nhật danh sách bình luận hiển thị
+          refetch();
+        })
+        .catch((error) => {
+          // Xử lý lỗi
+          console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
+          setMessagecm(error.data.message)
+        });
+    } else {
+      // Kiểm tra đã mua hàng
+
     if (hasPurchased) {
       const purchasedOrder = order?.find((order: any) => {
         return (
@@ -351,6 +369,7 @@ const ProductDetail = () => {
     } else {
       setMessagecm('Bạn chưa mua sản phẩm này. Hãy mua sản phẩm để có thể bình luận!');
     }
+  }
 
     // Đặt lại nội dung bình luận
     setContent('');
