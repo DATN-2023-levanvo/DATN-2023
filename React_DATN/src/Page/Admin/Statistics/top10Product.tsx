@@ -5,6 +5,7 @@ import moment from 'moment';
 import {message} from "antd"
 import { useStatisticsByDayMutation } from '../../../Services/Api_Statistic';
 import Loading from '../../../Component/Loading';
+import LoadingAdmin from '../../../Component/LoadingAdmin';
 
 const Top10Product = () => {
   const [startDate, setStartDate] = useState('');
@@ -164,7 +165,7 @@ const Top10Product = () => {
           </div>
       </div>
       
-      {isLoading ? <Loading /> : <div>
+      {isLoading ? <LoadingAdmin /> : <div>
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>}
       
