@@ -30,9 +30,13 @@ const Header = () => {
     if ( getCartById) {
       const totalCartLength = getCartById.products.length;
       setCartQuantity(totalCartLength);          
+    }else{
+      setCartQuantity(0);          
     }
     if (localCartData) {
     setCartLocal(JSON.parse(localCartData).length);
+    }else{
+      setCartQuantity(0);          
     }
   },[localCartData,getCartById])
 
@@ -57,7 +61,6 @@ const Header = () => {
 
     setTimeout(() => {
       navigate("/")
-      window.location.reload()
     }, 2000)
   }
   const handleLogoutConfirmation = (confirmed: any) => {
@@ -135,14 +138,14 @@ const Header = () => {
 
                 }
                 <div className="cart-img">
-                  <Link to={"/cart"}>
+                  <a href={"/cart"}>
                       <img
                           className="active:scale-90"
                           src="../../../img/icon-cart.png"
                           alt=""
                         />
                         <span>{token ? cartQuantity : cartLocal}</span>
-                  </Link>
+                  </a>
                 </div>
                 {user ? (
                   <div className="account-menu">

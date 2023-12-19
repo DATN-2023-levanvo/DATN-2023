@@ -234,7 +234,7 @@ const ProductDetail = () => {
 
       // Cập nhật localStorage với giỏ hàng mới
       localStorage.setItem('cart', JSON.stringify(existingCart));
-      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn (chưa đăng nhập).");
+      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn");
     }
   };
 
@@ -559,10 +559,10 @@ const ProductDetail = () => {
                     <p className="view">Số lượt truy cập: {productDataOne?.views}</p>
                     <div className="avalable">
                       <p>
-                        Tình trạng: <span> {productDataOne?.inventoryTotal > 0 ? "còn hàng" : "hết hàng"}</span>
+                        Tình trạng: <span> {productDataOne?.inventoryTotal > 0 && productDataOne?.isDeleted === false ? "còn hàng" : "hết hàng"}</span>
                       </p>
                       <p>
-                        Số lượng: <span className="text-gray-600"> {productDataOne?.inventoryTotal}</span>
+                        Số lượng: <span className="text-gray-600"> { productDataOne?.isDeleted === false ? productDataOne?.inventoryTotal : 0}</span>
                       </p>
                     </div>
                     <div className="item-price flex">

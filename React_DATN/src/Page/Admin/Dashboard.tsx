@@ -7,7 +7,8 @@ import HighchartsReact from "highcharts-react-official";
 import { MdFreeCancellation } from "react-icons/md";
 import { LuCircleDollarSign } from "react-icons/lu";
 import { FaCartPlus } from "react-icons/fa";
-import Loading from "../../Component/Loading";
+
+import LoadingAdmin from "../../Component/LoadingAdmin";
 
 interface HighchartsChartProps {
   chartData: {
@@ -329,7 +330,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      {isLoading ? <Loading /> : <div>
+      {isLoading ? <LoadingAdmin /> : <div>
           <HighchartsChart chartData={chartData} />
           <Table columns={columns} dataSource={tableData} />
         </div> }

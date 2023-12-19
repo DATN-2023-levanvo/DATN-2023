@@ -1,6 +1,6 @@
-import React from 'react';
-import { useGetAllOrdersQuery, useGetUserOrdersQuery, useUpdateOrderMutation } from '../Services/Api_Order';
-import { Divider, Table, message } from 'antd';
+
+import { useGetUserOrdersQuery } from '../Services/Api_Order';
+import { Table } from 'antd';
 import Loading from '../Component/Loading';
 import { Link } from 'react-router-dom';
 import { IOrder } from '../Models/interfaces';
@@ -8,9 +8,9 @@ import '../../css/user.css'
 import UserMenu from '../Component/UserMenu';
 import moment from 'moment';
 
+
 const Bill = () => {
-  const { data, isLoading, error } = useGetUserOrdersQuery(undefined);
-  const [updateOrder] = useUpdateOrderMutation();
+  const { data, isLoading } = useGetUserOrdersQuery(undefined);
 
   const dataSource = data?.map((order: IOrder) => ({
     key: order._id,
@@ -20,18 +20,6 @@ const Bill = () => {
     status: order?.status,
   }));
 
-
-  const handleConfirmOrder = (orderId: string) => {
-    updateOrder({ _id: orderId, status: "4" })
-      .unwrap()
-      .then(() => {
-        console.log("Đơn hàng đã được xác nhận thành công.");
-        message.success("Đơn hàng đã được xác nhận thành công.");
-      })
-      .catch((error) => {
-        console.error("Lỗi khi xác nhận đơn hàng:", error);
-      });
-  };
 
   const columns = [
     {
@@ -64,11 +52,6 @@ const Bill = () => {
       title: 'Hành động',
       render: (record: any) => (
         <>
-          <button
-            style={{ width: 180, marginRight: 20, backgroundColor: record.status === '4' || record.status === '0' || record.status === '1' || record.status === '2' ? 'gray' : '#3F8CFF', color: 'white', borderRadius: 10 }}
-            onClick={() => handleConfirmOrder(record.key)} disabled={record.status === '0' || record.status === '1' || record.status === '2' || record.status === '4'}>
-            Xác nhận đã nhận hàng
-          </button>
           <Link style={{ border: '1px solid white', padding: 10, borderRadius: 10, backgroundColor: '#3F8CFF', color: 'white' }} to={`detail/${record.key}`}>Chi tiết</Link>
         </>
       ),
@@ -114,7 +97,7 @@ const Bill = () => {
       <UserMenu />
       {isLoading ? <Loading /> : <div className='user_profile'>
         <div className="user_profile-head">
-          <p>Đơn hàng Của Tôi</p>
+          <p className='mb-4 mt-3'>Đơn hàng Của Tôi</p>
         </div>
         <div>
           <Table

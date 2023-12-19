@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import { useGetAllOrdersQuery } from "../../../Services/Api_Order";
 import Loading from "../../../Component/Loading";
 import { message } from "antd";
+import LoadingAdmin from "../../../Component/LoadingAdmin";
 
 const DashboardStatusBill = () => {
   const { data: dataGetOrder, isLoading: loadingOrder }: any =
@@ -249,7 +250,7 @@ const DashboardStatusBill = () => {
   return (
     <div className="h-[80vh] scrollDasboard">
       {loadingOrder ? (
-        <Loading />
+        <LoadingAdmin />
       ) : (
         <div className="flex justify-between rounded-md ORDER select-none">
           <div className={`selector-Views`}>
