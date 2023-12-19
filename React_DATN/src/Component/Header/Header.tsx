@@ -30,9 +30,13 @@ const Header = () => {
     if ( getCartById) {
       const totalCartLength = getCartById.products.length;
       setCartQuantity(totalCartLength);          
+    }else{
+      setCartQuantity(0);          
     }
     if (localCartData) {
     setCartLocal(JSON.parse(localCartData).length);
+    }else{
+      setCartQuantity(0);          
     }
   },[localCartData,getCartById])
 
@@ -57,7 +61,6 @@ const Header = () => {
 
     setTimeout(() => {
       navigate("/")
-      window.location.reload()
     }, 2000)
   }
   const handleLogoutConfirmation = (confirmed: any) => {

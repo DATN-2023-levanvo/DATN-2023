@@ -4,7 +4,6 @@ import { Button, message } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IOrder } from '../Models/interfaces';
 import '../../css/user.css'
-import UserMenu from '../Component/UserMenu';
 import Loading from '../Component/Loading';
 import { useState } from 'react';
 
@@ -76,7 +75,6 @@ const BillDetailGuest = () => {
         <div className='container_u'>
             {loadingDelete && <Loading />}
             {contextHolder}
-            <UserMenu />
             {isLoading ? <Loading /> : <div className='user_profile'>
                 <div className="user_profile-head">
                     {/* <p style={{fontSize: 30}}>Đơn hàng Của Tôi</p> */}

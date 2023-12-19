@@ -23,19 +23,20 @@ const Login = () => {
                 type: "success",
                 content: "Đăng nhập thành công"
             });
-            // setTimeout(()=>{
-            //     window.location.href=window.location.origin;
-            // },2000);
-            const { role } = data.user;
+            setIsLoadingSeen(false);
 
-            if (role === "admin" || role === "staff") {
-                window.location.href = '/admin';
-            } else {
-                window.location.href = '/';
-            }
+            const { role } = data.user;
+            setTimeout(() => {
+                if (role === "admin" || role === "staff") {
+                    navigate("/admin")
+                } else {
+                    navigate("/")
+                }
+            },2000)
         } catch (error) {
+            message.error("Đã xảy ra lỗi xin vui lòng thử lại sau")
+            setIsLoadingSeen(false);
         }
-        setIsLoadingSeen(false);
     };
 
     const onFinishFailed = (errorInfo: any) => {
