@@ -114,8 +114,8 @@ const transporter = nodemailer.createTransport({
 })
 
 
-// Lấy mã xác minh bằng email
 
+// lấy mật khẩu bằng email
 const confirmationCodes = {};   // confirmationCodes lưu mã xác thực tạm thời
 export const forgotPassword = async (req, res) => {
 
@@ -160,12 +160,18 @@ export const forgotPassword = async (req, res) => {
 }
 
 
-// lấy mật khẩu bằng email
+// Lấy mã xác minh bằng email
 export const verifyConfirmationCode = async (req, res) => {
   try {
     const { email, code } = req.body;
     const storedCode = confirmationCodes[email];
     const user = await User.findOne({ email })
+
+    if(!user){
+      return res.status(400).json({
+        message: "Email không tồn tại vui lòng nhập lại email"
+      })
+    }
 
     // Chuyển đổi mã xác minh và mã đã lưu thành số để so sánh
     const numericCode = parseInt(code, 10);    // parseInt chuyển từ chuỗi sang số
@@ -184,7 +190,7 @@ export const verifyConfirmationCode = async (req, res) => {
 
     if (currentTime - codeTimestamp > codeExpiration) {
       return res.status(400).json({
-        message: "Mã xác nhận đã hết hạn",
+        message: "Mã xác nhận đã hết hạn vui lòng thử lại",
       });
     }
 

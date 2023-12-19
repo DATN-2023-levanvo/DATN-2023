@@ -1,4 +1,4 @@
-import React from 'react';
+import {useEffect} from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from 'antd';
 import { useSignupMutation } from '../Services/Api_User';
@@ -6,14 +6,24 @@ import { useSignupMutation } from '../Services/Api_User';
 const Register = () => {
     const navigate = useNavigate();
     const [setMessage, getMessage] = message.useMessage();
-    const [signup]: any = useSignupMutation();
+    const [signup,{error}]: any = useSignupMutation();
 
+    useEffect(() => {
+        if (error) {
+            if ("data" in error) {
+                const errorData = error.data as { message: string };
+                setMessage.open({
+                    type: "error",
+                    content: errorData?.message
+                })
+            }
+        }
+    }, [error]);
     const onFinish = async (values: any) => {
         try {
-            console.log("values: ", values);
             values.username.length < 3 && setMessage.open({ type: "error", content: "Tên tài khoản trên 2 kí tự !" });
             values.password.length < 6 && setMessage.open({ type: "error", content: "Mật khẩu phải trên 5 kí tự !" });
-            values.password != values.confirmPassword && setMessage.open({ type: "error", content: "Mật khẩu không trùng nhau !" });
+            // values.password != values.confirmPassword && setMessage.open({ type: "error", content: "Mật khẩu không trùng nhau !" });
             if (values.email.includes("@gmail.com")) {
                 signup(values)
                     .unwrap()

@@ -6,6 +6,7 @@ import { useGetOneUserQuery, useUpdateUserMutation } from '../Services/Api_User'
 import { IUser } from '../Models/interfaces';
 import { Button, message } from 'antd';
 import { Modal } from 'antd';
+import Loading from '../Component/Loading';
 
 
 const User = () => {
@@ -88,66 +89,69 @@ const User = () => {
 
 
   return (
-    <div className='container_u'>
-      <UserMenu />
-      <div className='user_profile'>
-        <div className="user_profile-head">
-          <p>Hồ Sơ Của Tôi</p>
-          <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-        </div>
-        <div className="form">
-          <form action="">
-            <div className="user_form">
-              <div className='form_left'>
-                <div className='df'>
-                  <label htmlFor="">Tên đăng nhập</label>
-                  <p className='m-0' style={{color: "#333"}}>{data?.data.username}</p>
+    <div>
+      {isLoading ? <Loading /> : <div className='container_u'>
+        <UserMenu />
+        <div className='user_profile'>
+          <div className="user_profile-head">
+            <p>Hồ Sơ Của Tôi</p>
+            <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+          </div>
+          <div className="form">
+            <form action="">
+              <div className="user_form">
+                <div className='form_left'>
+                  <div className='df'>
+                    <label htmlFor="">Tên đăng nhập</label>
+                    <p className='m-0' style={{color: "#333"}}>{data?.data.username}</p>
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Tên</label>
+                    <input className='inp_name' type="text" value={username} onChange={(e) => setName(e.target.value)} />
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Email</label>
+                    <input className='inp_name' type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Pass</label>
+                    <input className='inp_name' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Số điện thoại</label>
+                    <input className='inp_name' type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Địa chỉ</label>
+                    <input className='inp_name' type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
+                  </div>
+                  <div className='df'>
+                    <label htmlFor="">Giới tính</label>
+                    <input className='mr-2' type="radio" value="male" checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} /> Nam
+                    <input className='ml-6 mr-2' type="radio" value="female" checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} /> Nữ
+                    <input className='ml-6 mr-2' type="radio" value="other" checked={gender === 'other'} onChange={(e) => setGender(e.target.value)} /> Khác
+                  </div>
                 </div>
-                <div className='df'>
-                  <label htmlFor="">Tên</label>
-                  <input className='inp_name' type="text" value={username} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div className='df'>
-                  <label htmlFor="">Email</label>
-                  <input className='inp_name' type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className='df'>
-                  <label htmlFor="">Pass</label>
-                  <input className='inp_name' type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-                <div className='df'>
-                  <label htmlFor="">Số điện thoại</label>
-                  <input className='inp_name' type="text" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                </div>
-                <div className='df'>
-                  <label htmlFor="">Địa chỉ</label>
-                  <input className='inp_name' type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
-                </div>
-                <div className='df'>
-                  <label htmlFor="">Giới tính</label>
-                  <input className='mr-2' type="radio" value="male" checked={gender === 'male'} onChange={(e) => setGender(e.target.value)} /> Nam
-                  <input className='ml-6 mr-2' type="radio" value="female" checked={gender === 'female'} onChange={(e) => setGender(e.target.value)} /> Nữ
-                  <input className='ml-6 mr-2' type="radio" value="other" checked={gender === 'other'} onChange={(e) => setGender(e.target.value)} /> Khác
+                <div className="form_right">
+                  <div className="avt">
+                    <img src={imgUrl} alt='' />                 
+                    <label className='btn btn-warning'>Chọn ảnh
+                    <input type='file' onChange={handleImageChange}  hidden/>
+                    </label>
+                    <p>Dung lượng file tối đa 1 MB <br/>
+                      Định dạng:.JPEG, .PNG</p>
+                  </div>
                 </div>
               </div>
-              <div className="form_right">
-                <div className="avt">
-                  <img src={imgUrl} alt='' />                 
-                  <label className='btn btn-warning'>Chọn ảnh
-                  <input type='file' onChange={handleImageChange}  hidden/>
-                  </label>
-                  <p>Dung lượng file tối đa 1 MB <br/>
-                    Định dạng:.JPEG, .PNG</p>
-                </div>
-              </div>
-            </div>
-          </form>
-          <button type='button' className='ml-20 btn_u' onClick={showModal}>Lưu</button>
-          <Modal title='Xác nhận' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okButtonProps={{ style: { backgroundColor: "red" } }}>
-            <p>Bạn có chắc chắn muốn lưu thay đổi không?</p>
-          </Modal>
+            </form>
+            <button type='button' className='ml-20 btn_u' onClick={showModal}>Lưu</button>
+            <Modal title='Xác nhận' visible={isModalVisible} onOk={handleOk} onCancel={handleCancel} okButtonProps={{ style: { backgroundColor: "red" } }}>
+              <p>Bạn có chắc chắn muốn lưu thay đổi không?</p>
+            </Modal>
+          </div>
         </div>
-      </div>
+      </div>}
+      
     </div>
   )
 }
