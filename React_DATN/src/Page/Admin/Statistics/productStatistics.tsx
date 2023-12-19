@@ -5,6 +5,7 @@ import moment from 'moment';
 import {message} from "antd"
 import { useStatisticsByDayMutation } from '../../../Services/Api_Statistic';
 import Loading from '../../../Component/Loading';
+import LoadingAdmin from '../../../Component/LoadingAdmin';
 
 const ProductStatistics = () => {
   const [startDate, setStartDate] = useState('');
@@ -151,7 +152,7 @@ const ProductStatistics = () => {
           </div>
       </div>
       
-      {isLoading ? <Loading /> : <div>
+      {isLoading ? <LoadingAdmin /> : <div>
         <HighchartsReact highcharts={Highcharts} options={options} />
         <div className='ml-9'>
           <div style={{fontSize:25,color: "black",fontWeight: 600}}>Tổng số lượng sản phẩm đã bán: <samp className='text-red-600'>{totalQuantitySold} sản phẩm</samp></div>

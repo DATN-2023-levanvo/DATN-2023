@@ -4,7 +4,7 @@ import { useGetOrderByIdQuery, useUpdateOrderMutation } from '../../../Services/
 import { IOrder } from '../../../Models/interfaces';
 // import { useGetOneUserQuery } from '../../../Services/Api_User';
 import { Button, Popconfirm, message } from 'antd';
-import Loading from '../../../Component/Loading';
+import LoadingAdmin from '../../../Component/LoadingAdmin';
 // import moment from 'moment';
 
 
@@ -71,7 +71,7 @@ const DetailBill = () => {
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            {isLoading ? <Loading /> : <div>
+            {isLoading ? <LoadingAdmin /> : <div>
                 <div>
                     {data && (
                         <div className='order' >

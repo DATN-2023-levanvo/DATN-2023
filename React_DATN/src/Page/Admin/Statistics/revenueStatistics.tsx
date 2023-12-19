@@ -5,6 +5,7 @@ import Highcharts from 'highcharts';
 import { message } from 'antd';
 import HighchartsReact from 'highcharts-react-official';
 import Loading from "../../../Component/Loading";
+import LoadingAdmin from '../../../Component/LoadingAdmin';
 interface HighchartsChartProps {
   chartData: {
     categories: string[];
@@ -197,7 +198,7 @@ const handleResponse = (response: any) => {
             <input type='date' id='endDate' onChange={handleEndDateChange} defaultValue={endDate}/>
           </div>
         </div>
-        {isLoading ? <Loading /> : <div>
+        {isLoading ? <LoadingAdmin /> : <div>
           <HighchartsChart chartData={chartData} />
           <div className='ml-9'>
             <div style={{ fontSize: 20, color: 'black', fontWeight: 600 }}>
