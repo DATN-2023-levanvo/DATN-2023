@@ -11,7 +11,7 @@ export const getCart = async (req, res) => {
         .populate({
           path: 'products.productId',
           model: 'Product',
-          select: 'name imgUrl price isDeleted variants.inventory', // Include 'variants.inventory' in the selection
+          select: 'name imgUrl price isDeleted variants',
         });
 
       if (!cart) {
@@ -29,7 +29,7 @@ export const getCart = async (req, res) => {
 }
 
 export const addToCart = async (req, res) => {
-  const { productId, color, size, quantity,price,imgUrl } = req.body;
+  const { productId, color, size, quantity,price,imgUrl,totalAmount } = req.body;
   const userId = req.user._id;
   try {
     let cart = await Cart.findOne({ userId });
@@ -39,14 +39,14 @@ export const addToCart = async (req, res) => {
     }
 
     if (!cart) {
-      cart = new Cart({ userId, products: [{ productId, color, size, quantity,price,imgUrl }] });
+      cart = new Cart({ userId, products: [{ productId, color, size, quantity,price,imgUrl,totalAmount }] });
     }else{
       const existingProduct = cart.products.find(
         (item) => item.productId.equals(productId) && item.color === color && item.size === size
       );
       if(existingProduct){
       existingProduct.quantity += quantity;
-      existingProduct.price += price*quantity
+      existingProduct.totalAmount += price*quantity
       }else{
         if (!mongoose.Types.ObjectId.isValid(productId)) {
           return res.status(400).json({ message: "Địa chỉ sản phẩm không hợp lệ." });
@@ -55,10 +55,9 @@ export const addToCart = async (req, res) => {
         if (!productDocument) {
           return res.status(404).json({ message: "Không tìm thấy sản phẩm." });
         }
-        cart.products.unshift({ productId, color, size, quantity,price,imgUrl });
+        cart.products.unshift({ productId, color, size, quantity,price,imgUrl,totalAmount });
       }
     }
-
 
     await cart.save();
 
@@ -67,7 +66,6 @@ export const addToCart = async (req, res) => {
       cart
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: error.message });
   }
 }

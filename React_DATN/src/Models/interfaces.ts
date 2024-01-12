@@ -10,7 +10,12 @@ export interface IProduct {
     {
       size_id: string[],
       color_id: string[],
-      quantity?: number[]
+      quantity?: number,
+      importPrice: number,
+      original_price: number,
+      sellingPrice: number,
+      quantityImported: number,
+      isDeleted: boolean
     }
   ]
   isDeleted?: boolean
@@ -56,7 +61,8 @@ export interface ProductItem {
   quantity: number;
   color: string,
   size: string,
-  price: number
+  price: number,
+  totalAmount?: number
 }
 
 export interface ISlider {

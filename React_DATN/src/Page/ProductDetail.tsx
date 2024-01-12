@@ -50,6 +50,30 @@ const ProductDetail = () => {
   const { data: getAllSize } = useGetAllSizeQuery()
   const [imgUrl, setImgUrl] = useState<any[]>([]);
   const [totalVariant, setTotalVariant]: any = useState(0); //sau khi chọn size lập tức hiện số lượng của biến thể đó
+  const [sellingPrice, setSellingPrice] = useState<number | undefined>(undefined); // lưu giá bán ra
+  const [originalPrice,setOriginalPrice] = useState<number | undefined>(undefined) // lưu giá gốc
+
+
+// thực hiện in ra giá của từng biến thể sản phẩm variants trong bảng Product
+const prices = productDataOne?.variants?.map(({ sellingPrice, original_price }: {sellingPrice: number, original_price:number}) => ({
+  sellingPrice,
+  original_price,
+}));
+
+
+const sellingPrices = prices?.map((price:{sellingPrice:number}) => price.sellingPrice) || [];
+
+
+// trả về giá bán ra
+const allSellingPrices = sellingPrices.join(', ');
+
+
+
+const sellingPricesArray = allSellingPrices.split(',').map(Number);
+
+// Find the minimum and maximum selling prices
+const minSellingPrice = Math.min(...sellingPricesArray);
+const maxSellingPrice = Math.max(...sellingPricesArray);
 
 
   useEffect(() => {
@@ -114,7 +138,26 @@ const ProductDetail = () => {
     
     const totalAvailableQuantity = selectedVariant.inventory;
     setTotalVariant(totalAvailableQuantity);
+
+    const selectedSellingPrice = selectedVariant?.sellingPrice;
+    setSellingPrice(selectedSellingPrice);
   };
+
+  
+
+  //THỰC THI CHẠY LỆNH KHI CHỌN MÀU VÀ SIZE SẼ RA GIÁ TƯƠNG ỨNG CỦA SẢN PHẨM
+  useEffect(() => {
+    const selectedVariant = productDataOne?.variants.find(
+      (variant: any) => variant.color_id.unicode === getColor && variant.size_id.name === getSize
+    );
+
+    const selectedSellingPrice = selectedVariant?.sellingPrice;
+    const originalPrice = selectedVariant?.original_price
+    setSellingPrice(selectedSellingPrice);
+    setOriginalPrice(originalPrice)
+  }, [getColor, getSize, productDataOne]);
+
+
 
   // giảm số lượng
   const Minus = () => {
@@ -157,41 +200,61 @@ const ProductDetail = () => {
 
       // thực hiện lần đầu tiên kiểm tra khi tài khoản chưa thêm vào giỏ hàng thực hiện thêm mới
       if (cartData === undefined || cartData?.products.length === 0) {
-        addToCart({
-          productId: productDataOne._id,
-          imgUrl: imgUrl,
-          color: getColor,
-          size: getSize,
-          quantity: getQuantityBuy,
-          price: productDataOne.price * getQuantityBuy
-        })
-
-        message.success("Đã thêm sản phẩm vào giỏ hàng")
-      } else {
-        const productItemIndex = cartData.products.findIndex((product: any) => product.productId?._id == productDataOne._id && product.color == getColor && product.size == getSize);
-
-        const productItem = cartData.products[productItemIndex];
-        if (productItemIndex !== -1) {
-          const updatedProductItem = { ...productItem }; // Tạo bản sao của productItem
-          addToCart({
-            productId: updatedProductItem.productId._id,
-            imgUrl: imgUrl,
-            color: updatedProductItem.color,
-            size: updatedProductItem.size,
-            quantity: getQuantityBuy,
-            price: productDataOne.price
-          });
-          message.success("Đã thêm sản phẩm vào giỏ hàng")
-        } else {
+        if (typeof sellingPrice !== 'undefined') {
           addToCart({
             productId: productDataOne._id,
             imgUrl: imgUrl,
             color: getColor,
             size: getSize,
             quantity: getQuantityBuy,
-            price: productDataOne.price * getQuantityBuy
-          })
-          message.success("Đã thêm sản phẩm vào giỏ hàng")
+            price: sellingPrice,
+            totalAmount: sellingPrice*getQuantityBuy
+          });
+        } else {
+          message.error("Đã có lỗi xảy ra vui lòng thử lại");
+        }
+
+        message.success("Đã thêm sản phẩm vào giỏ hàng")
+      } else {
+        const productItemIndex = cartData.products.findIndex((product: any) => product.productId?._id == productDataOne._id && product.color == getColor && product.size == getSize);
+
+        const productItem = cartData.products[productItemIndex];
+        console.log(productItem);
+
+        
+        
+        if (productItemIndex !== -1) {
+          const updatedProductItem = { ...productItem }; // Tạo bản sao của productItem
+          console.log(updatedProductItem);
+          
+          if (typeof sellingPrice !== 'undefined') {
+            addToCart({
+              productId: updatedProductItem.productId._id,
+              imgUrl: imgUrl,
+              color: updatedProductItem.color,
+              size: updatedProductItem.size,
+              quantity: getQuantityBuy,
+              price: sellingPrice
+            });
+            message.success("Đã thêm sản phẩm vào giỏ hàng")
+          } else {
+            message.error("Đã có lỗi xảy ra vui lòng thử lại");
+          }
+        } else {
+          if (typeof sellingPrice !== 'undefined') {
+            addToCart({
+              productId: productDataOne._id,
+              imgUrl: imgUrl,
+              color: getColor,
+              size: getSize,
+              quantity: getQuantityBuy,
+              price: sellingPrice,
+              totalAmount: sellingPrice * getQuantityBuy
+            });
+            message.success("Đã thêm sản phẩm vào giỏ hàng")
+          } else {
+            message.error("Đã có lỗi xảy ra vui lòng thử lại");
+          }
         }
       }
     } else {
@@ -219,17 +282,22 @@ const ProductDetail = () => {
 
       } else {
         // Nếu sản phẩm không tồn tại trong giỏ hàng, tạo sản phẩm mới và thêm vào mảng giỏ hàng
-        existingCart.unshift({
-          id: newId,
-          productId: productDataOne._id,
-          name: productDataOne.name,
-          imgUrl: imgUrl,
-          quantity: getQuantityBuy,
-          color: getColor,
-          size: getSize,
-          price: productDataOne.price * getQuantityBuy,
-          priceItem: productDataOne.price
-        });
+        if (typeof sellingPrice !== 'undefined') {
+          existingCart.unshift({
+            id: newId,
+            productId: productDataOne._id,
+            name: productDataOne.name,
+            imgUrl: imgUrl,
+            quantity: getQuantityBuy,
+            color: getColor,
+            size: getSize,
+            price: sellingPrice,
+            totalAmount: sellingPrice * getQuantityBuy
+          });
+          message.success("Đã thêm sản phẩm vào giỏ hàng")
+        } else {
+          message.error("Đã có lỗi xảy ra vui lòng thử lại");
+        }
       }
 
       // Cập nhật localStorage với giỏ hàng mới
@@ -585,8 +653,12 @@ const ProductDetail = () => {
                       </p>
                     </div>
                     <div className="item-price flex">
-                      <p className="price">{productDataOne?.price.toLocaleString()} VND</p>
-                      <p className="original_price">{productDataOne?.original_price.toLocaleString()} VND</p>
+                      <p>
+                        {sellingPrice ? sellingPrice?.toLocaleString() : 0} VND
+                      </p>
+                      <p className="original_price">
+                        {originalPrice ? originalPrice?.toLocaleString() : 0} VND
+                      </p>
                     </div>
 
 
@@ -839,8 +911,8 @@ const ProductDetail = () => {
                     <Link to={`/product/${items._id}`}><img onClick={()=>ChangeProducts(items._id)} className="w-56 h-48 rounded-lg hover:scale-110 duration-200 mb-2" src={items.imgUrl[0]} alt="" /></Link>
                     <p className="ml-2  text-gray-500">{items.name} <span className="float-right mr-2 text-gray-400 text-xs mt-2">SL: {items.quantityTotal}</span></p>
                     <div className="flex space-x-2">
-                      <p className="text-xs ml-2">{items.price.toLocaleString()} (VND)</p>
-                      {items.original_price > 0 && <p className="text-xs"><del>{items.original_price.toLocaleString()}</del></p>}
+                      <p className="text-xs ml-2">{items.price ? items.price.toLocaleString() : 0} (VND)</p>
+                      {items.original_price > 0 && <p className="text-xs"><del>{items.original_price ? items.original_price.toLocaleString() : 0}</del></p>}
                       {
                         items.original_price > items.price ?
                           <img className=" absolute w-10 top-2" src="../../img/IMAGE_CREATED/sale.png" alt="" />

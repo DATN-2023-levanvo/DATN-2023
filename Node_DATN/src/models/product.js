@@ -27,15 +27,17 @@ const productSchema = new mongoose.Schema(
           type: Schema.Types.ObjectId,
           ref: "Color",
         },
-        quantity: {
-          type: Number,
-        },
+        importPrice: Number, // giá tiền nhập hàng
+        original_price: Number, // giá gốc
+        sellingPrice: Number,   // giá bán ra (giá hiện tại mở bán)
+        quantity: Number,  // tổng số lượng nhập hàng
+        quantityImported: Number,
         inventory: {
-          type: Number,
+          type: Number, // số lượng tồn kho 
           default: 0
         },
         sell_quantity: {
-          type: Number,
+          type: Number, // số lượng sp bán ra
           default: 0
         },
         isDeleted: {
@@ -51,8 +53,8 @@ const productSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "Category",
     },
-    price: Number,
-    original_price: Number,
+    // price: Number,
+    // original_price: Number,
     description: String,
 
     views: {

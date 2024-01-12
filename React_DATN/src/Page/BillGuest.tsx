@@ -89,18 +89,9 @@ const BillGuest = () => {
             dataIndex: 'status',
             key: 'status',
             render: (status: any, record: IOrder) => (
-                <Select
-                    value={status}
-                    onChange={(value) => handleStatusChange(value, record.key)}
-                    style={{ width: 150 }}
-                    disabled
-                >
-                    <Option value="0">Đang chờ xác nhận</Option>
-                    <Option value="1">Đã xác nhận</Option>
-                    <Option value="2">Đã hủy</Option>
-                    <Option value="3">Đang giao hàng</Option>
-                    <Option value="4">Đã nhận hàng</Option>
-                </Select>
+                <p>{status === "0" ? "Đang chờ xác nhận" : status === "1" ? "Đã xác nhận" : 
+                status === "2" ? "Đã hủy" : status === "3" ? "Đang giao hàng" : status === "4" ? "Đã nhận hàng" : "Không xác định"
+                }</p>
             ),
         },
         {
@@ -112,6 +103,7 @@ const BillGuest = () => {
         },
     ];
 
+    // tìm kiếm đơn hàng theo mã đơn hàng, số điện thoại
     const handleStatusFilter = (value: string) => {
         setFilterStatus(value);
         const filteredDataNew = dataSource?.filter((order: IOrder) => {
@@ -132,7 +124,7 @@ const BillGuest = () => {
         const matchNameOrCode =
             !filterNameOrCode ||
             deburr(order.code_order.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase())) ||
-            deburr(order.phone.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase()));
+            deburr(order?.phone?.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase()));
         const matchUserId = order.userId.toLowerCase() === "khách hàng";
 
         return matchStatus && matchNameOrCode && matchUserId;

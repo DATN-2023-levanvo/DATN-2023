@@ -34,6 +34,10 @@ const orderSchema = new mongoose.Schema({
         default: "0"
     },
 
+    statusPayment: {
+      type: Boolean,
+    },
+
     // discount:String,
     address: {
         city: String, // tỉnh/thành phố

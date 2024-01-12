@@ -24,6 +24,16 @@ const productApi = createApi({
       providesTags: ["Product"]
     }),
 
+    getOneVariantProduct: builder.query<IProduct, { productId: number | string; variantId: number | string }>({
+      query: ({ productId, variantId }) => {
+        const productIdString = String(productId);
+        const variantIdString = String(variantId);
+    
+        return `/api/product/${productIdString}/variant/${variantIdString}`;
+      },
+      providesTags: ["Product"]
+    }),
+
     addProduct: builder.mutation<IProduct, IProduct>({
       query: (product) => ({
         url: `/api/product`,
@@ -41,6 +51,16 @@ const productApi = createApi({
       }),
       invalidatesTags: ["Product"]
     }),
+
+    updateVariantProduct: builder.mutation<IProduct, { productId: number | string; variantId: number | string; quantityImported: number,quantity: number }>({
+      query: ({ productId, variantId, quantityImported,quantity }) => ({
+        url: `/api/product/${productId}/variant/${variantId}/update`,
+        method: 'PUT',
+        body: { quantityImported,quantity },
+      }),
+      invalidatesTags: [{ type: 'Product' }],
+    }),
+
 
     // Xóa sản phẩm tạm thời
     deleteProduct: builder.mutation<void, number | string>({
@@ -112,6 +132,8 @@ export const {
   useGetAllDeletedProductsQuery,
   useRestoreProductMutation,
   useRemoveProductMutation,
-  useGetHotProductsQuery
+  useGetHotProductsQuery,
+  useGetOneVariantProductQuery,
+  useUpdateVariantProductMutation
 } = productApi;
 export default productApi;

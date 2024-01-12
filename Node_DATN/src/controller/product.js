@@ -153,6 +153,38 @@ export const readProduct = async (req, res) => {
   }
 }
 
+
+// Hiển thị chi tiết biến thể của 1 sản phẩm
+export const getVariantDetails = async (req, res) => {
+  try {
+    // Extract the product ID and variant ID from the request parameters
+    const { productId, variantId } = req.params;
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    // Check if the product and variants exist
+    if (!product || !product.variants || product.variants.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy sản phẩm hoặc biến thể' });
+    }
+
+    // Find the variant by ID
+    const variant = product.variants.find((v) => v._id.toString() === variantId);
+
+    // Check if the variant exists
+    if (!variant) {
+      return res.status(404).json({ message: 'Không tìm thấy biến thể' });
+    }
+
+    // Return the variant details
+    res.status(200).json(variant);
+  } catch (error) {
+    res.status(500).json({ message: 'Đã có lỗi gì đó',error: error.message });
+  }
+};
+
+
+// thêm sản phẩm trang chính
 export const createProduct = async (req, res) => {
   try {
     const { error } = productSchema.validate(req.body, { abortEarly: false })
@@ -229,6 +261,8 @@ export const removeProduct = async (req, res) => {
   }
 }
 
+
+// cập nhật sản phẩm
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params
@@ -262,8 +296,125 @@ export const updateProduct = async (req, res) => {
   }
 }
 
-// Khôi phục sản phẩm
 
+// cập nhật biến thể sản phẩm
+export const updateVariantProduct = async (req,res) => {
+  try {
+    const { productId, variantId } = req.params;
+    const { quantityImported,quantity } = req.body; // Assuming quantityImported is provided in the request body
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    // Check if the product and variants exist
+    if (!product || !product.variants || product.variants.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy sản phẩm hoặc biến thể' });
+    }
+
+    // Find the variant by ID
+    const variant = product.variants.find((v) => v._id.toString() === variantId);
+
+    // Check if the variant exists
+    if (!variant) {
+      return res.status(404).json({ message: 'Không tìm thấy biến thể' });
+    }
+
+
+      if (quantity===0 && quantityImported===0) {
+        variant.quantity = 0 
+      }
+    
+
+    if(quantityImported){
+      variant.quantity += quantityImported;
+    }
+
+    // Save the updated product
+    await product.save();
+
+    res.status(200).json({
+      message: "Cập nhật biến thể thành công",
+      variant
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+// xóa biến thể sản phẩm
+export const removeVariantProduct = async (req,res) => {
+  try {
+    const { productId, variantId } = req.params;
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    // Check if the product and variants exist
+    if (!product || !product.variants || product.variants.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy sản phẩm hoặc biến thể' });
+    }
+
+    // Find the variant by ID
+    const variant = product.variants.find((v) => v._id.toString() === variantId);
+
+    // Check if the variant exists
+    if (!variant) {
+      return res.status(404).json({ message: 'Không tìm thấy biến thể' });
+    }
+
+    // Update the variant with the imported quantity
+    variant.isDeleted = true;
+
+    // Save the updated product
+    await product.save();
+
+    // Return the updated product or variant as needed
+    res.status(200).json(variant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+// khôi phục biến thể sản phẩm 
+export const restoreVariantProduct = async (req,res) => {
+  try {
+    const { productId, variantId } = req.params;
+
+    // Find the product by ID
+    const product = await Product.findById(productId);
+
+    // Check if the product and variants exist
+    if (!product || !product.variants || product.variants.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy sản phẩm hoặc biến thể' });
+    }
+
+    // Find the variant by ID
+    const variant = product.variants.find((v) => v._id.toString() === variantId);
+
+    // Check if the variant exists
+    if (!variant) {
+      return res.status(404).json({ message: 'Không tìm thấy biến thể' });
+    }
+
+    // Update the variant with the imported quantity
+    variant.isDeleted = false;
+
+    // Save the updated product
+    await product.save();
+
+    // Return the updated product or variant as needed
+    res.status(200).json(variant);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+// Khôi phục sản phẩm
 export const restoreProduct = async (req, res) => {
   try {
     const { id } = req.params;

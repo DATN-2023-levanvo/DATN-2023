@@ -89,12 +89,12 @@ const BillDetailHome = () => {
                                     <div style={{ marginBottom: 40, marginRight: 200 }}>
                                         <h3>Thông tin đơn hàng</h3>
                                         <p style={{fontSize: 18}}>Mã đơn hàng: {data?.code_order}</p>
-                                        {/* <p>Tên khách hàng: {data?.userId?.username}</p> */}
                                         <p style={{fontSize: 18}}>Tên khách hàng: {data?.name}</p>
                                         <p style={getStatusColor(data?.status)}>Trạng thái: {getStatusText(data?.status)}</p>
                                         <p style={{fontSize: 18}}>Tổng giá trị đơn hàng: {data?.totalPrice.toLocaleString()}đ</p>
+                                        <p style={{fontSize: 18}}>Thanh toán: <span style={{color: data?.statusPayment === true ? "#33CC00" : "red", fontWeight: "bold",marginLeft:10}}>{data?.statusPayment === true ? "Đã thanh toán online" : "Thanh toán khi nhận hàng"}</span></p>
+                                        <p>Số tiền phải trả: <span>{data?.statusPayment === true ? 0 : data?.totalPrice.toLocaleString()}đ</span></p>
                                         <p>Thời gian: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
-                                        {/* <p>Ngày cập nhật: {new Date(data?.updatedAt).toLocaleString()}</p> */}
                                     </div>
                                     <div style={{display: "block", margin: "0 auto"}}>
                                         <h3>Địa chỉ giao hàng</h3>

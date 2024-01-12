@@ -37,6 +37,7 @@ const Checkout = () => {
   const [name, setname]:any = useState(null)
   const [address, setaddress]:any = useState(null)
   const [isLoadingSeen, setIsLoadingSeen] = useState(false);
+  const [orderPayment, setOrderPayment] = useState({statusPayment: false});
 
 
   const [createPayment] = useCreatePaymentMutation()
@@ -128,7 +129,7 @@ const Checkout = () => {
   // tổng tiền
   const calculateTotalPrice = () => {
     let totalPrice = Array.isArray(selectedProducts)
-      ? selectedProducts.reduce((acc, product) => acc + product.price, 0)
+      ? selectedProducts.reduce((acc, product) => acc + product.totalAmount, 0)
       : 0
 
     let discountType = null
@@ -429,8 +430,10 @@ const Checkout = () => {
         }
 
         if (selectedMethod == "transfer") {
-          const urlPay:any = await createPayment(orderData)
-          localStorage.setItem("orderData", JSON.stringify(orderData))
+          setOrderPayment({...orderData, statusPayment: true})
+          const urlPay:any = await createPayment(orderPayment)
+          console.log(urlPay);
+          localStorage.setItem("orderPaymentUser", JSON.stringify(orderPayment))
           window.location.href = urlPay.data.data
         } else {
           await addOrder(orderData)
@@ -476,7 +479,7 @@ const Checkout = () => {
           return
         }
 
-        const orderItemData = {
+        const orderItem = {
           cartId: cartId,
           products: productId.map((id: string | number, index: number) => ({
             productId: id,
@@ -512,16 +515,19 @@ const Checkout = () => {
         }
 
         if (selectedMethod == "transfer") {
-          const urlPay:any = await createPayment(orderItemData)
+          setOrderPayment({...orderItem,statusPayment: true,})
+          const urlPay:any = await createPayment(orderPayment)
+          console.log(urlPay);
+
           window.location.href = urlPay.data.data
-          localStorage.setItem("orderItemData", JSON.stringify(orderItemData))
+          localStorage.setItem("orderPayment", JSON.stringify(orderPayment))
         } else {
-          await addOrder(orderItemData)
+          await addOrder(orderItem)
           message.success("Đặt hàng thành công")
           setIsLoadingSeen(false);
-          setTimeout(() => {
-            navigate("/order/view/guest")
-          },2000)
+          // setTimeout(() => {
+          //   navigate("/order/view/guest")
+          // },2000)
           const updatedLocalCart = localCart.filter(
             (item) => !cartId.includes(item.id)
           )
@@ -587,10 +593,10 @@ const Checkout = () => {
                     </div>
                     <div className="product_quantity">
                       <span>
-                        {product.price.toLocaleString("vi-VN", {
+                        {product.price ? product.price.toLocaleString("vi-VN", {
                           style: "currency",
                           currency: "VND",
-                        })}
+                        }):""}
                       </span>
                       <div className="quantity" style={{ border: "none" }}>
                         <p>x{product.quantity}</p>

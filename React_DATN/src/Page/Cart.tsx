@@ -22,6 +22,7 @@ const Cart = () => {
   const [updateMinus] = useUpdateMinusMutation()
   const [updateIncrease] = useUpdateIncreaseMutation()
 
+
   const rowSelection = {
     selectedRowKeys: selectedProductId,
     onChange: (selectedRowKeys: React.Key[]) => {
@@ -46,7 +47,7 @@ const Cart = () => {
       let total = 0;
 
       selectedProducts.forEach((product) => {
-        total += product.price;
+        total += product.totalAmount;
       });
 
       return total;
@@ -55,7 +56,7 @@ const Cart = () => {
       let total = 0;
 
       selectedProducts.forEach((product) => {
-        total += product.price * (product.quantity);
+        total += product.totalAmount * (product.quantity);
       });
 
       return total;
@@ -67,7 +68,7 @@ const Cart = () => {
 
   useEffect(() => {
     // Gọi hàm updateTotalAmount khi selectedProducts thay đổi
-    updateTotalAmount();
+     updateTotalAmount();
   }, [selectedProducts]);
 
   //Cập nhật tổng tiền mỗi khi thực hiện chọn sản phẩm
@@ -80,7 +81,8 @@ const Cart = () => {
   //cập nhật tăng số lượng với người dùng có tk
   const handleIncrease = (productId: string) => {
     const productToUpdate = cartData?.products.find((product: any) => product._id === productId);
-
+    console.log(productToUpdate);
+    
     if (productToUpdate) {
       const updatedProductQuantities = {
         ...productQuantities,
@@ -88,16 +90,20 @@ const Cart = () => {
       };
 
       setProductQuantities(updatedProductQuantities);
+      const price = productToUpdate.totalAmount + productToUpdate.price
+     
+      
 
       updateIncrease({
         productId: productToUpdate.productId._id,
         color: productToUpdate.color,
         size: productToUpdate.size,
         quantity: 1,
-        price: productToUpdate.productId.price
+        price: productToUpdate.price
       });
     }
   };
+  console.log(productQuantities);
 
 
   //cập nhật giảm số lượng với người dùng có tk
@@ -204,7 +210,7 @@ const Cart = () => {
         productId: product.productId?._id,
         priceItem: product.productId?.price,
         name: product.productId?.name,
-        price: product.price,
+        totalAmount: product.totalAmount,
         imgUrl: product.imgUrl[0],
         color: product.color,
         size: product.size,
@@ -311,11 +317,11 @@ const Cart = () => {
 
     {
       title: 'Giá',
-      dataIndex: 'price',
+      dataIndex: 'totalAmount',
       align: 'center',
-      render: (price: number) => (
+      render: (totalAmount : number) => (
         <span>
-          {price ? price.toLocaleString('vi-VN', { style: "currency", currency: "VND" }) : 'Giá không xác định'}
+          {totalAmount ? totalAmount.toLocaleString('vi-VN', { style: "currency", currency: "VND" }) : 'Giá không xác định'}
         </span>
       )
     },

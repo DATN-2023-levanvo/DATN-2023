@@ -122,10 +122,8 @@ const AddProduct = () => {
       const imageUrls = response.data.urls.map((urls: urlObject) => urls.url)
 
       if (response.status === 200) {
-        const newProduct: IProduct = {
+        const newProduct: any = {
           name: values.name,
-          original_price: values.original_price,
-          price: values.price,
           imgUrl: imageUrls,
           categoryId: values.categoryId,
           description: values.description,
@@ -195,48 +193,6 @@ const AddProduct = () => {
           </Select>
         </Form.Item>
 
-
-        <Form.Item
-          name="original_price"
-          label="Giá gốc"
-          rules={[
-            { required: true, message: "Giá gốc không được để trống" },
-            {
-              validator: (_, values) => {
-                if (!isNaN(values)) {
-                  return Promise.resolve()
-                } else {
-                  return Promise.reject(new Error("Giá gốc phải là số"))
-                }
-              },
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          name="price"
-          label="Giá hiện tại"
-          rules={[
-            { required: true, message: 'Giá hiện tại không được để trống' },
-            {
-              validator: (_, values) => {
-                const originalPrice = form.getFieldValue('original_price');
-                if (!isNaN(values)) {
-                  if (!isNaN(originalPrice) && parseFloat(values) > parseFloat(originalPrice)) {
-                    return Promise.reject(new Error('Giá hiện tại không được lớn hơn giá gốc'));
-                  }
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(new Error('Giá hiện tại phải là số'));
-                }
-              },
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
 
         <Form.Item label="Mô tả sản phẩm" name="description" >
           <ReactQuill theme="snow" modules={modules} className="h-[150px] w-[470px] mb-10 " />

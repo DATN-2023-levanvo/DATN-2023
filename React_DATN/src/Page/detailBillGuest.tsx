@@ -91,6 +91,8 @@ const BillDetailGuest = () => {
                                         <p style={{fontSize: 18}}>Tên khách hàng: {data?.name}</p>
                                         <p style={getStatusColor(data?.status)}>Trạng thái: {getStatusText(data?.status)}</p>
                                         <p style={{fontSize: 18}}>Tổng giá trị đơn hàng: {data?.totalPrice.toLocaleString()}đ</p>
+                                        <p style={{fontSize: 18}}>Thanh toán: <span style={{color: data?.statusPayment === true ? "#33CC00" : "red", fontWeight: "bold"}}>{data?.statusPayment === true ? "Đã thanh toán online" : "Thanh toán khi nhận hàng"}</span></p>
+                                        <p>Số tiền phải trả: {data?.statusPayment === true ? 0 : data?.totalPrice.toLocaleString()}đ</p>
                                         <p>Thời gian: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
                                         {/* <p>Ngày cập nhật: {new Date(data?.updatedAt).toLocaleString()}</p> */}
                                     </div>
