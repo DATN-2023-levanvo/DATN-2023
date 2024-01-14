@@ -18,9 +18,9 @@ const Cart = () => {
   const [productQuantities, setProductQuantities] = useState<any>({});
   const [selectedProducts, setSelectedProducts] = useState<any[]>([]);
   const navigate = useNavigate()
-  const [updatePrice, setUpdatePrice] = useState()
   const [updateMinus] = useUpdateMinusMutation()
   const [updateIncrease] = useUpdateIncreaseMutation()
+  const [priceVariant,setPriceVariant] = useState<any>({})
 
 
   const rowSelection = {
@@ -43,88 +43,101 @@ const Cart = () => {
 
   // thực hiện tính tổng tiền với người dùng k có tài khoản
   const calculateTotal = () => {
+    let total = 0;
+  
     if (token) {
-      let total = 0;
-
       selectedProducts.forEach((product) => {
-        total += product.totalAmount;
+        total += priceVariant[product.key] || product.totalAmount;
       });
 
-      return total;
     } else {
-      // Nếu không có token, thực hiện tính tổng tiền từ localCart
-      let total = 0;
-
+      // If there's no token, calculate total from localCart
       selectedProducts.forEach((product) => {
-        total += product.totalAmount * (product.quantity);
+        total += priceVariant[product.key] || product.totalAmount;
       });
-
-      return total;
     }
+  
+    return total;
   };
 
 
   const [totalAmount, setTotalAmount] = useState<number>(calculateTotal());
 
   useEffect(() => {
-    // Gọi hàm updateTotalAmount khi selectedProducts thay đổi
-     updateTotalAmount();
-  }, [selectedProducts]);
-
-  //Cập nhật tổng tiền mỗi khi thực hiện chọn sản phẩm
-  const updateTotalAmount = () => {
+    // Update the totalAmount state whenever priceVariant changes
     const total = calculateTotal();
     setTotalAmount(total);
-  };
+  }, [selectedProducts,priceVariant]);
+
+  //Cập nhật tổng tiền mỗi khi thực hiện chọn sản phẩm
+  // const updateTotalAmount = () => {
+  //   const total = calculateTotal();
+  //   setTotalAmount(total);
+  // };
 
 
   //cập nhật tăng số lượng với người dùng có tk
   const handleIncrease = (productId: string) => {
     const productToUpdate = cartData?.products.find((product: any) => product._id === productId);
-    console.log(productToUpdate);
-    
+  
     if (productToUpdate) {
-      const updatedProductQuantities = {
-        ...productQuantities,
-        [productId]: (productToUpdate.quantity) + 1,
-      };
+      // Use the functional form of setProductQuantities to ensure correct state update
+      setProductQuantities((prevQuantities:any) => {
+        const updatedQuantity = (prevQuantities[productId] || productToUpdate.quantity) + 1;
+        return {
+          ...prevQuantities,
+          [productId]: updatedQuantity,
+        };
+      });
 
-      setProductQuantities(updatedProductQuantities);
-      const price = productToUpdate.totalAmount + productToUpdate.price
-     
-      
+      setPriceVariant((prevPrice:any) => {
+        const updatedPrice =  (prevPrice[productId] || productToUpdate.totalAmount) + productToUpdate.price
+        return {
+          ...prevPrice,
+          [productId]: updatedPrice,
+        };
+      });
 
       updateIncrease({
-        productId: productToUpdate.productId._id,
-        color: productToUpdate.color,
-        size: productToUpdate.size,
+        cartVariationID: productToUpdate._id, // cartVariationID là ID biến thể giỏ hàng
         quantity: 1,
         price: productToUpdate.price
       });
+  
+
     }
   };
-  console.log(productQuantities);
+
 
 
   //cập nhật giảm số lượng với người dùng có tk
   const handleMinus = (productId: string) => {
     const productToUpdate = cartData?.products.find((product: any) => product._id === productId);
-    
-    if (productToUpdate.quantity === 1) {
-      message.error("Không thể giảm thêm số lượng")
-    } else {
-      const updatedProductQuantities = {
-        ...productQuantities,
-        [productId]: (productToUpdate.quantity) - 1,
-      };
-      setProductQuantities(updatedProductQuantities)
-      updateMinus({
-        productId: productToUpdate.productId._id,
-        color: productToUpdate.color,
-        size: productToUpdate.size,
-        quantity: 1,
-        price: productToUpdate.productId.price
+    if (productToUpdate) {
+      // Use the functional form of setProductQuantities to ensure correct state update
+      setProductQuantities((prevQuantities:any) => {
+        const updatedQuantity = (prevQuantities[productId] || productToUpdate.quantity) - 1;
+        return {
+          ...prevQuantities,
+          [productId]: updatedQuantity,
+        };
       });
+
+      setPriceVariant((prevPrice:any) => {
+        const updatedPrice =  (prevPrice[productId] || productToUpdate.totalAmount) - productToUpdate.price
+        return {
+          ...prevPrice,
+          [productId]: updatedPrice,
+        };
+      });
+
+      updateMinus({
+        cartVariationID: productToUpdate._id, // cartVariationID là ID biến thể giỏ hàng
+        quantity: 1,
+        price: productToUpdate.price
+      });
+  
+
     }
   };
 
@@ -138,7 +151,7 @@ const Cart = () => {
           ? {
             ...product,
             quantity: product.quantity - 1,
-            price: product.price - product.priceItem
+            totalAmount: product.totalAmount - product.price
           }
           : product
       );
@@ -159,7 +172,7 @@ const Cart = () => {
           ? {
             ...product,
             quantity: product.quantity + 1,
-            price: product.price + product.priceItem
+            totalAmount: product.totalAmount + product.price
           }
           : product
       );
@@ -208,13 +221,12 @@ const Cart = () => {
       return {
         key: product._id,
         productId: product.productId?._id,
-        priceItem: product.productId?.price,
         name: product.productId?.name,
         totalAmount: product.totalAmount,
         imgUrl: product.imgUrl[0],
         color: product.color,
         size: product.size,
-        quantity: productQuantities[product._id] || product.quantity,
+        quantity:  product.quantity,
       };
     });
 
@@ -223,13 +235,12 @@ const Cart = () => {
       return {
         key: product.id,
         productId: product.productId,
-        priceItem: product.priceItem,
         name: product.name,
-        price: product.price,
+        totalAmount: product.totalAmount,
         imgUrl: product.imgUrl[0],
         color: product.color,
         size: product.size,
-        quantity: productQuantities[product.productId] || product.quantity,
+        quantity: product.quantity,
       };
 
     });
@@ -319,12 +330,19 @@ const Cart = () => {
       title: 'Giá',
       dataIndex: 'totalAmount',
       align: 'center',
-      render: (totalAmount : number) => (
+      render: (totalAmount: number, record: any) => (
         <span>
-          {totalAmount ? totalAmount.toLocaleString('vi-VN', { style: "currency", currency: "VND" }) : 'Giá không xác định'}
+          {totalAmount ? 
+            (priceVariant[record.key] ? 
+              priceVariant[record.key].toLocaleString('vi-VN', { style: "currency", currency: "VND" }) : 
+              totalAmount.toLocaleString('vi-VN', { style: "currency", currency: "VND" })
+            ) : 
+            "Không xác định"
+          }
         </span>
       )
     },
+    
 
     {
       title: 'Xóa',

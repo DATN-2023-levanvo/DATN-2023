@@ -276,7 +276,7 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
 
       if (existingProductIndex !== -1) {
         // Sản phẩm đã tồn tại trong giỏ hàng với cùng productId, color và size
-        // Chỉ cập nhật giá trị quantity cho sản phẩm này
+        // Chỉ cập nhật giá trị quantity và giá cho sản phẩm này
         existingCart[existingProductIndex].quantity += getQuantityBuy;
         existingCart[existingProductIndex].price += existingCart[existingProductIndex].priceItem * getQuantityBuy;
 
