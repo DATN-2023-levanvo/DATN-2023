@@ -23,6 +23,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import parse from 'html-react-parser';
 import { format } from "date-fns";
+import { AiOutlineMinus } from "react-icons/ai";
 
 
 type Variant = {
@@ -61,19 +62,10 @@ const prices = productDataOne?.variants?.map(({ sellingPrice, original_price }: 
 }));
 
 
-const sellingPrices = prices?.map((price:{sellingPrice:number}) => price.sellingPrice) || [];
+const priceMap = prices?.map((item:any) => item.sellingPrice)
+const minSellingPrice = priceMap ? Math.min(...priceMap) : 0;
+const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
 
-
-// trả về giá bán ra
-const allSellingPrices = sellingPrices.join(', ');
-
-
-
-const sellingPricesArray = allSellingPrices.split(',').map(Number);
-
-// Find the minimum and maximum selling prices
-const minSellingPrice = Math.min(...sellingPricesArray);
-const maxSellingPrice = Math.max(...sellingPricesArray);
 
 
   useEffect(() => {
@@ -114,19 +106,20 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
   const ChooseColor = (color: any, indColor: number) => {
     setColor(color);
     setIndexSlider(indColor);
-
-    // Find the corresponding image URL for the selected color
+    
+    // Tìm URL hình ảnh tương ứng cho màu đã chọn
     const selectedVariant = productDataOne?.variants.find(
       (variant: any) => variant.color_id.unicode === color
     );
     const selectedImgUrl = selectedVariant ? selectedVariant.imgUrl : "";
 
     setImgUrl(selectedImgUrl);
-
     const sizesForColor = productDataOne?.variants
       .filter((variant: any) => variant.color_id.unicode === color)
       .map((variant: any) => variant.size_id.name);
+      
     setSizeByColor(sizesForColor);
+    setSize('')
   };
 
   // Chọn size
@@ -302,7 +295,6 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
 
       // Cập nhật localStorage với giỏ hàng mới
       localStorage.setItem('cart', JSON.stringify(existingCart));
-      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn");
     }
   };
 
@@ -392,13 +384,13 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
         .unwrap()
         .then((response) => {
           // Xử lý phản hồi thành công
-          console.log('Bình luận đã được tạo:', response);
+          // console.log('Bình luận đã được tạo:', response);
           // Cập nhật danh sách bình luận hiển thị
           refetch();
         })
         .catch((error) => {
           // Xử lý lỗi
-          console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
+          // console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
           setMessagecm(error.data.message)
         });
     } else {
@@ -421,14 +413,10 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
         createComment({ userId: currentUser?._id, productId: id, orderId, content })
           .unwrap()
           .then((response) => {
-            // Xử lý phản hồi thành công
-            console.log('Bình luận đã được tạo:', response);
             // Cập nhật danh sách bình luận hiển thị
             refetch();
           })
           .catch((error) => {
-            // Xử lý lỗi
-            console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
             setMessagecm(error.data.message)
           });
       } else {
@@ -633,7 +621,7 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
                           |
                         </p>
                         <div className="evaluate">
-                          {comments?.length} Đánh giá
+                          {comments.length} Đánh giá
                         </div>
                         <p style={{ fontSize: "20px" }}>
                           |
@@ -653,12 +641,11 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
                       </p>
                     </div>
                     <div className="item-price flex">
-                      <p>
-                        {sellingPrice ? sellingPrice?.toLocaleString() : 0} VND
-                      </p>
-                      <p className="original_price">
-                        {originalPrice ? originalPrice?.toLocaleString() : 0} VND
-                      </p>
+                     
+                      {sellingPrice ? <p style={{fontSize: 20,color: 'black',fontWeight:500}}>{sellingPrice?.toLocaleString()}đ</p> : <span style={{fontSize: 20,color: 'black',fontWeight:500}}>{minSellingPrice.toLocaleString()}đ</span>}
+                      <span style={{fontSize: 20,marginLeft:10,marginRight:10,color: 'black',fontWeight:500}}>-</span>
+                      {originalPrice ? <p style={{fontSize: 20,color: 'black',fontWeight:500,textDecoration: 'line-through'}}>{originalPrice?.toLocaleString()}đ</p> : <span style={{fontSize: 20,color: 'black',fontWeight:500}}>{maxSellingPrice.toLocaleString()}đ</span>}
+
                     </div>
 
 
@@ -706,13 +693,13 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
                                             } ${isSizeAvailable ? 'bg-transparent' : 'bg-slate-300'}`}
                                         >
                                           <p>{size.name}</p>
-                                          {getSize === size.name && (
+                                          {getSize === size.name ? (
                                             <img
                                               className="absolute top-[-7px] right-[-5px] w-3 h-3"
                                               src="../../img/icons/correct.png"
                                               alt=""
                                             />
-                                          )}
+                                          ) : ''}
                                         </button>
                                       );
                                     })
@@ -825,13 +812,14 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
                     ) : (
                       currentUser && currentUser?._id === comment.userId._id && (
                         <div>
-                          <div className="favorites">
-                            <p style={{ border: 'none' }} onClick={() => handleUpdateComment(comment)}><FaTools style={{ color: '#18a3f4' }} /> <span style={{ color: '#18a3f4' }}>Sửa</span></p>
-                          </div>
-
-                          <div className="favorites">
-                            <p style={{ border: 'none' }} onClick={() => handleDeleteCommentUser(comment._id)}><MdDeleteForever /> <span>Xóa</span></p>
-                          </div>
+                          
+                            <div className="favorites">
+                              <p style={{ border: 'none' }} onClick={() => handleUpdateComment(comment)}><FaTools style={{ color: '#18a3f4' }} /> <span style={{ color: '#18a3f4' }}>Sửa</span></p>
+                            </div>
+                            <div className="favorites">
+                              <p style={{ border: 'none' }} onClick={() => handleDeleteCommentUser(comment._id)}><MdDeleteForever /> <span>Xóa</span></p>
+                            </div>
+           
 
                           <Modal
                             title="Xác nhận xóa"
@@ -859,6 +847,7 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
                               value={updatedContent || comment?.content}
                               onChange={(e) => setUpdatedContent(e.target.value)}
                             />
+                            <input type="text" name="" id="" />
                           </Modal>
 
                         </div>
@@ -890,9 +879,9 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
               <div className="comment_form">
                 {currentUser?._id ?
                   (<form onSubmit={handleSubmit}>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your comment" maxLength={200} cols={174} rows={5} />
+                    <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your comment" maxLength={200} cols={150} rows={5} />
                     <button type="submit" disabled={isLoadingcm} >Gửi</button>
-                    {messagecm && <p>{messagecm}</p>}
+                    {messagecm && <p style={{color: 'red'}}>{messagecm}</p>}
                   </form>) : (<p>Vui lòng đăng nhập để bình luận.</p>)}
 
 
@@ -902,7 +891,7 @@ const maxSellingPrice = Math.max(...sellingPricesArray);
           </div>
           {/* ============================================ khu SP liên quan */}
           <div className="container mb-20 -mt-16 productsRelative text-black">
-            <h3>Sản phẩm liên quan</h3>
+            <h3 style={{fontSize:20}}>Sản phẩm liên quan</h3>
             <div className={`productShow mt-4 flex flex-wrap space-x-5 ${arrayPR.length > 3 ? "justify-center" : ""}`}>
               {arrayPR.length ? arrayPR?.map((items: any) => {
                 return (

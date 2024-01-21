@@ -54,6 +54,7 @@ const Checkout = () => {
   const enteredDiscount:any = Array.isArray(discounts)
     ? discounts?.find((d) => d.code === discountCode)
     : "không có data discount"
+    
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -208,18 +209,13 @@ const Checkout = () => {
       ),
     },
     {
-      title: "Số lượng",
-      dataIndex: "quantity",
-      render: (quantity: number) => <p style={{}}>{quantity}</p>,
-    },
-    {
       title: "Ngày bắt đầu",
       dataIndex: "startDate",
       render: (startDate: string) => (
         <p style={{}}>
           {moment(startDate)
             .tz("Asia/Ho_Chi_Minh")
-            .format("HH:mm A YYYY-MM-DD ")}
+            .format("HH:mm | DD-MM-YYYY")}
         </p>
       ),
     },
@@ -230,7 +226,7 @@ const Checkout = () => {
         <p style={{}}>
           {moment(expiresAt)
             .tz("Asia/Ho_Chi_Minh")
-            .format("HH:mm A YYYY-MM-DD ")}
+            .format("HH:mm | DD-MM-YYYY")}
         </p>
       ),
     },
@@ -241,10 +237,10 @@ const Checkout = () => {
         return (
           <div className="">
             <button
-              className="bg-[#1677ff] text-white w-[60%] h-[30px] rounded"
+              className="bg-[#1677ff] text-white rounded"
               onClick={() => handleUseDiscount(discount)}
             >
-              Use
+              Sử dụng
             </button>
           </div>
         )
@@ -381,6 +377,8 @@ const Checkout = () => {
     handleInputBlur("district", selectedOption)
   }
 
+  console.log('selectedProducts',selectedProducts);
+  
   // Sử lý tạo đơn hàng
   const handlePlaceOrder = async () => {
     setIsLoadingSeen(true);
@@ -412,6 +410,7 @@ const Checkout = () => {
             size: selectedProducts[index].size,
             imgUrl: selectedProducts[index].imgUrl
           })),
+          discountCodeId: enteredDiscount._id,
           name:
             (document.getElementById("name") as HTMLInputElement)?.value || "",
           phone:
@@ -429,10 +428,12 @@ const Checkout = () => {
           totalPrice: totalPrice,
         }
 
+        console.log("oder",orderData);
+        
+
         if (selectedMethod == "transfer") {
           setOrderPayment({...orderData, statusPayment: true})
           const urlPay:any = await createPayment(orderPayment)
-          console.log(urlPay);
           localStorage.setItem("orderPaymentUser", JSON.stringify(orderPayment))
           window.location.href = urlPay.data.data
         } else {
@@ -490,6 +491,7 @@ const Checkout = () => {
             size: selectedProducts[index].size,
             imgUrl: selectedProducts[index].imgUrl
           })),
+          discountCodeId: enteredDiscount._id,
           name:
             (document.getElementById("name") as HTMLInputElement)?.value || "",
           phone:
@@ -504,20 +506,15 @@ const Checkout = () => {
           note:
             (document.getElementById("note") as HTMLTextAreaElement)?.value ||
             "",
-          totalPrice: productId.reduce(
-            (total: number, id: string, index: number) => {
-              const productPrice = selectedProducts[index].price
-              const productQuantity = quantity[index]
-              return total + productPrice * productQuantity
-            },
-            0
-          ),
+          totalPrice: totalPrice
         }
+
+        console.log('orderItem',orderItem);
+        
 
         if (selectedMethod == "transfer") {
           setOrderPayment({...orderItem,statusPayment: true,})
           const urlPay:any = await createPayment(orderPayment)
-          console.log(urlPay);
 
           window.location.href = urlPay.data.data
           localStorage.setItem("orderPayment", JSON.stringify(orderPayment))
@@ -525,9 +522,9 @@ const Checkout = () => {
           await addOrder(orderItem)
           message.success("Đặt hàng thành công")
           setIsLoadingSeen(false);
-          // setTimeout(() => {
-          //   navigate("/order/view/guest")
-          // },2000)
+          setTimeout(() => {
+            navigate("/order/view/guest")
+          },2000)
           const updatedLocalCart = localCart.filter(
             (item) => !cartId.includes(item.id)
           )

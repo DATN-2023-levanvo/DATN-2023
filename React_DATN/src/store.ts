@@ -12,6 +12,7 @@ import orderApi from "./Services/Api_Order"
 import commentApi from "./Services/Api_Comment"
 import discountApi from "./Services/Api_Discount"
 import statisticApi from "./Services/Api_Statistic"
+import searchProductApi from "./Services/Api_SearchProduct"
 
 
 export const store = configureStore({
@@ -29,7 +30,7 @@ export const store = configureStore({
     comments: commentApi.reducer,
     discountApi: discountApi.reducer,
     statistic: statisticApi.reducer,
-
+    searchProduct: searchProductApi.reducer
   },
   middleware: (defaultMiddleware) =>
     defaultMiddleware()
@@ -46,6 +47,7 @@ export const store = configureStore({
       .concat(commentApi.middleware)
       .concat(discountApi.middleware)
       .concat(statisticApi.middleware)
+      .concat(searchProductApi.middleware)
 })
 
 export type RootState = ReturnType<typeof store.getState>

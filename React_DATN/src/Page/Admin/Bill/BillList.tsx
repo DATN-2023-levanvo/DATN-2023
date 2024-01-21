@@ -14,8 +14,8 @@ const BillList = () => {
   const [updateOrder] = useUpdateOrderMutation();
 
   const [filterStatus, setFilterStatus] = useState('');
-
   const [filterNameOrCode, setFilterNameOrCode] = useState('');
+  const [filterPhone, setFilterPhone] = useState('')
 
   
 
@@ -27,6 +27,7 @@ const BillList = () => {
     status: order?.status,
     phone: order?.phone
   }));
+  
 
 
   const handleStatusChange = (value: string, orderId: string) => {
@@ -41,6 +42,11 @@ const BillList = () => {
   const handleNameOrCodeFilter = (e: any) => {
     const filterValue = deburr(e.target?.value); // Loại bỏ các dấu trong chuỗi
     setFilterNameOrCode(filterValue);
+  };
+
+  const handlePhoneFilter = (e: any) => {
+    const filterValue = deburr(e.target?.value);
+    setFilterPhone(filterValue);
   };
 
   const columns = [
@@ -114,9 +120,12 @@ const BillList = () => {
     const matchNameOrCode =
       !filterNameOrCode ||
       deburr(order.code_order.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase())) ||
-      deburr(order.userId.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase())) ||
-      deburr(order.phone.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase()));
-    return matchStatus && matchNameOrCode;
+      deburr(order.userId.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase())) 
+      // deburr(order?.phone?.toLowerCase()).includes(deburr(filterNameOrCode.toLowerCase()));
+      
+    const matchPhone = !filterPhone || deburr(order.phone.toLowerCase()).includes(deburr(filterPhone.toLowerCase()));
+
+    return matchStatus && matchNameOrCode && matchPhone;
   });
 
   return (

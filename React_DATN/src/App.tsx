@@ -62,7 +62,8 @@ import Guests from "./Page/Guests"
 import BillGuest from "./Page/BillGuest"
 import BillDetailGuest from "./Page/detailBillGuest"
 import UpdateVariantProduct from "./Page/Admin/Product/UpdateVariantProduct"
-import TestInput from "./Page/testInput"
+
+import SearchResultsPage from "./Page/SearchResultsPage"
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
         <Route path="order/view/detail/:id" element={<BillDetailHome />} />
         <Route path="order/view/detail/guest/:id" element={<BillDetailGuest />} />
         <Route path="order/alert" element={<CheckOutSuccess />} />
+        <Route path="/search-results" element={<SearchResultsPage />} />
 
       </Route>
 

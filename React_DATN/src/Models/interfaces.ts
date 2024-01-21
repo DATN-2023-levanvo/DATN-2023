@@ -156,7 +156,8 @@ export interface IOrder {
     color: string
     size: number
     _id: string
-  }[]
+  }[],
+  discountCodeId?: string,
   phone: string
   note?: string
   status: string

@@ -26,6 +26,10 @@ const orderSchema = new mongoose.Schema({
           ]
         }
       ],
+      discountCodeId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DiscountCode"
+      },
     name: String,
     phone:String,
     note: String,

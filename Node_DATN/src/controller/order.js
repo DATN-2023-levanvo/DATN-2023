@@ -24,20 +24,27 @@ export const getAllOrders = async (req, res) => {
 //lấy ra chi tiết đơn hàng theo id
 export const getOrdersById = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.id).populate("products.productId").populate({path: "userId", select: "username"});
+        const order = await Order.findById(req.params.id)
+            .populate("products.productId")
+            .populate({ path: "userId", select: "username" })
+            .populate('discountCodeId'); // Add this line to populate discountCodeId
+
         if (!order) {
-          return res.json({
-            message: "Không tìm thấy Order!",
-          });
+            return res.json({
+                message: "Không tìm thấy Order!",
+            });
         }
         return res.status(200).json(order);
-      } catch (error) {
+    } catch (error) {
         return res.status(400).json({
-          message: error.message,
+            message: error.message,
         });
-      }
+    }
 };
 
+
+
+// Chức năng lấy ra dữ liệu của người dùng đã mua hàng để kết hợp với chức năng bình luận
 export const getUserOrders = async (req, res) => {
     const userId = req.user ? req.user._id : null;
 
@@ -57,29 +64,6 @@ export const getUserOrders = async (req, res) => {
     }
 };
 
-
-// lấy ra đơn hàng theo user
-export const getOneOrderUser = async (req, res) => {
-    const userId = req.user ? req.user._id : null;
-    const orderId = req.params.id;
-
-    try {
-        const order = await Order.findOne({ _id: orderId, userId }).populate("productId");
-
-        if (!order) {
-            return res.status(404).json({
-                message: "Không tìm thấy đơn hàng"
-            });
-        }
-
-        return res.status(200).json({
-            message: "Thông tin đơn hàng",
-            order
-        });
-    } catch (error) {
-        return res.status(500).json({ message: "Lỗi khi lấy thông tin đơn hàng", err: error.message });
-    }
-};
 
 
 //generateRandomCode() --> Hàm thực thi tạo ngẫu nhiên mã đơn hàng

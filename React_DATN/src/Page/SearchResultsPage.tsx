@@ -1,121 +1,114 @@
-import { ICategory, IColor, IProduct, ISize } from "../Models/interfaces";
-import { useGetAllProductQuery } from "../Services/Api_Product";
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState } from 'react';
+import { useLocation,Link } from 'react-router-dom';
 import ReactPaginate from "react-paginate";
-import { useGetAllCategoryQuery } from "../Services/Api_Category";
-import { useGetColorsQuery } from "../Services/Api_Color";
-import { Link } from "react-router-dom";
-import Loading from "../Component/Loading";
-import { useGetAllSizeQuery } from "../Services/Api_Size";
+import { ICategory, IColor, IProduct, ISize } from '../Models/interfaces';
+import { useGetAllCategoryQuery } from '../Services/Api_Category';
+import { useGetAllSizeQuery } from '../Services/Api_Size';
+import { useGetColorsQuery } from '../Services/Api_Color';
 
-const Products = () => {
-  const { data: producData, isLoading: isLoadingData, error } = useGetAllProductQuery();
+const SearchResultsPage = () => {
+  const location = useLocation();
+  const searchData = location.state;
   const { data: categoryData, error: errorCategory } = useGetAllCategoryQuery();
   const { data: sizeData, error: errorSize } = useGetAllSizeQuery();
   const { data: colorData, error: errorColor } = useGetColorsQuery();
-
-
-  //Lọc sản phẩm theo bộ lọc
-  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
-  const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
-  const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
-  const [selectedPriceRange, setSelectedPriceRange] = useState<string | undefined>(undefined);
-
-
-  const handlePriceRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    setSelectedPriceRange(selectedValue);
-    // Đây là nơi bạn sẽ áp dụng bộ lọc dựa trên khoảng giá
-    // Bạn có thể thêm logic lọc vào ở đây
-  };
-
-  const isPriceInRange = (price: number, priceRange: string) => {
-    if (priceRange === "0-500000") {
-      return price >= 0 && price < 500000;
-    } else if (priceRange === "500000-1000000") {
-      return price >= 500000 && price <= 1000000;
-    } else if (priceRange === "1000000") {
-      return price > 1000000;
-    }
-    // Thêm các khoảng giá khác ở đây
-    return true; // Mặc định hiển thị sản phẩm nếu không có khoảng giá nào được chọn
-  };
-
-  const filteredProduct = producData ? producData.filter((product: IProduct) => {
-    console.log(product);
-    const isCategoryMatch = !selectedCategory || product.categoryId === selectedCategory;
-    const isSizeMatch = !selectedSize || product.variants?.some((variant: any) => variant.size_id._id === selectedSize);
-    const isColorMatch = !selectedColor || product.variants?.some((variant: any) => variant.color_id._id === selectedColor);
-    const isPriceRangeMatch = !selectedPriceRange || product.variants?.some((variant: any) => isPriceInRange(variant.sellingPrice, selectedPriceRange));
-
-
-    return isCategoryMatch && isSizeMatch && isColorMatch && isPriceRangeMatch;
-  }): [];
-
-
-
-  const sortedProducts = [...filteredProduct];
-  console.log(sortedProducts);
+  console.log(searchData);
   
 
-  const [sortOption, setSortOption] = useState("ascending"); // Mặc định sắp xếp theo giá tăng dần
-  const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    setSortOption(selectedValue);
-  };
+    //Lọc sản phẩm theo bộ lọc
+    const [selectedCategory, setSelectedCategory] = useState<string | undefined>(undefined);
+    const [selectedSize, setSelectedSize] = useState<string | undefined>(undefined);
+    const [selectedColor, setSelectedColor] = useState<string | undefined>(undefined);
+    const [selectedPriceRange, setSelectedPriceRange] = useState<string | undefined>(undefined);
+  
+  
+    const handlePriceRangeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value;
+      setSelectedPriceRange(selectedValue);
+      // Đây là nơi bạn sẽ áp dụng bộ lọc dựa trên khoảng giá
+      // Bạn có thể thêm logic lọc vào ở đây
+    };
+  
+    const isPriceInRange = (price: number, priceRange: string) => {
+      if (priceRange === "0-500000") {
+        return price >= 0 && price < 500000;
+      } else if (priceRange === "500000-1000000") {
+        return price >= 500000 && price <= 1000000;
+      } else if (priceRange === "1000000") {
+        return price > 1000000;
+      }
+      // Thêm các khoảng giá khác ở đây
+      return true; // Mặc định hiển thị sản phẩm nếu không có khoảng giá nào được chọn
+    };
+  
+    const filteredProduct = searchData ? searchData.data.filter((product: IProduct) => {
+      const isCategoryMatch = !selectedCategory || product.categoryId === selectedCategory;
+      const isSizeMatch = !selectedSize || product.variants?.some((variant: any) => variant.size_id === selectedSize);
+      const isColorMatch = !selectedColor || product.variants?.some((variant: any) => variant.color_id === selectedColor);
+      const isPriceRangeMatch = !selectedPriceRange || product.variants?.some((variant: any) => isPriceInRange(variant.sellingPrice, selectedPriceRange));
+  
+  
+      return isCategoryMatch && isSizeMatch && isColorMatch && isPriceRangeMatch;
+    }): [];
+  
+  
+  
+    const sortedProducts = [...filteredProduct];
+    
+  
+    const [sortOption, setSortOption] = useState("ascending"); // Mặc định sắp xếp theo giá tăng dần
+    const handleSortChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value;
+      setSortOption(selectedValue);
+    };
+  
+    if (sortOption === "ascending") {
+      sortedProducts.sort((a, b) => {
+        const minPriceA = Math.min(...(a.variants?.map((variant: any) => variant.sellingPrice || 0)));
+        const minPriceB = Math.min(...(b.variants?.map((variant: any) => variant.sellingPrice || 0)));   
+        return minPriceA - minPriceB;
+      });
+    } else if (sortOption === "decreasing") {
+      sortedProducts.sort((a, b) => {
+        const minPriceA = Math.min(...(a.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
+        const minPriceB = Math.min(...(b.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
+        return minPriceB - minPriceA;
+      });
+    }
+  
+  
+    // Phân trang
+    const [currentPage, setCurrentPage] = useState(0);
+    const [productsPerPage, setProductsPerPage] = useState(9);
+  
+  
+    const totalProducts = sortedProducts?.length || 0;
+    const pageCount = Math.ceil(totalProducts / productsPerPage);
+    const startIndex = currentPage * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+    const displayedProducts = sortedProducts?.slice(startIndex, endIndex);
+  
+    const handlePageChange = ({ selected }: { selected: number }) => {
+      setCurrentPage(selected);
+    };
+    const handleProductsPerPageChange = (
+      event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const selectedValue = parseInt(event.target.value);
+      setProductsPerPage(selectedValue);
+      setCurrentPage(0); // Đặt lại về trang đầu tiên khi thay đổi số lượng sản phẩm trên mỗi trang
+    };
+  
+    // Xử lý sự kiện khi click vào nút reset filter
+    const handleResetFilter = () => {
+      setSelectedCategory(undefined);
+      setSelectedSize(undefined);
+      setSelectedColor(undefined);
+      setSelectedPriceRange(undefined);
+    };
 
-  if (sortOption === "ascending") {
-    sortedProducts.sort((a, b) => {
-      const minPriceA = Math.min(...(a.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
-      const minPriceB = Math.min(...(b.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
-      return minPriceA - minPriceB;
-    });
-  } else if (sortOption === "decreasing") {
-    sortedProducts.sort((a, b) => {
-      const minPriceA = Math.min(...(a.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
-      const minPriceB = Math.min(...(b.variants?.map((variant: any) => variant.sellingPrice || 0) || [0]));
-      return minPriceB - minPriceA;
-    });
-  }
-
-
-  // Phân trang
-  const [currentPage, setCurrentPage] = useState(0);
-  const [productsPerPage, setProductsPerPage] = useState(9);
-
-
-  const totalProducts = sortedProducts?.length || 0;
-  const pageCount = Math.ceil(totalProducts / productsPerPage);
-  const startIndex = currentPage * productsPerPage;
-  const endIndex = startIndex + productsPerPage;
-  const displayedProducts = sortedProducts?.slice(startIndex, endIndex);
-
-  const handlePageChange = ({ selected }: { selected: number }) => {
-    setCurrentPage(selected);
-  };
-  const handleProductsPerPageChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedValue = parseInt(event.target.value);
-    setProductsPerPage(selectedValue);
-    setCurrentPage(0); // Đặt lại về trang đầu tiên khi thay đổi số lượng sản phẩm trên mỗi trang
-  };
-
-
-  if (errorCategory || errorSize || errorColor || error) {
-    return <div>Error</div>;
-  }
-
-  // Xử lý sự kiện khi click vào nút reset filter
-  const handleResetFilter = () => {
-    setSelectedCategory(undefined);
-    setSelectedSize(undefined);
-    setSelectedColor(undefined);
-    setSelectedPriceRange(undefined);
-  };
   return (
     <div className="w-[90vw] mx-auto" style={{ marginTop: '10%' }}>
-      {isLoadingData && <Loading />}
       <div className="product-banner">
         <img src="img/product/banner.jpg" alt="" />
       </div>
@@ -298,19 +291,17 @@ const Products = () => {
                     >
                       <div className="row">
                         {displayedProducts && displayedProducts.length > 0 ? (
-                          displayedProducts.map((product: IProduct) => {
+                          displayedProducts?.map((product: IProduct) => {
                       const minPrices = product.variants?.map((variant) => variant.sellingPrice || 0);
                       const maxPrices = product.variants?.map((variant) => variant.sellingPrice || 0);
                       const minSellingPrice = minPrices ? Math.min(...minPrices) : 0;
                       const maxSellingPrice = maxPrices ? Math.max(...maxPrices) : 0;
 
-                      // giá bé nhất của mảng
                       const formattedMinSellingPrice = new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND',
                       }).format(minSellingPrice);
             
-                       // giá lớn nhất của mảng
                       const formattedMaxSellingPrice = new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND',
@@ -395,4 +386,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default SearchResultsPage;

@@ -16,6 +16,7 @@ const orderApi = createApi({
   },
   }),
   endpoints: (builder) => ({
+
     getUserOrders: builder.query<any, void>({
       query: () => `/api/order/view`,
       providesTags: ["Order"]
@@ -26,10 +27,6 @@ const orderApi = createApi({
       providesTags: ["Order"]
     }),
 
-    getOneOrderUser: builder.query<IOrder[], number | string>({
-      query: (_id) => `/api/order/${_id}/user`,
-      providesTags: ["Order"]
-    }),
 
     getOrderById: builder.query<any, number | string>({
       query: (_id) => `/api/order/${_id}`,
@@ -71,7 +68,6 @@ export const {
   useGetAllOrdersQuery,
   useAddOrderMutation,
   useRemoveOrderMutation,
-  useGetOneOrderUserQuery,
   useGetOrderByIdQuery,
   useUpdateOrderMutation
 } = orderApi;

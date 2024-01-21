@@ -34,9 +34,9 @@ const CheckOutSuccess = () => {
                     let dataOrder = JSON.parse(orderDataString);
                     await addOrder(dataOrder)
                     localStorage.removeItem('orderPaymentUser');
-                    // setTimeout(()=>{
-                    //     navigate("/")
-                    // },1000)
+                    setTimeout(()=>{
+                        navigate("/order/view")
+                    },1000)
                 }
 
                 // Thanh toán vnp với người không có tài khoản
@@ -51,9 +51,9 @@ const CheckOutSuccess = () => {
                     setLocalCart(updatedLocalCart);
                     localStorage.setItem('cart', JSON.stringify(updatedLocalCart));
                     localStorage.removeItem('orderPayment');
-                    // setTimeout(()=>{
-                    //     navigate("/order/view/guest")
-                    // },1000)
+                    setTimeout(()=>{
+                        navigate("/order/view/guest")
+                    },1000)
                 }
                 setStatusOrder(true);
             } else {

@@ -3,9 +3,8 @@ import { MdManageAccounts, MdNotificationsActive  } from "react-icons/md";
 import { useGetOneUserQuery } from '../Services/Api_User';
 
 const UserMenu = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data }: any = useGetOneUserQuery(id!);
-  console.log('data:', data);
+  const { id } = useParams();
+  const { data }: any = useGetOneUserQuery(id || '');
   
   return (
     <>
