@@ -37,6 +37,7 @@ const Checkout = () => {
   const [name, setname]:any = useState(null)
   const [address, setaddress]:any = useState(null)
   const [isLoadingSeen, setIsLoadingSeen] = useState(false);
+  const [orderPayment, setOrderPayment] = useState({statusPayment: false});
 
 
   const [createPayment] = useCreatePaymentMutation()
@@ -53,6 +54,7 @@ const Checkout = () => {
   const enteredDiscount:any = Array.isArray(discounts)
     ? discounts?.find((d) => d.code === discountCode)
     : "không có data discount"
+    
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -128,7 +130,7 @@ const Checkout = () => {
   // tổng tiền
   const calculateTotalPrice = () => {
     let totalPrice = Array.isArray(selectedProducts)
-      ? selectedProducts.reduce((acc, product) => acc + product.price, 0)
+      ? selectedProducts.reduce((acc, product) => acc + product.totalAmount, 0)
       : 0
 
     let discountType = null
@@ -207,18 +209,13 @@ const Checkout = () => {
       ),
     },
     {
-      title: "Số lượng",
-      dataIndex: "quantity",
-      render: (quantity: number) => <p style={{}}>{quantity}</p>,
-    },
-    {
       title: "Ngày bắt đầu",
       dataIndex: "startDate",
       render: (startDate: string) => (
         <p style={{}}>
           {moment(startDate)
             .tz("Asia/Ho_Chi_Minh")
-            .format("HH:mm A YYYY-MM-DD ")}
+            .format("HH:mm | DD-MM-YYYY")}
         </p>
       ),
     },
@@ -229,7 +226,7 @@ const Checkout = () => {
         <p style={{}}>
           {moment(expiresAt)
             .tz("Asia/Ho_Chi_Minh")
-            .format("HH:mm A YYYY-MM-DD ")}
+            .format("HH:mm | DD-MM-YYYY")}
         </p>
       ),
     },
@@ -240,10 +237,10 @@ const Checkout = () => {
         return (
           <div className="">
             <button
-              className="bg-[#1677ff] text-white w-[60%] h-[30px] rounded"
+              className="bg-[#1677ff] text-white rounded"
               onClick={() => handleUseDiscount(discount)}
             >
-              Use
+              Sử dụng
             </button>
           </div>
         )
@@ -380,8 +377,11 @@ const Checkout = () => {
     handleInputBlur("district", selectedOption)
   }
 
+  // console.log('selectedProducts',selectedProducts);
+  
   // Sử lý tạo đơn hàng
   const handlePlaceOrder = async () => {
+    
     setIsLoadingSeen(true);
     try {
       const token = localStorage.getItem("token")
@@ -411,6 +411,7 @@ const Checkout = () => {
             size: selectedProducts[index].size,
             imgUrl: selectedProducts[index].imgUrl
           })),
+          discountCodeId: enteredDiscount ? enteredDiscount._id : null,
           name:
             (document.getElementById("name") as HTMLInputElement)?.value || "",
           phone:
@@ -428,17 +429,21 @@ const Checkout = () => {
           totalPrice: totalPrice,
         }
 
+        console.log("oder",orderData);
+        
+
         if (selectedMethod == "transfer") {
-          const urlPay:any = await createPayment(orderData)
-          localStorage.setItem("orderData", JSON.stringify(orderData))
+          setOrderPayment({...orderData, statusPayment: true})
+          const urlPay:any = await createPayment(orderPayment)
+          localStorage.setItem("orderPaymentUser", JSON.stringify(orderPayment))
           window.location.href = urlPay.data.data
         } else {
           await addOrder(orderData)
           message.success("Đặt hàng thành công");
           setIsLoadingSeen(false);
-          setTimeout(()=>{
-            navigate('/order/view')
-          },2000);
+          // setTimeout(()=>{
+          //   navigate('/order/view')
+          // },2000);
         }
 
         if (currentUser) {
@@ -454,14 +459,16 @@ const Checkout = () => {
         }
         if (enteredDiscount) {
           await updateDiscount({
-            _id: enteredDiscount._id,
-            percentage: enteredDiscount.percentage,
-            amountDiscount: enteredDiscount.amountDiscount,
-            minimumOrderAmount: enteredDiscount.minimumOrderAmount,
-            quantity: enteredDiscount.quantity - 1,
+            _id: enteredDiscount._id || '',
+            percentage: enteredDiscount.percentage || 0,
+            amountDiscount: enteredDiscount.amountDiscount || 0,
+            minimumOrderAmount: enteredDiscount.minimumOrderAmount || 0,
+            quantity: (enteredDiscount.quantity || 0) - 1,
           })
         }
       } else {
+
+        // Thao tác với người dùng không có tài khoản
         const cartId = selectedProducts.map((product: any) => product.key)
         const productId = selectedProducts.map(
           (product: any) => product.productId
@@ -476,7 +483,7 @@ const Checkout = () => {
           return
         }
 
-        const orderItemData = {
+        const orderItem = {
           cartId: cartId,
           products: productId.map((id: string | number, index: number) => ({
             productId: id,
@@ -487,6 +494,7 @@ const Checkout = () => {
             size: selectedProducts[index].size,
             imgUrl: selectedProducts[index].imgUrl
           })),
+          discountCodeId: enteredDiscount._id,
           name:
             (document.getElementById("name") as HTMLInputElement)?.value || "",
           phone:
@@ -501,15 +509,20 @@ const Checkout = () => {
           note:
             (document.getElementById("note") as HTMLTextAreaElement)?.value ||
             "",
-          totalPrice: totalPrice,
+          totalPrice: totalPrice
         }
 
+        console.log('orderItem',orderItem);
+        
+
         if (selectedMethod == "transfer") {
-          const urlPay:any = await createPayment(orderItemData)
+          setOrderPayment({...orderItem,statusPayment: true,})
+          const urlPay:any = await createPayment(orderPayment)
+
           window.location.href = urlPay.data.data
-          localStorage.setItem("orderItemData", JSON.stringify(orderItemData))
+          localStorage.setItem("orderPayment", JSON.stringify(orderPayment))
         } else {
-          await addOrder(orderItemData)
+          await addOrder(orderItem)
           message.success("Đặt hàng thành công")
           setIsLoadingSeen(false);
           setTimeout(() => {
@@ -522,6 +535,8 @@ const Checkout = () => {
         }
       }
     } catch (error) {
+      console.log("dang co loi",error);
+      
       setIsLoadingSeen(false);
     }
   }
@@ -580,10 +595,10 @@ const Checkout = () => {
                     </div>
                     <div className="product_quantity">
                       <span>
-                        {product.price.toLocaleString("vi-VN", {
+                        {product.price ? product.price.toLocaleString("vi-VN", {
                           style: "currency",
                           currency: "VND",
-                        })}
+                        }):""}
                       </span>
                       <div className="quantity" style={{ border: "none" }}>
                         <p>x{product.quantity}</p>

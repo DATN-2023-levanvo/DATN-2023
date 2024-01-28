@@ -17,6 +17,10 @@ const BillDetailHome = () => {
     const [loadingDelete,setLoadingDelete] = useState(false)
     const [updateOrder] = useUpdateOrderMutation();
     const [messageApi, contextHolder] = message.useMessage()
+    
+    // tổng tiền của sản phẩm khi chưa dùng mã giảm giá
+    const undiscountedMoney = data?.products?.reduce((acc:number,item:any) => acc + (item.price * item.quantity),0)
+
 
     const onFinish = (values: IOrder) => {
         setLoadingDelete(true)
@@ -86,16 +90,17 @@ const BillDetailHome = () => {
                         <div className='order' >
                             <div style={{ margin: 25 }}>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ marginBottom: 40, marginRight: 200 }}>
+                                <div style={{ marginBottom: 40, marginRight: 200 }}>
                                         <h3>Thông tin đơn hàng</h3>
                                         <p style={{fontSize: 18}}>Mã đơn hàng: {data?.code_order}</p>
-                                        {/* <p>Tên khách hàng: {data?.userId?.username}</p> */}
-                                        <p style={{fontSize: 18}}>Tên khách hàng: {data?.name}</p>
                                         <p style={getStatusColor(data?.status)}>Trạng thái: {getStatusText(data?.status)}</p>
-                                        <p style={{fontSize: 18}}>Tổng giá trị đơn hàng: {data?.totalPrice.toLocaleString()}đ</p>
-                                        <p>Thời gian: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
-                                        {/* <p>Ngày cập nhật: {new Date(data?.updatedAt).toLocaleString()}</p> */}
-                                    </div>
+                                        {data?.discountCodeId ? <p>Tổng giá trị đơn hàng trước giảm giá: <span style={{color: 'red',fontWeight: 500}}>{undiscountedMoney.toLocaleString()}đ</span></p>: ''}
+                                        {data?.discountCodeId ? <p> Đã sử dung mã giảm giá: <span style={{color: 'red',fontWeight: 500}}>{data?.discountCodeId.code}</span></p> : ''}
+                                        {data?.discountCodeId ? <p style={{fontSize: 18}}>Được giảm giá: {data?.discountCodeId.percentage > 0 ? <span style={{color:'red',fontWeight: 500}}>{ data?.discountCodeId?.percentage}%</span> : <span style={{color:'red',fontWeight: 500}}>{data?.discountCodeId.amountDiscount.toLocaleString()}đ</span>}</p> : ''}
+                                        {data?.discountCodeId || data.totalPrice ? <p>Tổng tiền phải trả: <span style={{color: 'red',fontWeight: 500}}>{data.statusPayment === true ? 0 : data?.totalPrice.toLocaleString() }đ</span></p> : ''}
+                                        <p style={{fontSize: 18}}>Thời gian đặt hàng: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
+                                        <p style={{fontSize: 18}}>Phương thức thanh toán: {data?.statusPayment === true ? <span style={{color: 'green',fontWeight: 500}}>Đã chuyển khoản</span> : <span style={{color: 'red',fontWeight: 500}}>Thanh toán khi nhận hàng</span>}</p>
+                                </div>
                                     <div style={{display: "block", margin: "0 auto"}}>
                                         <h3>Địa chỉ giao hàng</h3>
                                         {data?.address && (
@@ -156,8 +161,8 @@ const BillDetailHome = () => {
                                             </tr>
                                         ))}
                                         <tr>
-                                            <td colSpan={6} style={{ textAlign: 'right', fontWeight: 600, borderTop: '1px solid #ddd', paddingTop: 30,fontSize:18,color:"black" }}>Tổng tiền:</td>
-                                            <td style={{ paddingTop: 30, textAlign: 'center', fontWeight: 600,fontSize:18, color:"black" }}>{data?.totalPrice.toLocaleString()}đ</td>
+                                            <td colSpan={6} style={{ textAlign: 'right', fontWeight: 600, borderTop: '1px solid #ddd', paddingTop: 30,fontSize:18,color:"red" }}>Tổng tiền:</td>
+                                            <td style={{ paddingTop: 30, textAlign: 'center', fontWeight: 600,fontSize:18, color:"red" }}>{data?.totalPrice.toLocaleString()}đ</td>
                                         </tr>
                                     </tbody>
                                 </table>

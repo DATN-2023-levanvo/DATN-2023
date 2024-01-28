@@ -28,7 +28,7 @@ export const createComment = async (req, res) => {
     if (existingComment) {
       return res
         .status(400)
-        .json({ message: "Bạn đã bình luận sản phẩm này trước đó." });
+        .json({ message: "Bạn chỉ có thể đánh giá 1 lần." });
     }
 
     // Kiểm tra người dùng đã mua sản phẩm trong đơn hàng chưa
@@ -49,7 +49,7 @@ export const createComment = async (req, res) => {
       // console.log(order?.status);
       return res
         .status(400)
-        .json({ message: "Đơn hàng không tồn tại hoặc đã bị hủy." });
+        .json({ message: "Đơn hàng phải được giao thành công thì bạn mới có thể đánh giá." });
     }
 
     // Tạo bình luận mới

@@ -23,6 +23,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { FaTools } from "react-icons/fa";
 import parse from 'html-react-parser';
 import { format } from "date-fns";
+import { AiOutlineMinus } from "react-icons/ai";
 
 
 type Variant = {
@@ -50,6 +51,21 @@ const ProductDetail = () => {
   const { data: getAllSize } = useGetAllSizeQuery()
   const [imgUrl, setImgUrl] = useState<any[]>([]);
   const [totalVariant, setTotalVariant]: any = useState(0); //sau khi chọn size lập tức hiện số lượng của biến thể đó
+  const [sellingPrice, setSellingPrice] = useState<number | undefined>(undefined); // lưu giá bán ra
+  const [originalPrice,setOriginalPrice] = useState<number | undefined>(undefined) // lưu giá gốc
+  const [grossProduct,setGrossProduct] = useState('')
+
+// thực hiện in ra giá của từng biến thể sản phẩm variants trong bảng Product
+const prices = productDataOne?.variants?.map(({ sellingPrice, original_price }: {sellingPrice: number, original_price:number}) => ({
+  sellingPrice,
+  original_price,
+}));
+
+
+const priceMap = prices?.map((item:any) => item.sellingPrice)
+const minSellingPrice = priceMap ? Math.min(...priceMap) : 0;
+const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
+
 
 
   useEffect(() => {
@@ -90,19 +106,29 @@ const ProductDetail = () => {
   const ChooseColor = (color: any, indColor: number) => {
     setColor(color);
     setIndexSlider(indColor);
-
-    // Find the corresponding image URL for the selected color
+    
+    // Tìm URL hình ảnh tương ứng cho màu đã chọn
     const selectedVariant = productDataOne?.variants.find(
       (variant: any) => variant.color_id.unicode === color
     );
     const selectedImgUrl = selectedVariant ? selectedVariant.imgUrl : "";
 
+    // const totalAvailableQuantity = selectedVariant.inventory;
+    // if(totalAvailableQuantity===0){
+    //   setGrossProduct("Màu này đã hết size xin vui lòng chọn màu khác");
+    // }else{
+    //   setGrossProduct('')
+    // }
     setImgUrl(selectedImgUrl);
-
     const sizesForColor = productDataOne?.variants
       .filter((variant: any) => variant.color_id.unicode === color)
       .map((variant: any) => variant.size_id.name);
+
+      
     setSizeByColor(sizesForColor);
+
+    setSize('')
+    setTotalVariant(0)
   };
 
   // Chọn size
@@ -114,7 +140,26 @@ const ProductDetail = () => {
     
     const totalAvailableQuantity = selectedVariant.inventory;
     setTotalVariant(totalAvailableQuantity);
+
+    const selectedSellingPrice = selectedVariant?.sellingPrice;
+    setSellingPrice(selectedSellingPrice);
   };
+
+  
+
+  //THỰC THI CHẠY LỆNH KHI CHỌN MÀU VÀ SIZE SẼ RA GIÁ TƯƠNG ỨNG CỦA SẢN PHẨM
+  useEffect(() => {
+    const selectedVariant = productDataOne?.variants.find(
+      (variant: any) => variant.color_id.unicode === getColor && variant.size_id.name === getSize
+    );
+
+    const selectedSellingPrice = selectedVariant?.sellingPrice;
+    const originalPrice = selectedVariant?.original_price
+    setSellingPrice(selectedSellingPrice);
+    setOriginalPrice(originalPrice)
+  }, [getColor, getSize, productDataOne]);
+
+
 
   // giảm số lượng
   const Minus = () => {
@@ -143,7 +188,7 @@ const ProductDetail = () => {
     }
 
     // const totalAvailableQuantity = selectedVariant.quantity;
-    const totalAvailableQuantity = selectedVariant.inventory
+    const totalAvailableQuantity = selectedVariant.quantity
 
     if (getQuantityBuy < 1 || getQuantityBuy > totalAvailableQuantity) {
       message.error(`Số lượng không được vượt quá ${totalAvailableQuantity}`);
@@ -157,41 +202,61 @@ const ProductDetail = () => {
 
       // thực hiện lần đầu tiên kiểm tra khi tài khoản chưa thêm vào giỏ hàng thực hiện thêm mới
       if (cartData === undefined || cartData?.products.length === 0) {
-        addToCart({
-          productId: productDataOne._id,
-          imgUrl: imgUrl,
-          color: getColor,
-          size: getSize,
-          quantity: getQuantityBuy,
-          price: productDataOne.price * getQuantityBuy
-        })
-
-        message.success("Đã thêm sản phẩm vào giỏ hàng")
-      } else {
-        const productItemIndex = cartData.products.findIndex((product: any) => product.productId?._id == productDataOne._id && product.color == getColor && product.size == getSize);
-
-        const productItem = cartData.products[productItemIndex];
-        if (productItemIndex !== -1) {
-          const updatedProductItem = { ...productItem }; // Tạo bản sao của productItem
-          addToCart({
-            productId: updatedProductItem.productId._id,
-            imgUrl: imgUrl,
-            color: updatedProductItem.color,
-            size: updatedProductItem.size,
-            quantity: getQuantityBuy,
-            price: productDataOne.price
-          });
-          message.success("Đã thêm sản phẩm vào giỏ hàng")
-        } else {
+        if (typeof sellingPrice !== 'undefined') {
           addToCart({
             productId: productDataOne._id,
             imgUrl: imgUrl,
             color: getColor,
             size: getSize,
             quantity: getQuantityBuy,
-            price: productDataOne.price * getQuantityBuy
-          })
-          message.success("Đã thêm sản phẩm vào giỏ hàng")
+            price: sellingPrice,
+            totalAmount: sellingPrice*getQuantityBuy
+          });
+        } else {
+          message.error("Đã có lỗi xảy ra vui lòng thử lại");
+        }
+
+        message.success("Đã thêm sản phẩm vào giỏ hàng")
+      } else {
+        const productItemIndex = cartData.products.findIndex((product: any) => product.productId?._id == productDataOne._id && product.color == getColor && product.size == getSize);
+
+        const productItem = cartData.products[productItemIndex];
+        console.log(productItem);
+
+        
+        
+        if (productItemIndex !== -1) {
+          const updatedProductItem = { ...productItem }; // Tạo bản sao của productItem
+          console.log(updatedProductItem);
+          
+          if (typeof sellingPrice !== 'undefined') {
+            addToCart({
+              productId: updatedProductItem.productId._id,
+              imgUrl: imgUrl,
+              color: updatedProductItem.color,
+              size: updatedProductItem.size,
+              quantity: getQuantityBuy,
+              price: sellingPrice
+            });
+            message.success("Đã thêm sản phẩm vào giỏ hàng")
+          } else {
+            message.error("Đã có lỗi xảy ra vui lòng thử lại");
+          }
+        } else {
+          if (typeof sellingPrice !== 'undefined') {
+            addToCart({
+              productId: productDataOne._id,
+              imgUrl: imgUrl,
+              color: getColor,
+              size: getSize,
+              quantity: getQuantityBuy,
+              price: sellingPrice,
+              totalAmount: sellingPrice * getQuantityBuy
+            });
+            message.success("Đã thêm sản phẩm vào giỏ hàng")
+          } else {
+            message.error("Đã có lỗi xảy ra vui lòng thử lại");
+          }
         }
       }
     } else {
@@ -213,28 +278,32 @@ const ProductDetail = () => {
 
       if (existingProductIndex !== -1) {
         // Sản phẩm đã tồn tại trong giỏ hàng với cùng productId, color và size
-        // Chỉ cập nhật giá trị quantity cho sản phẩm này
+        // Chỉ cập nhật giá trị quantity và giá cho sản phẩm này
         existingCart[existingProductIndex].quantity += getQuantityBuy;
         existingCart[existingProductIndex].price += existingCart[existingProductIndex].priceItem * getQuantityBuy;
 
       } else {
         // Nếu sản phẩm không tồn tại trong giỏ hàng, tạo sản phẩm mới và thêm vào mảng giỏ hàng
-        existingCart.unshift({
-          id: newId,
-          productId: productDataOne._id,
-          name: productDataOne.name,
-          imgUrl: imgUrl,
-          quantity: getQuantityBuy,
-          color: getColor,
-          size: getSize,
-          price: productDataOne.price * getQuantityBuy,
-          priceItem: productDataOne.price
-        });
+        if (typeof sellingPrice !== 'undefined') {
+          existingCart.unshift({
+            id: newId,
+            productId: productDataOne._id,
+            name: productDataOne.name,
+            imgUrl: imgUrl,
+            quantity: getQuantityBuy,
+            color: getColor,
+            size: getSize,
+            price: sellingPrice,
+            totalAmount: sellingPrice * getQuantityBuy
+          });
+          message.success("Đã thêm sản phẩm vào giỏ hàng")
+        } else {
+          message.error("Đã có lỗi xảy ra vui lòng thử lại");
+        }
       }
 
       // Cập nhật localStorage với giỏ hàng mới
       localStorage.setItem('cart', JSON.stringify(existingCart));
-      message.success("Sản phẩm đã được thêm vào giỏ hàng của bạn");
     }
   };
 
@@ -324,13 +393,13 @@ const ProductDetail = () => {
         .unwrap()
         .then((response) => {
           // Xử lý phản hồi thành công
-          console.log('Bình luận đã được tạo:', response);
+          // console.log('Bình luận đã được tạo:', response);
           // Cập nhật danh sách bình luận hiển thị
           refetch();
         })
         .catch((error) => {
           // Xử lý lỗi
-          console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
+          // console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
           setMessagecm(error.data.message)
         });
     } else {
@@ -353,14 +422,10 @@ const ProductDetail = () => {
         createComment({ userId: currentUser?._id, productId: id, orderId, content })
           .unwrap()
           .then((response) => {
-            // Xử lý phản hồi thành công
-            console.log('Bình luận đã được tạo:', response);
             // Cập nhật danh sách bình luận hiển thị
             refetch();
           })
           .catch((error) => {
-            // Xử lý lỗi
-            console.error('Đã xảy ra lỗi khi tạo bình luận:', error);
             setMessagecm(error.data.message)
           });
       } else {
@@ -565,7 +630,7 @@ const ProductDetail = () => {
                           |
                         </p>
                         <div className="evaluate">
-                          {comments?.length} Đánh giá
+                          {comments.length} Đánh giá
                         </div>
                         <p style={{ fontSize: "20px" }}>
                           |
@@ -585,8 +650,11 @@ const ProductDetail = () => {
                       </p>
                     </div>
                     <div className="item-price flex">
-                      <p className="price">{productDataOne?.price.toLocaleString()} VND</p>
-                      <p className="original_price">{productDataOne?.original_price.toLocaleString()} VND</p>
+                     
+                      {sellingPrice ? <p style={{fontSize: 20,color: 'black',fontWeight:500}}>{sellingPrice?.toLocaleString()}đ</p> : <span style={{fontSize: 20,color: 'black',fontWeight:500}}>{minSellingPrice.toLocaleString()}đ</span>}
+                      <span style={{fontSize: 20,marginLeft:10,marginRight:10,color: 'black',fontWeight:500}}>-</span>
+                      {originalPrice ? <p style={{fontSize: 20,color: 'black',fontWeight:500,textDecoration: 'line-through'}}>{originalPrice?.toLocaleString()}đ</p> : <span style={{fontSize: 20,color: 'black',fontWeight:500}}>{maxSellingPrice.toLocaleString()}đ</span>}
+
                     </div>
 
 
@@ -617,8 +685,9 @@ const ProductDetail = () => {
                                         productDataOne?.variants.some(
                                           (variant: any) =>
                                             variant.color_id.unicode === getColor &&
-                                            variant.size_id.name === size.name &&
-                                            variant.inventory > 0
+                                            variant.size_id.name === size.name 
+                                            // && variant.inventory > 0
+                                            
                                         );
 
                                       return (
@@ -634,13 +703,13 @@ const ProductDetail = () => {
                                             } ${isSizeAvailable ? 'bg-transparent' : 'bg-slate-300'}`}
                                         >
                                           <p>{size.name}</p>
-                                          {getSize === size.name && (
+                                          {getSize === size.name ? (
                                             <img
                                               className="absolute top-[-7px] right-[-5px] w-3 h-3"
                                               src="../../img/icons/correct.png"
                                               alt=""
                                             />
-                                          )}
+                                          ) : ''}
                                         </button>
                                       );
                                     })
@@ -650,12 +719,10 @@ const ProductDetail = () => {
                                 </div>
                                 <div className="mt-4 -mb-4">
                                   {
-                                    totalVariant > 0 ?
-                                      <p>{totalVariant} sản phẩm có sẵn</p>
-                                      :
-                                      <p>Vui lòng chọn màu và kích cỡ của sản phẩm !</p>
+                                    totalVariant > 0 ? <p>{totalVariant} sản phẩm có sẵn</p> :<p>Vui lòng chọn màu và kích cỡ của sản phẩm !</p>
                                   }
                                 </div>
+                                <div>{grossProduct}</div>
                               </div>
                             </div>
 
@@ -753,13 +820,14 @@ const ProductDetail = () => {
                     ) : (
                       currentUser && currentUser?._id === comment.userId._id && (
                         <div>
-                          <div className="favorites">
-                            <p style={{ border: 'none' }} onClick={() => handleUpdateComment(comment)}><FaTools style={{ color: '#18a3f4' }} /> <span style={{ color: '#18a3f4' }}>Sửa</span></p>
-                          </div>
-
-                          <div className="favorites">
-                            <p style={{ border: 'none' }} onClick={() => handleDeleteCommentUser(comment._id)}><MdDeleteForever /> <span>Xóa</span></p>
-                          </div>
+                          
+                            <div className="favorites">
+                              <p style={{ border: 'none' }} onClick={() => handleUpdateComment(comment)}><FaTools style={{ color: '#18a3f4' }} /> <span style={{ color: '#18a3f4' }}>Sửa</span></p>
+                            </div>
+                            <div className="favorites">
+                              <p style={{ border: 'none' }} onClick={() => handleDeleteCommentUser(comment._id)}><MdDeleteForever /> <span>Xóa</span></p>
+                            </div>
+           
 
                           <Modal
                             title="Xác nhận xóa"
@@ -787,6 +855,7 @@ const ProductDetail = () => {
                               value={updatedContent || comment?.content}
                               onChange={(e) => setUpdatedContent(e.target.value)}
                             />
+                            <input type="text" name="" id="" />
                           </Modal>
 
                         </div>
@@ -818,9 +887,9 @@ const ProductDetail = () => {
               <div className="comment_form">
                 {currentUser?._id ?
                   (<form onSubmit={handleSubmit}>
-                    <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your comment" maxLength={200} cols={174} rows={5} />
+                    <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your comment" maxLength={200} cols={150} rows={5} />
                     <button type="submit" disabled={isLoadingcm} >Gửi</button>
-                    {messagecm && <p>{messagecm}</p>}
+                    {messagecm && <p style={{color: 'red'}}>{messagecm}</p>}
                   </form>) : (<p>Vui lòng đăng nhập để bình luận.</p>)}
 
 
@@ -830,7 +899,7 @@ const ProductDetail = () => {
           </div>
           {/* ============================================ khu SP liên quan */}
           <div className="container mb-20 -mt-16 productsRelative text-black">
-            <h3>Sản phẩm liên quan</h3>
+            <h3 style={{fontSize:20}}>Sản phẩm liên quan</h3>
             <div className={`productShow mt-4 flex flex-wrap space-x-5 ${arrayPR.length > 3 ? "justify-center" : ""}`}>
               {arrayPR.length ? arrayPR?.map((items: any) => {
                 return (
@@ -839,8 +908,8 @@ const ProductDetail = () => {
                     <Link to={`/product/${items._id}`}><img onClick={()=>ChangeProducts(items._id)} className="w-56 h-48 rounded-lg hover:scale-110 duration-200 mb-2" src={items.imgUrl[0]} alt="" /></Link>
                     <p className="ml-2  text-gray-500">{items.name} <span className="float-right mr-2 text-gray-400 text-xs mt-2">SL: {items.quantityTotal}</span></p>
                     <div className="flex space-x-2">
-                      <p className="text-xs ml-2">{items.price.toLocaleString()} (VND)</p>
-                      {items.original_price > 0 && <p className="text-xs"><del>{items.original_price.toLocaleString()}</del></p>}
+                      <p className="text-xs ml-2">{items.price ? items.price.toLocaleString() : 0} (VND)</p>
+                      {items.original_price > 0 && <p className="text-xs"><del>{items.original_price ? items.original_price.toLocaleString() : 0}</del></p>}
                       {
                         items.original_price > items.price ?
                           <img className=" absolute w-10 top-2" src="../../img/IMAGE_CREATED/sale.png" alt="" />

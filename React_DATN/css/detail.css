@@ -165,24 +165,23 @@ select option:checked {
 /* css comment - product detail */
 
 .cm {
-  width: 1290px;
-  /* height: 245px; */
-  margin: 20px auto;
+  margin-left: 60px;
+  margin-top: 40px;
   height: auto;
   margin-bottom: 10%;
 }
 
 .cm_title {
-  font-size: 25px;
+  font-size: 20px;
   margin-bottom: 15px;
 }
 
 .comments {}
 
 .comment_detail {
-  /* width: 65%; */
+  width: 95%;
   border-bottom: 1px solid #efefef;
-margin-bottom: 22px;
+  margin-bottom: 22px;
 }
 
 .comment_detail_header {
@@ -214,16 +213,18 @@ margin-bottom: 22px;
   line-height: 30px;
 }
 
-.favorites {}
+
 
 .favorites p {
   margin: 0;
   border: 1px solid red;
-  padding: 8px 14px;
+  /* padding: 8px 14px; */
   border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
+  margin-top: 5px;
 }
+
 
 .favorites svg {
   display: inline;
@@ -233,7 +234,7 @@ margin-bottom: 22px;
 }
 
 .favorites span {
-  font-size: 18px;
+  font-size: 13px;
   color: red;
 }
 
@@ -254,14 +255,11 @@ margin-bottom: 22px;
 .comment_form button {
   display: block;
   background-color: #00b7ff;
-  float: right;
   padding: 10px 20px;
   margin-top: 10px;
-  /* border: 1px solid black; */
   border-radius: 6px;
   overflow: hidden;
   color: white;
-  font-weight: bold;
 }
 
 .ratings{

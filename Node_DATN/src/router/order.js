@@ -2,7 +2,6 @@ import express from "express";
 import {
     createOrder,
     getAllOrders,
-    getOneOrderUser,
     getOrdersById,
     getUserOrders,
     removeOrder,
@@ -14,7 +13,7 @@ const router = express.Router();
 
 router.get("/order/view", checkPermissionOrder,getUserOrders);
 router.get("/order",getAllOrders);
-router.get("/order/:id/user",checkPermissionOrder, getOneOrderUser);
+// router.get("/order/:id/user",checkPermissionOrder, getOneOrderUser);
 router.get("/order/:id", getOrdersById);
 router.post("/order",checkPermissionOrder, createOrder);
 router.delete("/order/:id", removeOrder);

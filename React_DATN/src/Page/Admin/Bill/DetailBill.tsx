@@ -11,7 +11,12 @@ import LoadingAdmin from '../../../Component/LoadingAdmin';
 const DetailBill = () => {
     const { id } = useParams();
     const { data,isLoading } = useGetOrderByIdQuery(id || "");
-    // const { data: user } = useGetOneUserQuery(data?.userId)
+
+
+    // tổng tiền của sản phẩm khi chưa dùng mã giảm giá
+    const undiscountedMoney = data?.products?.reduce((acc:number,item:any) => acc + (item.price * item.quantity),0)
+
+    
     const navigate = useNavigate();
 
     const [updateOrder] = useUpdateOrderMutation();
@@ -77,14 +82,17 @@ const DetailBill = () => {
                         <div className='order' >
                             <div style={{ margin: 25 }}>
                                 <div style={{ display: 'flex' }}>
-                                    <div style={{ marginBottom: 40, marginRight: 200 }}>
+                                <div style={{ marginBottom: 40, marginRight: 200 }}>
                                         <h3>Thông tin đơn hàng</h3>
                                         <p style={{fontSize: 18}}>Mã đơn hàng: {data?.code_order}</p>
                                         <p style={getStatusColor(data?.status)}>Trạng thái: {getStatusText(data?.status)}</p>
-                                        <p style={{fontSize: 18}}>Tổng giá trị đơn hàng: {data?.totalPrice.toLocaleString()}đ</p>
-                                        <p style={{fontSize: 18}}>Thời gian: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
-                                        {/* <p>Ngày cập nhật: {new Date(data?.updatedAt).toLocaleString()}</p> */}
-                                    </div>
+                                        {data?.discountCodeId ? <p>Tổng giá trị đơn hàng trước giảm giá: <span style={{color: 'red',fontWeight: 500}}>{undiscountedMoney.toLocaleString()}đ</span></p>: ''}
+                                        {data?.discountCodeId ? <p> Đã sử dung mã giảm giá: <span style={{color: 'red',fontWeight: 500}}>{data?.discountCodeId.code}</span></p> : ''}
+                                        {data?.discountCodeId ? <p style={{fontSize: 18}}>Được giảm giá: {data?.discountCodeId.percentage > 0 ? <span style={{color:'red',fontWeight: 500}}>{ data?.discountCodeId?.percentage}%</span> : <span style={{color:'red',fontWeight: 500}}>{data?.discountCodeId.amountDiscount.toLocaleString()}đ</span>}</p> : ''}
+                                        {data?.discountCodeId || data.totalPrice ? <p>Tổng tiền thu hộ: <span style={{color: 'red',fontWeight: 500}}>{data.statusPayment === true ? 0 : data?.totalPrice.toLocaleString() }đ</span></p> : ''}
+                                        <p style={{fontSize: 18}}>Thời gian đặt hàng: {`${new Date(data?.createdAt).toLocaleTimeString()} | ${new Date(data?.createdAt).toLocaleDateString()}`}</p>
+                                        <p style={{fontSize: 18}}>Phương thức thanh toán: {data?.statusPayment === true ? <span style={{color: 'green',fontWeight: 500}}>Đã chuyển khoản</span> : <span style={{color: 'red',fontWeight: 500}}>Thanh toán khi nhận hàng</span>}</p>
+                                </div>
                                     <div style={{display: "block", margin: "0 auto"}}>
                                         <h3>Địa chỉ giao hàng</h3>
                                         {data?.address && (
@@ -111,7 +119,7 @@ const DetailBill = () => {
                                             <th style={{ border: '1px solid #ddd', padding: '8px', background: '#f2f2f2', width: '8%', textAlign: 'center' }}>Màu sắc</th>
                                             <th style={{ border: '1px solid #ddd', padding: '8px', background: '#f2f2f2', width: '5%', textAlign: 'center' }}>Size</th>
                                             <th style={{ border: '1px solid #ddd', padding: '8px', background: '#f2f2f2', width: '7%', textAlign: 'center' }}>Số lượng</th>
-                                            <th style={{ border: '1px solid #ddd', padding: '8px', background: '#f2f2f2', width: '10%', textAlign: 'center' }}>Giá</th>
+                                            <th style={{ border: '1px solid #ddd', padding: '8px', background: '#f2f2f2', width: '10%', textAlign: 'center' }}>Đơn giá</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -122,7 +130,7 @@ const DetailBill = () => {
                                                 <td style={{ border: '1px solid #ddd', padding: '8px', display: "flex", alignItems: "center", justifyContent: "center" }}>
                                                     {product?.productId?.imgUrl && (
                                                         <img
-                                                            src={product?.productId?.imgUrl?.[0]}
+                                                            src={product?.imgUrl[0]}
                                                             alt={product?.productId?.name}
                                                             style={{ width: '100px', height: '100px' }}
                                                         />
@@ -141,12 +149,12 @@ const DetailBill = () => {
                                                 </td>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{product?.size}</td>
                                                 <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{product?.quantity}</td>
-                                                <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{product?.price.toLocaleString()}đ</td>
+                                                <td style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>{product.price ? product?.price.toLocaleString() : ''}đ</td>
                                             </tr>
                                         ))}
                                         <tr>
-                                            <td colSpan={6} style={{paddingTop: 30,textAlign: 'right', fontWeight: 600, borderTop: '1px solid #ddd', fontSize:18,color:"black" }}>Tổng tiền:</td>
-                                            <td style={{paddingTop: 30, textAlign: 'center', fontWeight: 600, fontSize:18,color:"black"}}>{data?.totalPrice.toLocaleString()}đ</td>
+                                            <td colSpan={6} style={{paddingTop: 30,textAlign: 'right', fontWeight: 600, borderTop: '1px solid #ddd', fontSize:18,color:"red" }}>Tổng tiền:</td>
+                                            <td style={{paddingTop: 30, textAlign: 'center', fontWeight: 600, fontSize:18,color:"red"}}>{data.totalPrice ? data?.totalPrice.toLocaleString() : ''}đ</td>
                                         </tr>
                                     </tbody>
                                 </table>

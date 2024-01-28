@@ -1057,6 +1057,7 @@ body {
 }
 
 .product-name h1 {
+    color: black;
     font-size: 14px;
     font-weight: 500;
     text-transform: uppercase;
@@ -1070,14 +1071,15 @@ body {
 }
 
 .price-rating span {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 14px;
+    color: #ed3a17;
+    font-weight: 500;
     font-family: "Montserrat", sans-serif;
 }
 
-.single-product .ratings {
+/* .single-product .ratings {
     float: right;
-}
+} */
 
 .single-product .ratings i {
     color: #ffb21e;
@@ -4054,3 +4056,7 @@ button.check-button:hover,
   .ant-btn.css-dev-only-do-not-override-p7e5j5.ant-btn-primary.ant-btn-sm {
     background-color: red;
   }
+
+
+
+  

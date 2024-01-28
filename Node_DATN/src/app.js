@@ -17,6 +17,8 @@ import discountRouter from "./router/discountCode.js"
 import statisticRouter from "./router/statistic.js"
 import vnpRouter from "./router/vnp.js"
 import commentRouter from "./router/comment.js"
+import searchProductRouter from "./router/searchProduct.js"
+
 
 
 dotenv.config()
@@ -43,6 +45,8 @@ app.use("/api", discountRouter)
 app.use("/api",vnpRouter)
 app.use("/api", commentRouter)
 app.use("/api", statisticRouter)
+app.use("/api", searchProductRouter)
+
 
 
 

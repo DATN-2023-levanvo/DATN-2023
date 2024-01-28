@@ -26,12 +26,21 @@ const orderSchema = new mongoose.Schema({
           ]
         }
       ],
+      discountCodeId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "DiscountCode",
+        default: null,
+      },
     name: String,
     phone:String,
     note: String,
     status: {
         type: String,
         default: "0"
+    },
+
+    statusPayment: {
+      type: Boolean,
     },
 
     // discount:String,

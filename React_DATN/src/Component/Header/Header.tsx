@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect,ChangeEvent,MouseEvent } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { ImCancelCircle } from "react-icons/im"
-import { UserOutlined } from "@ant-design/icons"
-import { message, Modal } from "antd"
-import useSearch from '../UseSearch'
+import { UserOutlined,SearchOutlined } from "@ant-design/icons"
+import { message, Modal,Input } from "antd"
 import Loading from "../Loading"
 import { useGetCartQuery } from '../../Services/Api_cart'
 import { IProduct } from '../../Models/interfaces'
+import { useGetSearchProductQuery } from '../../Services/Api_SearchProduct'
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 interface User {
   username: string
@@ -20,12 +21,77 @@ const Header = () => {
   const token = localStorage.getItem("token")
   const navigate = useNavigate()
   const [cartStatus,setCartStatus]:any=useState(false);
-  const { data: getCartById, isLoading, isError } = useGetCartQuery();
+  const { data: getCartById, isError } = useGetCartQuery();
   const [cartQuantity,setCartQuantity] = useState<number | null>(null)
   const [cartLocal,setCartLocal] = useState(null)
   const localCartData = localStorage.getItem('cart');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState('');
+  const { data: searchResults, isLoading } = useGetSearchProductQuery(debouncedSearchQuery);
+  const [isSearchBoxOpen, setIsSearchBoxOpen] = useState(false);
+
+  console.log(searchResults);
+  
+  const handleSearchIconClick = () => {
+    setIsSearchBoxOpen(true);
+  };
+  
+
+  const handleCancelClick = () => {
+    setIsSearchBoxOpen(false);
+  };
+
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+      setSearchQuery(query);
+  };
+  
+
+  // thực hiện chức năng xóa dấu và nếu có dấu cách sẽ thay bằng dấu - 
+  const removeDiacritics = (str:string) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D"); 
+  };  
+  
+  const handleViewMoreClick = (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+  
+    if (searchQuery !== '') {
+      // Remove diacritics and replace spaces with hyphens
+      const formattedQuery = removeDiacritics(searchQuery).replace(/\s+/g, '-');
+  
+      const searchData = searchResults.results;
+  
+      navigate(`/search-results?keyword=${encodeURIComponent(formattedQuery)}`, {
+        state: { data: searchData }
+      });
+      setIsSearchBoxOpen(false);
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleViewMoreClick(e as React.MouseEvent<HTMLButtonElement>);
+    }
+  };
+
+
 
   
+
   useEffect(() => {
     if ( getCartById) {
       const totalCartLength = getCartById.products.length;
@@ -70,7 +136,6 @@ const Header = () => {
     setIsLogoutModalVisible(false)
   }
 
-  const { searchInputRef, handleKeyDown } = useSearch();
 
   const [userId, setUserId] = useState(null);
 
@@ -120,23 +185,74 @@ const Header = () => {
             <div className="col-lg-3 col-md-3 position-relative">
               <div className="flex space-x-3 mt-3">
                 {/* Thanh tìm kiếm */}
-                {
 
-                  <div className="account-menu relative">
-                    <input type="checkbox" hidden id='search-webSite' />
-                    <label htmlFor="search-webSite"><img className='w-7 active:scale-90 cursor-pointer' src="../../../img/search-main-web.png" alt="" /></label>
-                    <form className='form-webSite' action="" >
-                      <label htmlFor="search-webSite" className=' float-right'><ImCancelCircle className="w-5 h-5 m-1 hover:rotate-90 duration-200 cursor-pointer" /></label>
-                      <h1 className='text-center text-2xl mt-3 text-gray-500 font-bold'>Tìm Kiếm</h1>
-                      <input type="text" placeholder=' Bạn đang tìm kiếm gì ?'
-                        onKeyDown={handleKeyDown}
-                        ref={searchInputRef}
-                      />
-                    </form>
-                    <label htmlFor="search-webSite" className='display-website-search'></label>
-                  </div>
+                <div className="account-menu relative">
+              <SearchOutlined
+                className="searchOutlined cursor-pointer "
+                onClick={handleSearchIconClick}
+              />
+          {isSearchBoxOpen && (
+            <form
+              className="form-webSite"
+              style={{ overflowY: 'auto', padding: '10px', display: 'block' }}
+            >
+              <label
+                htmlFor="search-webSite"
+                className="float-right"
+              >
+                <ImCancelCircle onClick={handleCancelClick} className="w-5 h-5 m-1 hover:rotate-90 duration-200 cursor-pointer" />
+              </label>
+              <h1 className="text-center text-2xl mt-3 text-black font-bold">
+                Tìm Kiếm
+              </h1>
+              <Input
+                type="text"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onKeyPress={(e) => handleKeyPress(e)}
+                className='mb-3'
+                placeholder="Nhập từ khóa để tìm kiếm"
+              />
+              {isLoading ? (
+                <div className="loading-spinner flex justify-center items-center" style={{ height: 100 }}>
+                  <AiOutlineLoading3Quarters className="animate-spin text-black text-2xl cursor-pointer" />
+                </div>
+              ) : (
+                <div>
+                  {searchResults && (
+                    <div className="mt-5">
+                      {searchResults.message !== 'Không có sản phẩm nào' ? (
+                        searchResults.results.slice(0, 4).map((item: IProduct) => (
+                          <a href={`/product/${item._id}`}>
+                            <div key={item._id} className="product-item flex pb-2 pt-2">
+                              <img src={item.imgUrl[0]} alt={item.name} width={80} className="mr-3" />
+                              <p className="flex items-center justify-center text-black font-medium" style={{ margin: 0 }}>
+                                {item.name}
+                              </p>
+                            </div>
+                            <hr className="my-2 border-t border-black" />
+                          </a>
+                        ))
+                      ) : (
+                        'Không có sản phẩm nào'
+                      )}
+                      <button
+                        className="block mx-auto mt-4 bg-blue-500 text-white p-2 rounded"
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                          handleViewMoreClick(e);
+                        }}
+                      >
+                        Xem thêm
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </form>
+          )}
+        </div>
 
-                }
+  
                 <div className="cart-img">
                   <a href={"/cart"}>
                       <img

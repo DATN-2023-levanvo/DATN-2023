@@ -26,16 +26,16 @@ const CheckOutSuccess = () => {
         // Tạo một đối tượng URLSearchParams từ chuỗi truy vấn của URL   
         const fetchData = async () => {
             if (location.search.includes('vnp_ResponseCode=00')) {
-                let orderDataString = localStorage.getItem('orderData')
-                let orderItemData= localStorage.getItem('orderItemData')
+                let orderDataString = localStorage.getItem('orderPaymentUser')
+                let orderItemData= localStorage.getItem('orderPayment')
 
                 // Thanh toán vnp với người có tài khoản
                 if(orderDataString){
                     let dataOrder = JSON.parse(orderDataString);
                     await addOrder(dataOrder)
-                    localStorage.removeItem('orderData');
+                    localStorage.removeItem('orderPaymentUser');
                     setTimeout(()=>{
-                        navigate("/")
+                        navigate("/order/view")
                     },1000)
                 }
 
@@ -50,7 +50,7 @@ const CheckOutSuccess = () => {
                     const updatedLocalCart = localCart.filter((item) => !cartId.includes(item.id));
                     setLocalCart(updatedLocalCart);
                     localStorage.setItem('cart', JSON.stringify(updatedLocalCart));
-                    localStorage.removeItem('orderItemData');
+                    localStorage.removeItem('orderPayment');
                     setTimeout(()=>{
                         navigate("/order/view/guest")
                     },1000)

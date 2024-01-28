@@ -61,6 +61,9 @@ import Top10Product from "./Page/Admin/Statistics/top10Product"
 import Guests from "./Page/Guests"
 import BillGuest from "./Page/BillGuest"
 import BillDetailGuest from "./Page/detailBillGuest"
+import UpdateVariantProduct from "./Page/Admin/Product/UpdateVariantProduct"
+
+import SearchResultsPage from "./Page/SearchResultsPage"
 
 
 function App() {
@@ -97,6 +100,8 @@ function App() {
         <Route path="order/view/detail/:id" element={<BillDetailHome />} />
         <Route path="order/view/detail/guest/:id" element={<BillDetailGuest />} />
         <Route path="order/alert" element={<CheckOutSuccess />} />
+        <Route path="/search-results" element={<SearchResultsPage />} />
+
       </Route>
 
       <Route
@@ -118,6 +123,7 @@ function App() {
         <Route path="product/list" element={<ProductList />} />
         <Route path="product/details/:id" element={<ProductListDetails />} />
         <Route path="product/:id/update" element={<UpdateProduct />} />
+        <Route path="product/:productId/variant/:variantId/update" element={<UpdateVariantProduct />} />
         <Route path="comment/list" element={<CommentList />} />
         <Route path="category/list" element={<CategoryList />} />
         <Route path="category/add" element={<AddCategory />} />

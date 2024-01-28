@@ -10,7 +10,13 @@ export interface IProduct {
     {
       size_id: string[],
       color_id: string[],
-      quantity?: number[]
+      quantity?: number,
+      importPrice: number,
+      original_price: number,
+      sellingPrice: number,
+      quantityImported: number,
+      isDeleted: boolean,
+
     }
   ]
   isDeleted?: boolean
@@ -56,7 +62,8 @@ export interface ProductItem {
   quantity: number;
   color: string,
   size: string,
-  price: number
+  price: number,
+  totalAmount?: number
 }
 
 export interface ISlider {
@@ -96,23 +103,7 @@ export interface IBlog {
   createdAt?: string
   updatedAt?: string
 }
-// export interface IOrder {
-//   _id?: string | number
-//   phone: string
-//   note?: string
-//   status: string
-//   discount: string
-//   methodPayment: string
-//   quantity: number
-//   totalPrice: number
-//   address: {
-//     city: string
-//     location: string
-//     district: string
-//   }
-//   userID: string
-//   codeID: string
-// }
+
 export interface IDiscount {
   _id?: string
   code?: string
@@ -150,7 +141,8 @@ export interface IOrder {
     color: string
     size: number
     _id: string
-  }[]
+  }[],
+  discountCodeId: string,
   phone: string
   note?: string
   status: string

@@ -11,7 +11,7 @@ export const getCart = async (req, res) => {
         .populate({
           path: 'products.productId',
           model: 'Product',
-          select: 'name imgUrl price isDeleted variants.inventory', // Include 'variants.inventory' in the selection
+          select: 'name imgUrl price isDeleted variants',
         });
 
       if (!cart) {
@@ -29,7 +29,7 @@ export const getCart = async (req, res) => {
 }
 
 export const addToCart = async (req, res) => {
-  const { productId, color, size, quantity,price,imgUrl } = req.body;
+  const { productId, color, size, quantity,price,imgUrl,totalAmount } = req.body;
   const userId = req.user._id;
   try {
     let cart = await Cart.findOne({ userId });
@@ -39,14 +39,14 @@ export const addToCart = async (req, res) => {
     }
 
     if (!cart) {
-      cart = new Cart({ userId, products: [{ productId, color, size, quantity,price,imgUrl }] });
+      cart = new Cart({ userId, products: [{ productId, color, size, quantity,price,imgUrl,totalAmount }] });
     }else{
       const existingProduct = cart.products.find(
         (item) => item.productId.equals(productId) && item.color === color && item.size === size
       );
       if(existingProduct){
       existingProduct.quantity += quantity;
-      existingProduct.price += price*quantity
+      existingProduct.totalAmount += price*quantity
       }else{
         if (!mongoose.Types.ObjectId.isValid(productId)) {
           return res.status(400).json({ message: "Địa chỉ sản phẩm không hợp lệ." });
@@ -55,10 +55,9 @@ export const addToCart = async (req, res) => {
         if (!productDocument) {
           return res.status(404).json({ message: "Không tìm thấy sản phẩm." });
         }
-        cart.products.unshift({ productId, color, size, quantity,price,imgUrl });
+        cart.products.unshift({ productId, color, size, quantity,price,imgUrl,totalAmount });
       }
     }
-
 
     await cart.save();
 
@@ -67,14 +66,13 @@ export const addToCart = async (req, res) => {
       cart
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: error.message });
   }
 }
 
 // hàm cập nhật giảm số lượng tính lại tổng tiền
 export const updateMinus = async (req, res) => {
-  const { productId, color, size, quantity,price } = req.body;
+  const { cartVariationID , quantity,price } = req.body;
   const userId = req.user._id;
   try {
     const cart = await Cart.findOne({ userId });
@@ -83,13 +81,11 @@ export const updateMinus = async (req, res) => {
       return res.status(404).json({ message: "Giỏ hàng của bạn đang trống." });
     }
 
-    if (!productId || !quantity || !size || !color || !price) {
+    if (!cartVariationID || !quantity ||  !price) {
       return res.status(400).json({ message: "Dữ liệu sản phẩm không hợp lệ." });
     }
 
-    const existingProduct = cart.products.find(
-      (item) => item.productId.equals(productId) && item.color === color && item.size === size
-    );
+    const existingProduct = cart.products.find((item) => item._id);
 
     if (existingProduct) {
       // Kiểm tra số lượng mới không được âm hoặc lớn hơn số lượng hiện có
@@ -98,14 +94,14 @@ export const updateMinus = async (req, res) => {
       }
 
       existingProduct.quantity -= quantity;
-      existingProduct.price -= price
+      existingProduct.totalAmount -= price
       
-      if (existingProduct.quantity <= 0) {
-        // Nếu số lượng sản phẩm trong giỏ hàng bằng 0, hãy loại bỏ nó khỏi giỏ hàng
-        cart.products = cart.products.filter(
-          (item) => !item.productId.equals(productId) || item.color !== color || item.size !== size
-        );
-      }
+      // if (existingProduct.quantity <= 0) {
+      //   // Nếu số lượng sản phẩm trong giỏ hàng bằng 0, hãy loại bỏ nó khỏi giỏ hàng
+      //   cart.products = cart.products.filter(
+      //     (item) => !item.productId.equals(cartVariationID) || item.color !== color || item.size !== size
+      //   );
+      // }
       
       await cart.save();
       return res.status(200).json({
@@ -123,7 +119,7 @@ export const updateMinus = async (req, res) => {
 
 // hàm cập nhật tăng số lượng tính lại tổng tiền
 export const updateIncrease = async (req, res) => {
-  const { productId, color, size, quantity,price } = req.body;
+  const { cartVariationID, quantity ,price } = req.body; // cartVariationID là ID biến thể giỏ hàng
   const userId = req.user._id;
   try {
     const cart = await Cart.findOne({ userId });
@@ -132,17 +128,15 @@ export const updateIncrease = async (req, res) => {
       return res.status(404).json({ message: "Giỏ hàng của bạn đang trống." });
     }
 
-    if (!productId || !quantity || !size || !color || !price) {
+    if (!cartVariationID || !quantity || !price) {
       return res.status(400).json({ message: "Dữ liệu sản phẩm không hợp lệ." });
     }
 
-    const existingProduct = cart.products.find(
-      (item) => item.productId.equals(productId) && item.color === color && item.size === size
-    );
+    const existingProduct = cart.products.find((item) => item._id);
 
     if (existingProduct) {
       existingProduct.quantity += quantity;
-      existingProduct.price += price
+      existingProduct.totalAmount += price
 
       
       await cart.save();
