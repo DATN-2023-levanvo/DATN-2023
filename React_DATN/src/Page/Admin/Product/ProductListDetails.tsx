@@ -25,6 +25,7 @@ const ProductListDetails = () => {
       sell_quantity: variant.sell_quantity || 0,
       inventory: variant.inventory || 0,
       importPrice: variant.importPrice || 0,
+      totalQuantityVariant: variant.totalQuantityVariant || 0,
       sellingPrice: variant.sellingPrice || 0,
       original_price: variant.original_price || 0
     };
@@ -127,6 +128,12 @@ const ProductListDetails = () => {
       title: 'Số lượng bán ra',
       dataIndex: 'sell_quantity',
       key: 'sell_quantity',
+      align: 'center',
+    },
+    {
+      title: 'Tổng số lượng đã nhập hàng',
+      dataIndex: 'totalQuantityVariant',
+      key: 'totalQuantityVariant',
       align: 'center',
     },
     {

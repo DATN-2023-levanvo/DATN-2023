@@ -55,7 +55,7 @@ const Products = () => {
 
 
   const sortedProducts = [...filteredProduct];
-  console.log(sortedProducts);
+
   
 
   const [sortOption, setSortOption] = useState("ascending"); // Mặc định sắp xếp theo giá tăng dần
@@ -299,22 +299,17 @@ const Products = () => {
                       <div className="row">
                         {displayedProducts && displayedProducts.length > 0 ? (
                           displayedProducts.map((product: IProduct) => {
-                      const minPrices = product.variants?.map((variant) => variant.sellingPrice || 0);
-                      const maxPrices = product.variants?.map((variant) => variant.sellingPrice || 0);
-                      const minSellingPrice = minPrices ? Math.min(...minPrices) : 0;
-                      const maxSellingPrice = maxPrices ? Math.max(...maxPrices) : 0;
+                      const prices = product.variants?.map((variant) => variant.sellingPrice || 0);
+                      const minSellingPrice = prices ? Math.min(...prices) : 0;
+                      const maxSellingPrice = prices ? Math.max(...prices) : 0;
 
-                      // giá bé nhất của mảng
-                      const formattedMinSellingPrice = new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND',
-                      }).format(minSellingPrice);
-            
-                       // giá lớn nhất của mảng
-                      const formattedMaxSellingPrice = new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND',
-                      }).format(maxSellingPrice);
+                      // chuyển dạng số thành dạng tiền tệ việt nam
+                      const numberFormat = (value: number) =>
+                      new Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                      }).format(value);
+
 
                             return (
                               <div
@@ -347,8 +342,9 @@ const Products = () => {
                                       </div>
                                       <div className="price-rating">
      
-                                        <span className="mr-1">{formattedMinSellingPrice}</span>-
-                                        <span className="ml-1">{formattedMaxSellingPrice}</span>
+                                        <span className="mr-1">{numberFormat(minSellingPrice)}</span>
+                                        <span style={{fontSize:20,marginLeft:5,marginRight:5}}>-</span>
+                                        <span className="ml-1">{numberFormat(maxSellingPrice)}</span>
 
                                         <div className="ratings">
                                           <i className="fa fa-star"></i>

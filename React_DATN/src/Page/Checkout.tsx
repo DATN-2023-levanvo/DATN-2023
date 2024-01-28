@@ -377,10 +377,11 @@ const Checkout = () => {
     handleInputBlur("district", selectedOption)
   }
 
-  console.log('selectedProducts',selectedProducts);
+  // console.log('selectedProducts',selectedProducts);
   
   // Sử lý tạo đơn hàng
   const handlePlaceOrder = async () => {
+    
     setIsLoadingSeen(true);
     try {
       const token = localStorage.getItem("token")
@@ -410,7 +411,7 @@ const Checkout = () => {
             size: selectedProducts[index].size,
             imgUrl: selectedProducts[index].imgUrl
           })),
-          discountCodeId: enteredDiscount._id,
+          discountCodeId: enteredDiscount ? enteredDiscount._id : null,
           name:
             (document.getElementById("name") as HTMLInputElement)?.value || "",
           phone:
@@ -440,9 +441,9 @@ const Checkout = () => {
           await addOrder(orderData)
           message.success("Đặt hàng thành công");
           setIsLoadingSeen(false);
-          setTimeout(()=>{
-            navigate('/order/view')
-          },2000);
+          // setTimeout(()=>{
+          //   navigate('/order/view')
+          // },2000);
         }
 
         if (currentUser) {
@@ -458,14 +459,16 @@ const Checkout = () => {
         }
         if (enteredDiscount) {
           await updateDiscount({
-            _id: enteredDiscount._id,
-            percentage: enteredDiscount.percentage,
-            amountDiscount: enteredDiscount.amountDiscount,
-            minimumOrderAmount: enteredDiscount.minimumOrderAmount,
-            quantity: enteredDiscount.quantity - 1,
+            _id: enteredDiscount._id || '',
+            percentage: enteredDiscount.percentage || 0,
+            amountDiscount: enteredDiscount.amountDiscount || 0,
+            minimumOrderAmount: enteredDiscount.minimumOrderAmount || 0,
+            quantity: (enteredDiscount.quantity || 0) - 1,
           })
         }
       } else {
+
+        // Thao tác với người dùng không có tài khoản
         const cartId = selectedProducts.map((product: any) => product.key)
         const productId = selectedProducts.map(
           (product: any) => product.productId
@@ -532,6 +535,8 @@ const Checkout = () => {
         }
       }
     } catch (error) {
+      console.log("dang co loi",error);
+      
       setIsLoadingSeen(false);
     }
   }

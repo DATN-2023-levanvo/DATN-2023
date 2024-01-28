@@ -30,8 +30,8 @@ const productSchema = new mongoose.Schema(
         importPrice: Number, // giá tiền nhập hàng
         original_price: Number, // giá gốc
         sellingPrice: Number,   // giá bán ra (giá hiện tại mở bán)
-        quantity: Number,  // tổng số lượng nhập hàng
-        quantityImported: Number,
+        quantity: Number,  // tổng số lượng đã nhập hàng của 1 biến thể sản phẩm
+        quantityImported: Number,  // số lượng nhập hàng,
         inventory: {
           type: Number, // số lượng tồn kho 
           default: 0

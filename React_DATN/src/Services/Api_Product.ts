@@ -24,6 +24,7 @@ const productApi = createApi({
       providesTags: ["Product"]
     }),
 
+    // hiện thị chi tiết biến thể sản phẩm để thực hiện chức năng update
     getOneVariantProduct: builder.query<IProduct, { productId: number | string; variantId: number | string }>({
       query: ({ productId, variantId }) => {
         const productIdString = String(productId);
@@ -52,11 +53,11 @@ const productApi = createApi({
       invalidatesTags: ["Product"]
     }),
 
-    updateVariantProduct: builder.mutation<IProduct, { productId: number | string; variantId: number | string; quantityImported: number,quantity: number }>({
-      query: ({ productId, variantId, quantityImported,quantity }) => ({
+    updateVariantProduct: builder.mutation<IProduct, { productId: number | string; variantId: number | string; quantityImported: number,quantity: number,importPrice:number,sellingPrice: number, original_price:number}>({
+      query: ({ productId, variantId, quantityImported,quantity,importPrice,sellingPrice,original_price }) => ({
         url: `/api/product/${productId}/variant/${variantId}/update`,
         method: 'PUT',
-        body: { quantityImported,quantity },
+        body: { quantityImported,quantity, importPrice,sellingPrice,original_price},
       }),
       invalidatesTags: [{ type: 'Product' }],
     }),

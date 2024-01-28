@@ -53,7 +53,7 @@ const ProductDetail = () => {
   const [totalVariant, setTotalVariant]: any = useState(0); //sau khi chọn size lập tức hiện số lượng của biến thể đó
   const [sellingPrice, setSellingPrice] = useState<number | undefined>(undefined); // lưu giá bán ra
   const [originalPrice,setOriginalPrice] = useState<number | undefined>(undefined) // lưu giá gốc
-
+  const [grossProduct,setGrossProduct] = useState('')
 
 // thực hiện in ra giá của từng biến thể sản phẩm variants trong bảng Product
 const prices = productDataOne?.variants?.map(({ sellingPrice, original_price }: {sellingPrice: number, original_price:number}) => ({
@@ -113,13 +113,22 @@ const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
     );
     const selectedImgUrl = selectedVariant ? selectedVariant.imgUrl : "";
 
+    // const totalAvailableQuantity = selectedVariant.inventory;
+    // if(totalAvailableQuantity===0){
+    //   setGrossProduct("Màu này đã hết size xin vui lòng chọn màu khác");
+    // }else{
+    //   setGrossProduct('')
+    // }
     setImgUrl(selectedImgUrl);
     const sizesForColor = productDataOne?.variants
       .filter((variant: any) => variant.color_id.unicode === color)
       .map((variant: any) => variant.size_id.name);
+
       
     setSizeByColor(sizesForColor);
+
     setSize('')
+    setTotalVariant(0)
   };
 
   // Chọn size
@@ -179,7 +188,7 @@ const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
     }
 
     // const totalAvailableQuantity = selectedVariant.quantity;
-    const totalAvailableQuantity = selectedVariant.inventory
+    const totalAvailableQuantity = selectedVariant.quantity
 
     if (getQuantityBuy < 1 || getQuantityBuy > totalAvailableQuantity) {
       message.error(`Số lượng không được vượt quá ${totalAvailableQuantity}`);
@@ -676,8 +685,9 @@ const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
                                         productDataOne?.variants.some(
                                           (variant: any) =>
                                             variant.color_id.unicode === getColor &&
-                                            variant.size_id.name === size.name &&
-                                            variant.inventory > 0
+                                            variant.size_id.name === size.name 
+                                            // && variant.inventory > 0
+                                            
                                         );
 
                                       return (
@@ -709,12 +719,10 @@ const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
                                 </div>
                                 <div className="mt-4 -mb-4">
                                   {
-                                    totalVariant > 0 ?
-                                      <p>{totalVariant} sản phẩm có sẵn</p>
-                                      :
-                                      <p>Vui lòng chọn màu và kích cỡ của sản phẩm !</p>
+                                    totalVariant > 0 ? <p>{totalVariant} sản phẩm có sẵn</p> :<p>Vui lòng chọn màu và kích cỡ của sản phẩm !</p>
                                   }
                                 </div>
+                                <div>{grossProduct}</div>
                               </div>
                             </div>
 

@@ -332,9 +332,9 @@ const AddProductDetails = () => {
         // đóng loading
         setIsLoadingScreen(false)
 
-        // setTimeout(() => {
-        //   navigate("/admin/product/list")
-        // }, 1500)
+        setTimeout(() => {
+          navigate(`/admin/product/details/${id}`)
+        }, 1500)
       }
     } catch (error) {
       console.error("Error uploading images:", error)
@@ -507,7 +507,7 @@ const AddProductDetails = () => {
           </Button>
           <Button
             htmlType="button"
-            onClick={() => navigate("/admin/product/list")}
+            onClick={() => navigate(`/admin/product/details/${id}`)}
           >
             Quay lại
           </Button>

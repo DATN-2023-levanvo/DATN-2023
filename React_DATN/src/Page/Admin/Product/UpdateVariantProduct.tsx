@@ -41,7 +41,6 @@ const UpdateVariantProduct = () => {
   const [updateProduct, { error }] = useUpdateVariantProductMutation()
   const [isLoadingScreen, setIsLoadingScreen] = useState(false);
 
-  
 
   useEffect(() => {
     if (error) {
@@ -59,7 +58,11 @@ const UpdateVariantProduct = () => {
   useEffect(() => {
     form.setFieldsValue({
       id: productDataOne?._id,
-      quantity: productDataOne?.quantity
+      quantity: productDataOne?.quantity,
+      sellingPrice: productDataOne?.sellingPrice,
+      original_price: productDataOne?.original_price,
+      importPrice: productDataOne?.importPrice
+
     })
   }, [productDataOne])
 
@@ -70,6 +73,9 @@ const UpdateVariantProduct = () => {
       const payload = {
         quantity: values.quantity,
         quantityImported: values.quantityImported || 0,
+        sellingPrice: values.sellingPrice,
+        original_price: values.original_price,
+        importPrice: values.importPrice
       };
       console.log(payload);
       setIsLoadingScreen(true)
@@ -120,6 +126,27 @@ const UpdateVariantProduct = () => {
         >
           <InputNumber />
         </Form.Item>
+
+        <Form.Item
+          name="sellingPrice"
+          label="Giá bán ra"
+        >
+          <InputNumber />
+        </Form.Item>
+
+        <Form.Item
+          name="original_price"
+          label="Giá gốc"
+        >
+          <InputNumber />
+        </Form.Item>
+
+        <Form.Item
+          name="importPrice"
+          label="Giá nhập hàng"
+        >
+          <InputNumber />
+        </Form.Item>
         
 
         <Form.Item wrapperCol={{ offset: 4, span: 11 }}>
@@ -133,7 +160,7 @@ const UpdateVariantProduct = () => {
           </Button>
           <Button
             htmlType="button"
-            onClick={() => navigate("/admin/product/list")}
+            onClick={() => navigate(`/admin/product/details/${productId}`)}
           >
             Quay lại
           </Button>

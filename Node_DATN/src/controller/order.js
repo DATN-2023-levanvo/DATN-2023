@@ -133,7 +133,7 @@ export const createOrder = async (req, res) => {
                 {
                     $inc: {
                         'variants.$.sell_quantity': product.quantity,
-                        'variants.$.inventory': product.quantity - (product.sell_quantity || 0)
+                        'variants.$.inventory': -product.quantity
                     }
                 },
                 { new: true }

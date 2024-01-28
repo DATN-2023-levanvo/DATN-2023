@@ -17,12 +17,13 @@ const Product = () => {
     const [getId, setId]: any = useState("");
     const { data: productData, isLoading }: any = useGetAllProductQuery();
     // const { data: categoryData, isLoading: loadingCT }: any = useGetAllCategoryQuery();
-
+    
 
 
     const sortedProducts = productData?.slice()
     .sort((a: any, b: any) => (b.sell_quantity || 0) - (a.sell_quantity || 0))
     .filter((product: IProduct) => !product.isDeleted && (product.sell_quantity || 0) > 0).slice(0, 6);
+    console.log(sortedProducts);
     
     
     return (
@@ -68,6 +69,7 @@ const Product = () => {
                             <div className="row-new">
                                 <div className="product-new">
                                     {sortedProducts?.map((product: IProduct) => {
+                                        const prices = product.variants?.map((variant) => variant.sellingPrice)
                                         return (
                                             <div
                                                 className="col-lg-4 col-md-6"

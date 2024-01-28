@@ -26,22 +26,27 @@ export const getProduct = async (req, res) => {
     for (const product of products) {
       let quantityTotal = 0;
       let sell_quantity = 0;
+      let inventoryTotal = 0;
 
-      // Iterate through each variant of the product
+      // Lặp lại qua từng biến thể của sản phẩm
       for (const variant of product.variants) {
-        // Calculate total quantities for each product
+        // Tính tổng số lượng cho từng sản phẩm
         quantityTotal += variant.quantity || 0;
         sell_quantity += variant.sell_quantity || 0;
-        // Calculate inventory for each variant
-        variant.inventory = (variant.quantity || 0) - (variant.sell_quantity || 0);
+        // Tính toán tồn kho cho từng biến thể
+        if(variant.quantity>0){
+          variant.inventory = (variant.quantity || 0) - (variant.sell_quantity || 0);
+          inventoryTotal += variant.inventory;
+        }
+
       }
 
-      // Set total quantities for each product
+      // Đặt tổng số lượng cho từng sản phẩm
       product.quantityTotal = quantityTotal;
       product.sell_quantity = sell_quantity;
+      product.inventoryTotal = inventoryTotal;
 
-      // Calculate and set inventoryTotal for each product
-      product.inventoryTotal = quantityTotal - sell_quantity;
+      // Tính toán và đặt InventoryTotal cho từng sản phẩm
     }
     return res.status(200).json(products)
   } catch (error) {
@@ -67,11 +72,14 @@ export const createProductVariant = async (req, res) => {
     }
 
     const variantData = req.body;
-    
+    const inventory = variantData.quantity
+    const totalQuantityVariant = variantData.quantity
     const newVariant = {
       ...variantData,
       _id: new mongoose.Types.ObjectId(), 
       isDeleted: false,
+      inventory,
+      totalQuantityVariant
     };
 
   
@@ -85,7 +93,7 @@ export const createProductVariant = async (req, res) => {
 
     return res.status(201).json({
       message: "Biến thể sản phẩm đã được thêm thành công",
-      product: variantData.quantity
+      product: product
     });
   } catch (error) {
     console.error(error);
@@ -95,6 +103,8 @@ export const createProductVariant = async (req, res) => {
   }
 };
 
+
+// hiện ra chi tiết của 1 sản phẩm
 export const readProduct = async (req, res) => {
   try {
     const data = await Product.findById({ _id: req.params.id })
@@ -107,43 +117,16 @@ export const readProduct = async (req, res) => {
       })
       .exec()
 
-    if (!data) {
-      return res.status(400).json({
-        message: "Không có sản phẩm nào",
-      })
-    }
-
-    // Tăng lượt truy cập của sản phẩm
-    try {
-      const product = await Product.findById({ _id: req.params.id }).exec();
-      if (product) {
-        product.views += 1;
-        await product.save();
+      if (data) {
+        data.views += 1;
+        await data.save();
+      }else{
+        return res.status(400).json({
+          message: "Không có sản phẩm nào",
+        })
       }
-    } catch (error) {
-      console.error(error);
-    }
-        // Thêm trường quantityTotal, sell_quantity_total, inventory_total cho sản phẩm
-        data.quantityTotal = 0;
-        data.sell_quantity = 0;
-        data.inventoryTotal = 0;
 
-        // Duyệt qua từng biến thể và tính tổng
-        for (const variant of data.variants) {
-          // Thiết lập giá trị mặc định cho sell_quantity nếu không tồn tại
-          variant.sell_quantity = variant.sell_quantity || 0;
-
-          // Tính tổng quantityTotal và sell_quantity
-          data.quantityTotal  += variant.quantity;
-          data.sell_quantity += variant.sell_quantity;
-
-          // Thêm trường inventory cho mỗi biến thể
-          variant.inventory = variant.quantity - variant.sell_quantity;
-          data.inventoryTotal += variant.inventory;
-        }
-
-        // Thêm trường inventory_total cho sản phẩm
-        data.inventoryTotal = data.quantityTotal - data.sell_quantity;
+ 
 
     return res.status(200).json(data)
   } catch (error) {
@@ -301,7 +284,7 @@ export const updateProduct = async (req, res) => {
 export const updateVariantProduct = async (req,res) => {
   try {
     const { productId, variantId } = req.params;
-    const { quantityImported,quantity } = req.body; // Assuming quantityImported is provided in the request body
+    const { quantityImported,quantity,sellingPrice,original_price,importPrice } = req.body; // Assuming quantityImported is provided in the request body
 
     // Find the product by ID
     const product = await Product.findById(productId);
@@ -319,15 +302,42 @@ export const updateVariantProduct = async (req,res) => {
       return res.status(404).json({ message: 'Không tìm thấy biến thể' });
     }
 
+    if(!variant.sellingPrice){
+      variant.sellingPrice = sellingPrice
+    }else{
+      variant.sellingPrice = sellingPrice
+    }
+
+
+    if(!variant.original_price){
+      variant.original_price = original_price
+    }else{
+      variant.original_price = original_price
+    }
+
+    if(!variant.importPrice){
+      variant.importPrice = importPrice
+    }else{
+      variant.importPrice = importPrice
+    }
+
 
       if (quantity===0 && quantityImported===0) {
-        variant.quantity = 0 
+        variant.inventory = 0 
       }
-    
 
-    if(quantityImported){
-      variant.quantity += quantityImported;
-    }
+      if(quantityImported !== 0 && quantity!==0){
+        variant.inventory += quantityImported
+        variant.quantity += quantityImported;
+      }else if(quantity===0 && quantityImported !== 0 ){
+        variant.inventory = quantityImported
+        variant.quantity = quantityImported;
+        variant.quantity += quantityImported
+      }
+
+
+      
+
 
     // Save the updated product
     await product.save();

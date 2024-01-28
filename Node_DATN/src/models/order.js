@@ -28,7 +28,8 @@ const orderSchema = new mongoose.Schema({
       ],
       discountCodeId:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "DiscountCode"
+        ref: "DiscountCode",
+        default: null,
       },
     name: String,
     phone:String,

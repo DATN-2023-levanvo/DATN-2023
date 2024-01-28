@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import {  useGetHotProductsQuery } from '../../../Services/Api_Product'
+import {  useGetAllProductQuery, useGetHotProductsQuery } from '../../../Services/Api_Product'
 import { IProduct } from '../../../Models/interfaces';
 import { Link } from 'react-router-dom';
 import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons';
 const Hot_products = () => {
-    const { data: productData, isError, isLoading }: any = useGetHotProductsQuery()
+    const { data: productData, isError, isLoading }: any = useGetAllProductQuery()
     const [currentIndex, setCurrentIndex] = useState(0);
 
     if (isLoading) {
@@ -27,6 +27,8 @@ const Hot_products = () => {
     const endIndex = (currentIndex + 1) * itemsPerPage;
 
     const visibleProducts = hotProducts.slice(startIndex, endIndex);
+    console.log(visibleProducts);
+    
 
 
     // Xử lý khi bấm nút "Sang trang trước" và "Sang trang sau"
@@ -41,6 +43,11 @@ const Hot_products = () => {
             setCurrentIndex(currentIndex + 1);
         }
     };
+
+    const numberFormat = (value:number) => new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND"
+    }).format(value)
     
     return (
         <div className="w-[90vw] mx-auto">
@@ -58,6 +65,12 @@ const Hot_products = () => {
                             <div className="overflow-hidden">
                                 <div className="flex justify-center">
                                     {visibleProducts.map((product: IProduct) => {
+                                        console.log(product.sell_quantity);
+                                        
+                                        const prices = product.variants?.map((variant) => variant.sellingPrice)
+                                        const minSellingPrice = prices ? Math.min(...prices) : 0
+                                        const maxSellingPrice = prices ? Math.max(...prices) : 0
+
                                         return (
                                             <div className='ml-2' key={product._id}>
                                                 <Link to={`/product/${product._id}`} >
@@ -80,22 +93,25 @@ const Hot_products = () => {
                                                             </div>
                                                         </div>
                                                       
-                                                        <div className="product-price -mt-3">
+                                                        <div className="product-price -mt-3 ">
                                                             <div className="product-name">
                                                                 <h1>{product.name}</h1>
                                                                 <p>Lượt xem: {product.views}</p>
                                                             </div>
-                                                            <div className="price-rating">
-                                                                <span>
-                                                                    {product.price}
-                                                                </span>
-                                                                <div className="ratings">
-                                                                    <i className="fa fa-star"></i>
-                                                                    <i className="fa fa-star"></i>
-                                                                    <i className="fa fa-star"></i>
-                                                                    <i className="fa fa-star"></i>
-                                                                    <i className="fa fa-star-half-o"></i>
-                                                                </div>
+                                                            <div className="price-rating -mt-3">
+                                                            <span>
+                                                                {numberFormat(minSellingPrice)}
+                                                            </span>
+                                                            <span style={{fontSize:20,marginLeft:5,marginRight:5}}>-</span>
+                                                            <span>{numberFormat(maxSellingPrice)}</span>
+                                                            <div className="ratings" style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa fa-star"></i>
+                                                                <i className="fa fa-star"></i>
+                                                                <i className="fa fa-star"></i>
+                                                                <i className="fa fa-star"></i>
+                                                                <i className="fa fa-star"></i>
+                                                                <div style={{ marginLeft: 'auto', marginTop: '-1px' }}>Đã bán: {product.sell_quantity}</div>
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>

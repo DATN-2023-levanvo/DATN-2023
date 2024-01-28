@@ -16,6 +16,7 @@ const Featured_products = () => {
             currency: "VND",
         }).format(value);
 
+        
     return (
         <div className='w-[90vw] mx-auto'>
             {isLoading ? <Loading /> :
@@ -30,7 +31,10 @@ const Featured_products = () => {
                         </div>
                         <div className="row-new">
                             <div className="product-new">
-                                {getProduct?.slice(0, 4).map((product: IProduct) => {
+                                {getProduct?.slice(0, 6).map((product: IProduct) => {
+                                    const price = product.variants?.map((variant) => variant.sellingPrice || 0)
+                                    const minSellingPrice = price ? Math.min(...price) : 0
+                                    const maxSellingPrice = price ? Math.max(...price) : 0
                                     return (
                                         <div
                                             // className="col-lg-4 col-md-6"
@@ -63,14 +67,16 @@ const Featured_products = () => {
                                                         </div>
                                                         <div className="price-rating">
                                                             <span>
-                                                                {numberFormat(product.price)}
+                                                                {numberFormat(minSellingPrice)}
                                                             </span>
+                                                            <span style={{fontSize:20,marginLeft:5,marginRight:5}}>-</span>
+                                                            <span>{numberFormat(maxSellingPrice)}</span>
                                                             <div className="ratings">
                                                                 <i className="fa fa-star"></i>
                                                                 <i className="fa fa-star"></i>
                                                                 <i className="fa fa-star"></i>
                                                                 <i className="fa fa-star"></i>
-                                                                <i className="fa fa-star-half-o"></i>
+                                                                <i className="fa fa-star"></i>
                                                             </div>
                                                         </div>
                                                     </div>
