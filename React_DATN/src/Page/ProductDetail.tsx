@@ -106,12 +106,15 @@ const maxSellingPrice = prices ? Math.max(...priceMap) : 0;
   const ChooseColor = (color: any, indColor: number) => {
     setColor(color);
     setIndexSlider(indColor);
+    console.log(color);
     
     // Tìm URL hình ảnh tương ứng cho màu đã chọn
     const selectedVariant = productDataOne?.variants.find(
       (variant: any) => variant.color_id.unicode === color
     );
-    const selectedImgUrl = selectedVariant ? selectedVariant.imgUrl : "";
+    console.log(selectedVariant);
+    
+    const selectedImgUrl = selectedVariant ? selectedVariant.imgUrl[0] : "";
 
     // const totalAvailableQuantity = selectedVariant.inventory;
     // if(totalAvailableQuantity===0){

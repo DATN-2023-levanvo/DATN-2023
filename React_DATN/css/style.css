@@ -1051,10 +1051,10 @@ body {
     transform: translate3d(0, 0, 0);
 }
 
-.product-name {
+/* .product-name {
     margin-top: 10px;
     margin-bottom: 5px;
-}
+} */
 
 .product-name h1 {
     color: black;
@@ -1062,6 +1062,7 @@ body {
     font-weight: 500;
     text-transform: uppercase;
     font-family: "Montserrat", sans-serif;
+
 }
 
 .price-rating span.old-price {
