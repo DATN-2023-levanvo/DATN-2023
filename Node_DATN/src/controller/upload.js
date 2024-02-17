@@ -1,4 +1,4 @@
-import cloudinary from "../config/cloudinary.js";
+import cloudinary from "../../config/cloudinary.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -52,7 +52,6 @@ export const uploadImages = async (req, res) => {
   }
 };
 
-
 // Xóa tất cả ảnh trên Cloudinary
 export const deleteAllImages = async (req, res) => {
   try {
@@ -66,9 +65,6 @@ export const deleteAllImages = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-
-
 
 // delete images
 export const deleteImage = async (req, res) => {
