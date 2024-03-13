@@ -5,7 +5,9 @@ import { pause } from "../utils/pause";
 export const colorApi = createApi({
   reducerPath: "color",
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://datn-be-sneaker.onrender.com`,
+    baseUrl : "http://localhost:8080",
+
+    // baseUrl: `https://datn-be-sneaker.onrender.com`,
     headers: {
       
     },

@@ -6,7 +6,8 @@ const productApi = createApi({
   reducerPath: "products",
   tagTypes: ["Product"],
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://datn-be-sneaker.onrender.com",
+    baseUrl : "http://localhost:8080",
+    // baseUrl: "https://datn-be-sneaker.onrender.com",
     fetchFn: async (...args) => (
       await pause(1000),
       fetch(...args)

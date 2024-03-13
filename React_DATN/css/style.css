@@ -998,6 +998,13 @@ body {
     margin-top: 30px;
 }
 
+.level-pro-hot {
+    position: absolute;
+    top: 0; /* Điều chỉnh vị trí đầu tiên theo trục y */
+    right: 0; /* Điều chỉnh vị trí đầu tiên theo trục x */
+    z-index: 1; /* Đảm bảo hình ảnh nằm trên cùng */
+  }
+
 .level-pro-new,
 .level-pro-sale {
     background-color: #5eb4c1;
@@ -1013,9 +1020,16 @@ body {
     z-index: 5;
 }
 
+.level-pro-hot {
+    /* top: ; */
+}
+
 .level-pro-sale {
     background-color: #333333;
 }
+
+
+  
 
 .product-img div {
     display: block;

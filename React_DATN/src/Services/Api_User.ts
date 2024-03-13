@@ -6,7 +6,9 @@ const userApi = createApi({
   reducerPath: "user",
   tagTypes: ["User"],
   baseQuery: fetchBaseQuery({
-    baseUrl: `https://datn-be-sneaker.onrender.com`,
+    baseUrl : "http://localhost:8080",
+
+    // baseUrl: `https://datn-be-sneaker.onrender.com`,
     headers: {
       
     },
