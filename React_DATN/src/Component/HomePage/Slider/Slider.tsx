@@ -14,6 +14,9 @@ const Slider = () => {
         }
     }, [getAllSlide]);
 
+    console.log('getSlide',getSlide);
+    
+
     return (
         <div>
             <div className="slider-area mt-56">
@@ -26,9 +29,9 @@ const Slider = () => {
                     </div>
                     <div className="h-[70vh] overflow-hidden">
                         {
-                            getSlide?.map((itemSlide: any) => {
+                            getSlide?.map((itemSlide: any,index: number) => {
                                 return (
-                                    <div className="carousel-inner">
+                                    <div className="carousel-inner" key={index}>
                                         <div className="carousel-item active relative">
                                             <img className='w-[100vw] h-[70vh]' src={itemSlide?.imgSlider} alt="" />
                                             <div className="absolute top-44 left-44 ">
